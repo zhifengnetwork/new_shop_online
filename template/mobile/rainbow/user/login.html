@@ -1,0 +1,237 @@
+<include file="public/header" title="登录"  body=""/>
+<include file="public/header_nav" title="登录"  href="javascript:history.back(-1);"/>
+<div class="logo-wrap-bg">
+    <a class="login-logo-wrap" href="#">
+        <img src="{$tpshop_config.shop_info_store_user_logo|default='/public/static/images/logo/pc_home_user_logo_default.png'}" alt="LOGO"/>
+    </a>
+</div>
+
+<div class="loginsingup-input">
+    <!--登录表单-s-->
+    <form  id="loginform" method="post"  >
+        <input type="hidden" name="referurl" id="referurl" value="{$referurl}">
+        <div class="lsu">
+            <span class="ico ico-username"></span>
+            <input type="text" name="username" id="username" value=""  placeholder="请输入手机号"/>
+        </div>
+        <div class="lsu">
+            <span class="ico ico-password"></span>
+            <!--<input type="password" name="password" id="password" value="" placeholder="请输入密码"/>-->
+            <input class="v-code-input" type="text" id="mobile_code" value="" name="mobile_code" placeholder="请输入验证码" >
+            <a class="btn-text-message" rel="mobile" id="sendcode">获取验证码</a>
+            <input type="hidden" name="sms_type" value="5" />
+        </div>
+        <!--<notempty name="first_login">-->
+            <!--<div class="lsu">-->
+                <!--<span class="ico ico-v-code"></span>-->
+                <!--<input class="v-code-input" type="text" name="verify_code" id="verify_code" value="" placeholder="请输入验证码"/>-->
+                <!--<img class="v-code-pic"  id="verify_code_img" src="{:U('Mobile/User/verify')}" onClick="verify()"/>-->
+            <!--</div>-->
+        <!--</notempty>-->
+        <div class="lsu-submit">
+            <input type="button"  value="登 录"  onclick="submitverify()" class="btn_big1"  />
+        </div>
+    </form>
+    <div class="signup-find p">
+        <!--<a class="note fl" href="{:U('User/reg')}">快速注册</a>-->
+        <a class="note fr" href="{:U('User/forget_pwd')}">忘记密码？</a>
+    </div>
+    <!--登录表单-e-->
+    <!--第三方登陆-s-->
+    <div class="thirdlogin">
+        <h4>第三方登陆</h4>
+        <div class="third-login-list">
+            <a class="item-ico ico-wechat-login" href="{:U('LoginApi/login',array('oauth'=>'weixin'))}" target="_blank" title="weixin"></a>
+
+
+            <!-- <tpshop sql="select * from __PREFIX__plugin where type='login' AND status = 1" item="v" key="k">
+                <if condition="$v['code'] eq 'weixin' AND is_weixin() neq 1">
+                    <a class="item-ico ico-wechat-login" href="{:U('LoginApi/login',array('oauth'=>'weixin'))}" target="_blank" title="weixin"></a>
+                </if>
+                <if condition="$v['code'] eq 'qqq' AND is_qq() neq 1">
+                    <a class="item-ico ico-qq-login" href="{:U('LoginApi/login',array('oauth'=>'qq'))}" target="_blank" title="QQ"></a>
+                </if>
+                <if condition="$v['code'] eq 'alipay' AND is_alipay() neq 1 AND is_weixin() neq 1">
+                <a class="item-ico ico-alipay-login" href="{:U('LoginApi/login',array('oauth'=>'alipay'))}"></a>
+                </if>
+                <if condition="$v['code'] eq 'alipaynew' AND is_alipay() neq 1 AND is_weixin() neq 1">
+                    <a class="item-ico ico-alipay-login" href="alipays://platformapi/startapp?appId=20000067&url={$alipay_url}"></a>
+                </if>
+            </tpshop> -->
+        </div>
+    </div>
+    <!--第三方登陆-e-->
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // var myDate = new Date();
+        // var nowtime=Date.parse(new Date());
+        // console.log(123)
+        // console.log(mytime)
+        // nowtime=nowtime/1000;
+        var username = window.localStorage.getItem('key_username');
+        // var endtime = window.localStorage.getItem('key_endtime');
+        // console.log(username)
+        // console.log(password)
+        if(!username && typeof username != "undefined" && username != 0){
+
+        }else{
+                submitverify();
+        }
+
+    })
+    function verify(){
+        $('#verify_code_img').attr('src','/index.php?m=Mobile&c=User&a=verify&r='+Math.random());
+    }
+
+    //复选框状态
+    function remember(obj){
+        var che= $(obj).attr("class");
+        if(che == 'che check_t'){
+            $("#autologin").prop('checked',false);
+        }else{
+            $("#autologin").prop('checked',true);
+        }
+    }
+
+    //发送短信验证码
+    $("#sendcode").click(function () {
+        if($(this).hasClass('disabled')) return;
+        var reg = /^1[3456789]\d{9}$/;  /*用户手机号*/
+        var phone = $("#username");
+        var phoneS = $("#username").val();
+        // console.log(phone)
+        if (phone.val() == "") {
+            showErrorMsg('手机不能为空!', { time: 1000 }, function () {
+
+            });
+            return false
+        }
+        if (!reg.test(phone.val())) {
+            showErrorMsg('请输入正确的手机号!', { time: 1000 }, function () {
+
+            });
+            return false
+        }
+        var sms_type = 5;
+
+        // 获取验证码
+        var flag = true;
+        $.ajax({
+            url: '/index.php?m=Mobile&c=SendMessage&a=getPhoneVerify',
+            type: 'post',
+            async:false,
+            dataType: 'json',
+            data: { 'phone': phoneS, 'sms_type': sms_type },
+            success: function (msg) {
+                if (msg.code == 0) {
+                    showErrorMsg(msg.msg);
+                    flag = false;
+
+                    return false;
+                }
+            }
+        });
+
+        if (flag) {
+            showErrorMsg('已发送');
+            daojishi(60,this);
+        }
+    })
+
+    function daojishi(seconds,obj){
+        if (seconds > 1){
+            seconds--;
+            $(obj).text(seconds+"重新获取 ").addClass("disabled");
+            setTimeout(function(){
+                daojishi(seconds,obj);
+            },1000);
+        }else{
+            $(obj).text("获取验证码").removeClass("disabled");//启用按
+        }
+    }
+
+    function submitverify()
+    {
+        var username = window.localStorage.getItem('key_username');
+        // var endtime = window.localStorage.getItem('key_endtime');
+        // var nowtime = Date.parse(new Date());
+        // nowtime=nowtime/1000;
+        var referurl = $('#referurl').val();
+        // console.log(username)
+        // console.log(password)
+        if (!username && typeof username != "undefined" && username != 0){
+            var username = $.trim($('#username').val());
+            // var password = $.trim($('#password').val());
+            var mobile_code = $.trim($('#mobile_code').val());
+            var remember = $('#remember').val();
+            // var referurl = $('#referurl').val();
+            var verify_code = $.trim($('#verify_code').val());
+            if(username == ''){
+                showErrorMsg('手机号不能为空!');
+                return false;
+            }
+            if(!checkMobile(username) && !checkEmail(username)){
+                showErrorMsg('手机号格式不匹配!');
+                return false;
+            }
+            // if(password == ''){
+            //     showErrorMsg('密码不能为空!');
+            //     return false;
+            // }
+            if(mobile_code == ''){
+                showErrorMsg('手机验证码不能为空!');
+                return false;
+            }
+            var codeExist = $('#verify_code').length;
+            if (codeExist && verify_code == ''){
+                showErrorMsg('验证码不能为空!');
+                return false;
+            }
+        }else{
+            var mobile_code = '000000';
+        }
+
+        var sms_type=$("input[name='sms_type']").val()
+        var data = {username:username,mobile_code:mobile_code,referurl:encodeURIComponent(referurl),sms_type:sms_type};
+        if (codeExist) {
+            data.verify_code = verify_code;
+        }
+        $.ajax({
+            type : 'post',
+            url : '/index.php?m=Mobile&c=User&a=do_login&t='+Math.random(),
+            data : data,
+            dataType : 'json',
+            success : function(data){
+                if(data.status == 1){
+                    // var myDate = new Date();
+                    // var mytime=Date.parse(new Date());
+                    // mytime=mytime/1000+86400*7;
+                    window.localStorage.setItem('key_username', username);
+                    // window.localStorage.setItem('key_endtime', mytime);
+                    var url = decodeURIComponent(data.url);
+                    if (url.indexOf('user') >= 0 && url.indexOf('login') >= 0 || url == '') {
+                        window.location.href = '/index.php/mobile';
+                    }else{
+                        window.location.href = url;
+                    }
+                }else{
+                    layer.open({content: data.msg,time:2,end:function () {
+                            if (codeExist) {
+                                verify();
+                            } else {
+                                location.reload();
+                            }
+                        }});
+                }
+            },
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+                showErrorMsg('网络异常，请稍后重试');
+            }
+        })
+    }
+</script>
+</body>
+</html>

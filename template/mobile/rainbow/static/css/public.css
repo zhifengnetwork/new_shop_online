@@ -1,0 +1,116 @@
+@charset "utf-8";
+body,div,dl,dt,dd,ul,li,h1,h2,h3,h4,h5,h6,input,form,a,p,textarea{
+    margin:0;
+    padding:0;
+}
+body{
+	font-size: 0.24rem;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	-webkit-tap-highlight-color: transparent;
+	width:100%;
+	background-color:#f0f0f0;
+
+}
+
+li{
+	list-style-type: none;
+}
+a{
+	text-decoration: none;
+	color: black;
+}
+
+.hide{
+	display: none;
+}
+/*去除input默认样式*/
+input[type=button], input[type=submit], input[type=file], button { 
+	cursor: pointer; 
+	-webkit-appearance: none; 
+	background: none;
+	border: none;
+	outline: none;
+}
+/**用公共头部时_需要改class包裹，公共头部height:.88rem;*/
+.max_wrap_head {
+	padding-top: .88rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 100%;
+	height: auto;
+}
+/*清除浮动代码 '父元素'*/
+.clearfloat:after{
+	display: block;
+	clear: both;
+	content:" ";
+	visibility: hidden;
+	height: 0;
+}
+.clearfloat{
+	zoom: 1;
+}
+
+/*public 省略号*/
+.publicEllipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+/*弹性布局 wrap*/
+.flexWrap {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+/*弹性布局 box*/
+.flexBox {
+	-prefix-box-flex: 1; 
+	-webkit-box-flex: 1; 
+	-webkit-flex: 1; 
+	-moz-box-flex: 1; 
+	-ms-flex: 1; 
+	flex: 1; 
+}
+
+/* 左箭头 */
+.right-arrow {
+    border-bottom: 2px solid #cccccc;
+    border-right: 2px solid #cccccc;
+    width: 15px;
+    height: 15px;
+    -webkit-transform: rotate(-45deg);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    right: 14px;
+}
+
+*{
+	box-sizing: border-box;
+}
+
+
+/* /my/userinfo */
+.picker-toolbar,.mint-datetime-action{
+		 height:1rem;
+         line-height:1rem;
+}
+
+/* details */
+
+.van-swipe__indicators {
+	background: rgba(0,0,0,.2);
+	border-radius: 1.25rem;
+	line-height: 1.2;
+	padding: 10px  10px;
+}
+
+.van-swipe__indicators  .van-swipe__indicator{
+	background-color: #b0b0b0; 
+}
+						

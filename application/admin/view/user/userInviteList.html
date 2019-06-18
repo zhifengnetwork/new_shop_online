@@ -1,0 +1,179 @@
+<include file="public/layout" />
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+    <div id="append_parent"></div>
+    <div id="ajaxwaitid"></div>
+    <div class="page">
+        <div class="fixed-bar">
+            <div class="item-title">
+                <div class="subject">
+                    <h3>邀新管理</h3>
+                    <h5>会员邀新及管理设置</h5>
+                </div>
+                <ul class="tab-base nc-row">
+                    <li><a class="current" href="{:U('user/userInviteList')}" data-state="" ><span>邀新列表</span></a></li>
+                    <li><a href="{:U('user/userInviteRule')}" data-state="0"  ><span>邀新奖励规则</span></a></li>      
+                </ul>
+            </div>
+        </div>
+        <!-- 操作说明 -->
+        <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+            <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+                <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+                <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+            </div>
+            <ul>
+                <li>会员邀请新会员注册，可获得佣金奖励</li>
+                <li>邀新规则：可设置功能开启关闭，邀请人数及佣金奖励额度</li>
+                <li style="color:red;">注意：邀请人数只能填写整数，奖励佣金只能填写整数或小数，只保留2位小数</li>
+
+            </ul>
+        </div>
+        <div class="flexigrid">
+            <div class="mDiv">
+                <div class="ftitle">
+                    <h3>签到列表</h3>
+                    <h5></h5>
+                </div>
+                <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+                <form action="" id="search-form2" class="navbar-form form-inline" method="post" onsubmit="return false">
+                    <div class="sDiv">
+                        <div class="sDiv2">          
+                            <input type="text" size="30" name="mobile" class="qsbox" placeholder="搜索用户手机号...">
+                            <input type="button" onclick="ajax_get_table('search-form2', 1)" class="btn" value="搜索">
+                        </div>
+                    </div>
+                </form>
+                <form class="navbar-form form-inline" id="search-form3" method="get" action="">
+                    <input type="hidden" name="ids" value="" id="ids" />
+                    <input type="hidden" name="ident" value="2" id="ident" />
+                </form>
+            </div>
+            <div class="tDiv">
+                <div class="tDiv2">
+                    <div class="fbutton">
+                        <a href="javascript:;" onclick="exportUser()">
+                            <div class="add" title="导出邀请新会员返佣明细">
+                                <span><i class="fa fa-share"></i>导出邀请新会员返佣明细</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div style="clear:both"></div>
+            </div>
+            <div class="hDiv">
+                <div class="hDivBox">
+                    <table cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr>
+                                <th align="center" abbr="article_title" axis="col6" class="">
+                        <div style="text-align: center; width:80px;" class="" >id</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                        <div style="text-align: center; width: 150px;" class="" >用户名称</div>
+                        </th>
+                        <th align="center" axis="col4" class="">
+                            <div style="text-align: center; width: 50px;" class="">用户头像</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                        <div style="text-align: center; width: 150px;" class="" >手机号码</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                        <div style="text-align: center; width: 150px;" class="" >新用户名称</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                        <div style="text-align: center; width: 150px;" class="" >新用户手机号码</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col6" class="">
+                        <div style="text-align: center; width: 100px;" class="" >奖励佣金</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 100px;" class="" >记录时间</div>
+                        </th> 
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 100px;" class="" >备注说明</div>
+                        </th>       
+
+                        <th style="width:100%" axis="col7">
+                        <div></div>
+                        </th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bDiv" style="height: auto;">
+                <!--ajax 返回 --> 
+                <div id="ajax_return" cellpadding="0" cellspacing="0" border="0"></div>      
+            </div>
+
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            // 点击刷新数据
+            $('.fa-refresh').click(function(){
+                location.href = location.href;
+            });
+            // 表格行点击选中切换
+            $('#ajax_return').on('click', 'table>tbody >tr', function() {
+                if (!$(this).hasClass('spe_select')) {
+                    $(this).toggleClass('trSelected');
+
+                    var checked = $(this).hasClass('trSelected');
+                    $(this).find('input[type="checkbox"]').attr('checked', checked);
+                }
+            });
+            // 刷选条件 鼠标 移动进去 移出 样式
+            $(".hDivBox > table > thead > tr > th").mousemove(function() {
+                $(this).addClass('thOver');
+            }).mouseout(function() {
+                $(this).removeClass('thOver');
+            });
+
+            // 复选框事件 不联动父类
+            $('#ajax_return').on('click', 'table>tbody >tr input', function(e) {
+                //alert('bbb');
+                e.stopPropagation();
+            })
+
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // ajax 加载签到列表
+            ajax_get_table('search-form2', 1);
+
+        });
+
+       
+
+        // ajax 抓取页面 form 为表单id  page 为当前第几页
+        function ajax_get_table(form, page) {
+            cur_page = page; //当前页面 保存为全局变量
+            $.ajax({
+                type: "POST",
+                url: "/index.php?m=Admin&c=user&a=ajaxUserInviteList&p=" + page, //+tab,
+                data: $('#' + form).serialize(), // 你的formid
+                success: function(data) {
+                    $("#ajax_return").html('');
+                    $("#ajax_return").append(data);
+                }
+            });
+        }
+
+        function get_sign_list(obj) {
+            var url = $(obj).attr('data-state');
+            $('.tab-base').find('a').removeClass('current')
+            $(obj).addClass('current');
+        }
+
+        //导出Excel表格
+        function exportUser() {
+            $('#search-form3').attr('action',"{:U('User/export_commission_log')}")
+            
+            $('#search-form3').submit();
+        }
+    </script>
+</body>
+</html>

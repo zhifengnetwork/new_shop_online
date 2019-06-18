@@ -1,0 +1,65 @@
+<include file="public/header" title="购买记录" body="g4"/>
+<include file="public/header_nav" title="购买记录" href="javascript:history.back(-1)"/>
+<style>
+    .no_log{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        color: rgb(218, 214, 214);
+        transform: translate(-50%,-50%);
+        font-size: 0.7rem;
+    }
+    .user_top_tx{
+        width: 2.88rem;
+        height: 2.88rem;
+        margin: 0 auto;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-bottom:0.3rem;
+    }
+    .user_top_tx img{
+        width: 100%;
+        height: 100%;
+    }
+    .hh{
+        background-color: rgba(0, 0, 255, 0.637);
+        padding-bottom: 1rem;
+        margin-bottom: 0.3rem;
+    }
+    .hh #nickname{
+        text-align: center;
+    }
+</style>
+<div class="application-record">
+    <div class="hh" style="padding-top: 1rem;">
+        <div class="user_top_tx">
+            <notempty name="info.head_pic"><img src="{$info.head_pic}"/><else/><img src="/public/images/user_default_icon.jpg"/></notempty>
+        </div>
+        <h2 id="nickname">{$info.nickname}</h2>
+    </div>
+    <div class="maleri30">
+        <ul class="re_tit">
+            <li class="li3" style="width:40%"><span>下单时间</span></li>
+            <li class="li2" style="width:30%"><span>金额</span></li>
+            <li class="li2" style="width:30%"><span>数量</span></li>
+        </ul>
+        <empty name="log">
+            <div class="no_log">
+                该用户还没有购买记录
+            </div>
+        <else/>
+            <foreach name="log" item="v">
+                <ul>
+                    <li class="li3" style="width:40%"><span>{$v[pay_time]|date="Y-m-d H:i",###}</span></li>
+                    <li class="li2" style="width:30%"><span>{$v[goods_price]}</span></li>
+                    <li class="li2" style="width:30%"><span>{$v[goods_num]}</span></li> 
+                </ul>
+            </foreach>
+            <div id="getmore"  style="font-size:.32rem;text-align: center;color:#888;padding:.25rem .24rem .4rem; clear:both;">
+                <a>只显示最近50条记录</a>
+            </div>
+        </empty>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<include file="public/header" title="个人中心" body=""/>
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/personal.css"/>
+<div class="z_user_vs">
+    <div class="z_user_head" style="height:8.74rem;">
+        <div class="z_user_top">
+            <div class="user_top_tx">
+                <notempty name="$user.head_pic"><img src="{$user.head_pic}"/><else/><img src="/public/images/user_default_icon.jpg"/></notempty>
+            </div>
+            <div class="user_top_name">
+                <a href="javascript:void(0);">{$user['nickname']}</a>
+            </div>
+            <div class="user_top_title">
+                <a href="javascript:void(0);">
+                    <if condition="isset($agnet_name[$user.distribut_level])">
+                        {$agnet_name[$user.distribut_level]}
+                    </if>
+                </a>
+            </div>
+            <div class="user_top_name">
+                <a href="javascript:void(0);">ID：{$user['user_id']}</a>
+            </div>
+        </div>
+        <div class="z_user_down">
+            <!-- <div class="user_down_bg" style="background:url(__STATIC__/images/user_info.png) no-repeat;"></div> -->
+            <ul>
+                <li style="width:100%;background: white;opacity: .4;">
+                    <a href="{:U('Mobile/User/account')}">
+                        <div class="user_down_yue" style="color: black;font-size:0.64rem;margin-top: 0.4266666666666667rem">余额<p>{$user['user_money']}</p></div>
+                        <!-- <div class="user_down_name">余额</div> -->
+                        <div class="user_down_yue" style="color: black;font-size:0.64rem;margin-top: 0.4266666666666667rem">总佣金<p>{$user['distribut_money']}</p></div>
+                        <div class="user_down_yue" style="color: black;font-size:0.64rem;margin-top: 0.4266666666666667rem">今日佣金<p>{$user['today_comm']}</p></div>
+                    </a>
+                </li>
+                <!-- <li>
+                    <a href="{:U('Mobile/User/points_list')}">
+                        <div class="user_down_dev">{$user['pay_points']}</div>
+                        <div class="user_down_name">积分</div>
+                    </a>
+                </li> -->
+            </ul>
+        </div>
+        
+       <div class="z_user_icon">
+       	<a href="/Mobile/User/userinfo.html">
+       		<i></i>
+       	</a>
+       </div> 
+    </div>
+    <div class="z_user_li_wrap">
+        <volist name="menu_list" id="menu">
+            <switch name="$menu['menu_id']">
+                <case value="1">
+                        <div class="z_user_list border10">
+                            <a href="{$menu.menu_url}">
+                                <div class="user_list_cont padd10">
+                                    <div class="cont_fl">
+                                        <img src="__PUBLIC__/static/images/mlist.png"/>
+                                        <span>我的订单</span>
+                                    </div>
+                                    <div class="cont_fr">
+                                                <span>
+                                                    查看全部
+                                                </span>
+                                        <i class="zMright"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        <div class="z_user_nav">
+                            <ul>
+                                <li>
+                                    <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITPAY'))}">
+                                        <img src="__PUBLIC__/static/images/q1.png"/>
+
+                                        <p>待付款</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITSEND'))}">
+                                        <img src="__PUBLIC__/static/images/q4.png"/>
+
+                                        <p>待发货</p>
+                                    </a>
+                                    </li>
+                                <li>
+                                    <a href="{:U('/Mobile/Order/wait_receive',array('type'=>'WAITRECEIVE'))}">
+                                        <img src="__PUBLIC__/static/images/q2.png"/>
+
+                                        <p>待收货</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{:U('Mobile/Order/comment',array('status'=>0))}">
+                                        <img src="__PUBLIC__/static/images/q3.png"/>
+
+                                        <p>待评价</p>
+                                    </a>
+                                </li>
+                                <!-- <li>
+                                    <a href="{:U('Mobile/Order/return_goods_list',array('type'=>1))}">
+                                        <img src="__PUBLIC__/static/images/q4.png"/>
+
+                                        <p>售后服务</p>
+                                    </a>
+                                </li> -->
+                            </ul>
+                        </div>
+                    </div>
+                </case>
+                <default />
+                <a href="{$menu.menu_url}">
+                    <div class="z_user_list <if condition='$menu.is_tab eq 1'>border10</if>">
+                        <div class="user_list_cont padd10">
+                            <div class="cont_fl">
+                                <img src="__PUBLIC__/static/images/ww{$menu.menu_id}.png"/>
+                                <span>{$menu.menu_name}</span>
+                            </div>
+                            <div class="cont_fr">
+                                <i class="zMright"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </switch>
+        </volist>
+        <if condition="isset($app)">
+            <a onclick="app_download();">
+                <div class="z_user_list border10" style="border-color: rgb(248, 248, 248);">
+                    <div class="user_list_cont padd10">
+                        <div class="cont_fl">
+                            <img src="/public/images/download.jpg">
+                            <span>APP下载</span>
+                        </div>
+                        <div class="cont_fr">
+                            <i class="zMright"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </if>
+    </div>
+</div>
+<!--底部导航-start-->
+<include file="public/footer_nav"/>
+<script type="text/javascript" src="/public/static/js/layui/layui.js"></script>
+<!--底部导航-end-->
+<script>
+    
+    layui.use('layer', function(){
+        var layer = layui.layer;
+    }); 
+
+    function app_download(){
+        let android = '{$app.android_app_url}';
+        let ios = '{$app.ios_app_url}';
+        let mobile_validated = '{$mobile_validated}';
+        let _tpl = ``;
+
+        if(mobile_validated){
+            layer.open({
+                title:'请先绑定手机号！',
+                content:'<p style="text-align:center;color:red;">请先绑定手机号！</p>',
+                btn:['绑定手机号', '取消'],
+                btnAlign:'c',
+                area:['80%','25%'],
+                shade:0.2,
+                yes:function(){
+                    window.location.href="/Mobile/User/setMobile";
+                }
+            });
+            return false;
+        }
+        
+        if(android){
+            _tpl += `
+                <img src="/public/images/android_ico.png" style="height:30%;margin:10% 0 0 37%;" onclick="javascript:location.href='`+android+`'"/>
+                <h3 style="text-align:center;"margin-top:5%" onclick="javascript:location.href='`+android+`'">安卓APP下载</h3>
+                `;
+        }
+        if(ios){
+            _tpl += `
+                <img src="/public/images/ios_ico.png" style="height:30%;margin:10% 0 0 35%;" onclick="javascript:location.href='`+ios+`'"/>
+                <h3 style="text-align:center;"margin-top:5%"onclick="javascript:location.href='`+ios+`'">苹果APP下载</h3>
+                `;
+        }
+        layer.open({
+            title: 'APP下载',
+            btn:false,
+            shadeClose: true,
+            shade: 0.2,
+            area: ['75%', '50%'],
+            content: _tpl,
+        });
+    }
+
+    // $('.z_user_head').css("background-color", "{$tpshop_config['basic_header_background']}");
+    $('.z_user_head').css("background", "url(__STATIC__/images/user_bg.png) no-repeat");	
+    $('.z_user_head').css("background-size", "cover");
+    $(function(){		
+        var ua = window.navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+            $('#logout').hide();
+        }
+    });
+	$('.border10').css('border-color','#f8f8f8');
+</script>
+</body>
+</html>

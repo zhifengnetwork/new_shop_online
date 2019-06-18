@@ -1,0 +1,154 @@
+<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+    <table>
+        <tbody>
+        <volist name="userList" id="list">
+            <tr data-id="{$list['user_id']}">
+                <td class="sign">
+                    <div style="width: 24px;"><i class="ico-check"></i></div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 50px;">{$list.user_id}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 100px;">{$list.nickname}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 50px;">
+                        <empty name="$list.head_pic">
+                            <img src="/public/images/user_default_icon.jpg" style="width:30px;height:30px;" alt="">
+                        <else/>
+                            <img src="{$list.head_pic}" style="width:30px;height:30px;" alt="">
+                        </empty>
+                    </div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 80px;">
+                        <if condition="isset($agnet_name[$list.distribut_level])">
+                        {$agnet_name[$list.distribut_level]}
+                        </if>
+                        </div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 50px;">{$list.first_leader}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 100px;">{$list.first_leader|user_name}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 50px;">
+                        <empty name="$list.head_pic">
+                            <img src="/public/images/user_default_icon.jpg" style="width:30px;height:30px;" alt="">
+                        <else/>
+                            <img src="{$list.first_leader|get_a_avatar}" style="width:30px;height:30px;" alt="">
+                        </empty>
+                    </div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 50px;">{$list.total_amount}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 100px;">{$list.email}
+                        <if condition="($list['email_validated'] eq 0) AND ($list['email'])">
+                            (未验证)
+                        </if>
+                    </div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 60px;"><eq name="$list.is_employees" value="1"> 是 <else/> 否 </eq></div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 60px;"><a onclick="direct_list('{$list.user_id}');">{$last_cout[$list.user_id]['direct']|default="0"}</a></div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 80px;"><a onclick="team_list('{$list.user_id}');">{$last_cout[$list.user_id]['team']|default="0"}</a></div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 80px;">{$list.mobile}
+                        <if condition="($list['mobile_validated'] eq 0) AND ($list['mobile'])">
+                            (未验证)
+                        </if>
+                    </div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 60px;">{$list.user_money}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 60px;">{$list.pay_points}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 120px;">{$list.reg_time|date='Y-m-d H:i',###}</div>
+                </td>
+                <td align="center" class="handle">
+                    <div style="text-align: center; width: 200px; max-width:250px;">
+                        <a class="btn blue" href="{:U('Admin/user/detail',array('id'=>$list['user_id']))}"><i class="fa fa-pencil-square-o"></i>详情</a>
+                        <a class="btn blue" href="{:U('Admin/user/account_log',array('id'=>$list['user_id']))}"><i class="fa fa-search"></i>资金</a>
+                        <a class="btn blue" href="{:U('Admin/user/address',array('id'=>$list['user_id']))}"><i class="fa fa-steam"></i>收货地址</a>
+                    </div>
+                </td>
+                <td align="" class="" style="width: 100%;">
+                    <div>&nbsp;</div>
+                </td>
+            </tr>
+        </volist>
+        </tbody>
+    </table>
+</div>
+<!--分页位置-->
+{$pager->show()}
+<script>
+
+    function direct_list(id){
+        layer.open({
+            title: '直推下级列表',
+            type: 2,
+            content: "/Admin/user/direct_list?id="+id,
+            btn:false,
+            area:['90%','90%'],
+        });
+    }
+    function team_list(id){
+        layer.open({
+            title: '直推下级列表',
+            type: 2,
+            content: "/Admin/user/team_list?id="+id,
+            btn:false,
+            area:['90%','90%'],
+        });
+    }
+
+
+
+    $(".pagination  a").click(function(){
+        var page = $(this).data('p');
+        ajax_get_table('search-form2',page);
+    });
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid >table>tbody>tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+        $('#user_count').empty().html("{$pager->totalRows}");
+    });
+    function delfun(obj) {
+        // 删除按钮
+        layer.confirm('确认删除？', {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            $.ajax({
+                type: 'post',
+                url: $(obj).attr('data-url'),
+                data: {id : $(obj).attr('data-id')},
+                dataType: 'json',
+                success: function (data) {
+                    layer.closeAll();
+                    if (data.status == 1) {
+                        $(obj).parent().parent().parent().remove();
+                    } else {
+                        layer.alert(data.msg, {icon: 2});
+                    }
+                }
+            })
+        }, function () {
+        });
+    }
+</script>

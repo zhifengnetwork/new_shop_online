@@ -1,0 +1,234 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+	<div class="fixed-bar">
+		<div class="item-title">
+			<div class="subject">
+				<h3>分销业绩</h3>
+				<h5>分销业绩</h5>
+			</div>
+		</div>
+	</div>
+	<!-- 操作说明 -->
+	<div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+		<div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+			<h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+			<span title="收起提示" id="explanationZoom" style="display: block;"></span>
+		</div>
+		<ul>
+			<li>分销业绩，显示所有人的分销业绩</li>
+		</ul>
+	</div>
+	<div class="flexigrid">
+		<div class="mDiv">
+			<div class="ftitle">
+				<h3>分销业绩列表</h3>
+				<h5>(共{$count}条记录)</h5>
+			</div>
+			<div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+			<form class="navbar-form form-inline" id="search-form" method="get" action="{:U('Distribution/per_list')}" onsubmit="return check_form();">
+				<input type="hidden" name="ctime" id="ctime" value="{$ctime}">
+				<div class="sDiv">
+					<div class="sDiv2" style="margin-right: 10px;">
+						<select class="form-control" id="ttype" name="ttype" style="border: none;">
+							<option value="1" <if condition="$ttype eq 1">selected</if>>创建时间</option>
+							<option value="2" <if condition="$ttype eq 2">selected</if>>更新时间</option>
+						</select>
+						<input type="text" size="30" id="start_time" name="start_time" value="{$start_time}" placeholder="起始时间" class="qsbox">
+						<input type="text" size="30" id="end_time" name="end_time" value="{$end_time}" placeholder="截止时间" class="qsbox" style="border-left:1px dashed rgb(231, 227, 227);">
+					</div>
+					<div class="sDiv2" style="margin-right: 10px;">
+						<select class="form-control" id="per_type" name="per_type" style="border: none;">
+							<option value="1" <if condition="$per_type eq 1">selected</if>>个人业绩</option>
+							<option value="2" <if condition="$per_type eq 2">selected</if>>团队业绩</option>
+							<option value="3" <if condition="$per_type eq 3">selected</if>>个人销售数量</option>
+							<option value="4" <if condition="$per_type eq 4">selected</if>>团队销售数量</option>
+						</select>
+						<input type="text" size="30" id="min" name="min" value="{$min}" placeholder="最小值" class="qsbox">
+						<input type="text" size="30" id="max" name="max" value="{$max}" placeholder="最大值" class="qsbox" style="border-left:1px dashed rgb(231, 227, 227);">
+					</div>
+					<div class="sDiv2">
+						<input size="30" placeholder="用户名称" value="{$user_name}" name="user_name" class="qsbox" type="text">
+						<input class="btn" value="搜索" type="submit">
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="hDiv">
+			<div class="hDivBox">
+				<table cellspacing="0" cellpadding="0">
+					<thead>
+					<tr>
+						<th class="sign" axis="col8">
+							<div style="width: 24px;"><i class="ico-check"></i></div>
+						</th>
+						<th align="center" abbr="ac_id" axis="col3" class="">
+							<div style="text-align: center; width: 80px;" class="">ID</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col4" class="">
+							<div style="text-align: center; width: 150px;" class="">用户名称</div>
+						</th>
+						<th align="center" axis="col4" class="">
+							<div style="text-align: center; width: 50px;" class="">用户头像</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col5" class="">
+							<div style="text-align: center; width: 100px;" class="">个人业绩(元)</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 100px;" class="">团队业绩(元)</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 100px;" class="">个人销售数量(台)</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 100px;" class="">团队销售数量(台)</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 150px;" class="">创建时间</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 150px;" class="">更新时间</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 100px;" class="">描述</div>
+						</th>
+						<th style="width:100%" axis="col7">
+							<div></div>
+						</th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		<div class="bDiv" style="height: auto;">
+			<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+				<table>
+					<tbody>
+					<foreach name="list" item="vo" key="k" >
+						<tr>
+							<td class="sign">
+								<div style="width: 24px;"><i class="ico-check"></i></div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 80px;">{$vo.performance_id}</div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 150px;">{$vo.user_id|user_name}</div>
+							</td>
+							<td align="left" class="">
+			                    <div style="text-align: center; width: 50px;">
+			                        <empty name="$vo.head_pic">
+			                            <img src="/public/images/user_default_icon.jpg" style="width:30px;height:30px;" alt="">
+			                        <else/>
+			                            <img src="{$vo.head_pic}" style="width:30px;height:30px;" alt="">
+			                        </empty>
+			                    </div>
+			                </td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 100px;">{$vo.ind_per|default='0'}</div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 100px;">{$vo.agent_per|default='0'}</div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 100px;">{$vo.ind_goods_sum}</div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 100px;">{$vo.agent_goods_sum}</div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 150px;">{$vo.create_time}</div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 150px;">{$vo.update_time}</div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 100px;">{$vo.note}</div>
+							</td>
+							<td align="" class="" style="width: 100%;">
+								<div>&nbsp;</div>
+							</td>
+						</tr>
+					</foreach>
+					</tbody>
+				</table>
+			</div>
+			<div class="iDiv" style="display: none;"></div>
+		</div>
+		<!--分页位置-->
+		{$page} </div>
+</div>
+<script>
+	$(document).ready(function(){
+		// 表格行点击选中切换
+		$('#flexigrid > table>tbody >tr').click(function(){
+			$(this).toggleClass('trSelected');
+		});
+
+		// 点击刷新数据
+		$('.fa-refresh').click(function(){
+			location.href = location.href;
+		});
+
+		$('#start_time').layDate();
+        $('#end_time').layDate();
+	});
+
+	function check_form(){
+        var start_time = $.trim($('#start_time').val());
+        var end_time =  $.trim($('#end_time').val());
+		var min = $('#min').val();
+		var max = $('#max').val();
+		var reg = /^(\-|\+)?\d+(\.\d+)?$/;
+		
+		if (min && !reg.test(min)) {
+			layer.alert('最小值必须是数字');
+			return false;
+		}
+		if (max && !reg.test(max)) {
+			layer.alert('最大值必须是数字');
+			return false;
+		}
+        if(start_time == '' ^ end_time == ''){
+            layer.alert('请选择完整的时间间隔', {icon: 2});
+            return false;
+        }
+        if(start_time !== '' && end_time !== ''){
+            $('#ctime').val(start_time+" - "+end_time);
+        }
+        if(start_time == '' && end_time == ''){
+            $('#ctime').val('');
+        }
+        return true;
+    }
+
+	// function delfun(obj) {
+	// 	// 删除按钮
+	// 	layer.confirm('确认删除？', {
+	// 		btn: ['确定', '取消'] //按钮
+	// 	}, function () {
+	// 		$.ajax({
+	// 			type: 'post',
+	// 			url: $(obj).attr('data-url'),
+	// 			data : {act:'del',level_id:$(obj).attr('data-id')},
+	// 			dataType: 'json',
+	// 			success: function (data) {
+	// 				layer.closeAll();
+	// 				if (data.status == 1) {
+	// 					layer.msg(data.msg, {icon: 1});
+	// 					$(obj).parent().parent().parent().remove();
+	// 				} else {
+	// 					layer.alert(data.msg, {icon: 2});
+	// 				}
+	// 			}
+	// 		})
+	// 	}, function () {
+	// 		layer.closeAll();
+	// 	});
+	// }
+</script>
+</body>
+</html>

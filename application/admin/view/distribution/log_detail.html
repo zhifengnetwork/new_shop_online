@@ -1,0 +1,68 @@
+<include file="public/layout" />
+<style>
+
+.ncap-order-style .ncap-order-details{
+	margin:20px auto;
+  width:750px;
+}
+.contact-info h3,.contact-info {
+  display: inline-block;
+  vertical-align: middle;
+}
+.user-info{
+  width: 200px;
+}
+.good-info{
+  width: 200px;
+}
+
+</style>
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title"><a class="back" href="javascript:history.go(-1)" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+      <div class="subject">
+        <h3>业绩日志查看</h3>
+        <h5>日志详情</h5>
+      </div>
+    </div>
+  </div>
+  <div class="ncap-order-style">
+    <div class="titile">
+      <h3></h3>
+    </div>
+    <div class="ncap-order-details">
+      <div class="tabs-panels">
+          <div class="contact-info">
+              <h4>基本信息</h4>
+              <dl>
+                  <dt>用户：</dt>
+                  <dd class='user-info'>{$detail.user_id|user_name}</dd>
+                  <dt>金额：</dt>
+                  <dd>{$detail.money} (元)</dd>
+              </dl>
+              <dl>
+                  <dt>数量：</dt>
+                  <dd class='user-info'>{$detail.goods_num}</dd>
+                  <dt>订单编号：</dt>
+                  <dd>{$detail.order_id|order_sn}</dd>
+              </dl>
+              <dl>
+                <dt>时间：</dt>
+                <dd>{$detail.create_time}</dd>
+              </dl>
+          </div>       
+      <div class="contact-info">
+        <h3>描述</h3>
+        <dl class="row">
+          <dt>描述内容</dt>
+          <dd class="opt" style="margin-left:10px">
+            <textarea id="note" name="note" style="width:500px; height: 50px;" rows="10" class="row" maxlength="200" placeholder="记录描述" class="tarea">{$detail.note}</textarea>
+          </dd>
+        </dl> 
+      </div>
+  	</div>
+  </div>
+</div>
+</div>
+</body>
+</html>

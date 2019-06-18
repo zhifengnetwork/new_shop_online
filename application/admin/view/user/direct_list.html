@@ -1,0 +1,104 @@
+<include file="public/layout" />
+<p style="text-align: right; padding-right:30px;">共：{$count} 条数据</p>
+<table cellspacing="0" cellpadding="0" style="display:block;margin:10px 15px;">
+    <thead>
+    <tr style="height:40px; line-height: 40px; font-size:14px; background: #d7d5d4;dispaly:inline-block;margin-bottom: 5px;">
+        <th align="left" abbr="user_id" axis="col3" class="">
+            <div style="text-align: center; width: 40px;" class="">ID</div>
+        </th>
+        <th align="left" abbr="nickname" axis="col4" class="">
+            <div style="text-align: center; width: 150px;" class="">会员昵称</div>
+        </th>
+        <th align="left" abbr="avatar" axis="col4" class="">
+            <div style="text-align: center; width: 100px;" class="">会员头像</div>
+        </th>
+        <th align="center" abbr="level" axis="col5" class="">
+            <div style="text-align: center; width: 200px;" class="">会员等级</div>
+        </th>
+        <th align="center" abbr="total_amount" axis="col6" class="">
+            <div style="text-align: center; width: 60px;" class="">累计消费</div>
+        </th>
+        <th align="center" abbr="email" axis="col6" class="">
+            <div style="text-align: center; width: 200px;" class="">邮件地址</div>
+        </th>
+        <th align="center" axis="col6" class="">
+            <div style="text-align: center; width: 60px;" class="">公司人员</div>
+        </th>
+        <th align="center" abbr="mobile" axis="col6" class="">
+            <div style="text-align: center; width: 200px;" class="">手机号码</div>
+        </th>
+        <th align="center" abbr="user_money" axis="col6" class="">
+            <div style="text-align: center; width: 40px;" class="">余额</div>
+        </th>
+        <th align="center" abbr="pay_points" axis="col6" class="">
+            <div style="text-align: center; width: 200px;" class="">积分</div>
+        </th>
+        <th align="center" abbr="reg_time" axis="col6" class="">
+            <div style="text-align: center; width: 200px;" class="">注册日期</div>
+        </th>
+        <th style="width:100%" axis="col7">
+            <div></div>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+        <volist name="list" id="list">
+            <tr data-id="{$list['user_id']}">
+                <td align="left" class="">
+                    <div style="text-align: center; width: 40px;">{$list.user_id}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 150px;">{$list.nickname}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 100px;">
+                        <empty name="$list.head_pic">
+                                <img src="/public/images/user_default_icon.jpg" style="width:30px;height:30px;" alt="">
+                        <else/>
+                            <img src="{$list.head_pic}" style="width:30px;height:30px;" alt="">
+                        </empty>
+                    </div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 200px;">
+                        <if condition="isset($agnet_name[$list.distribut_level])">
+                        {$agnet_name[$list.distribut_level]}
+                        </if>
+                        </div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 60px;">{$list.total_amount}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 200px;">{$list.email}
+                        <if condition="($list['email_validated'] eq 0) AND ($list['email'])">
+                            (未验证)
+                        </if>
+                    </div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 60px;"><eq name="$list.is_employees" value="1"> 是 <else/> 否 </eq></div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 200px;">{$list.mobile}
+                        <if condition="($list['mobile_validated'] eq 0) AND ($list['mobile'])">
+                            (未验证)
+                        </if>
+                    </div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 40px;">{$list.user_money}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 200px;">{$list.pay_points}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: center; width: 200px;">{$list.reg_time|date='Y-m-d H:i',###}</div>
+                </td>
+                <td align="" class="" style="width: 100%;">
+                    <div>&nbsp;</div>
+                </td>
+            </tr>
+        </volist>
+    </tbody>
+</table>

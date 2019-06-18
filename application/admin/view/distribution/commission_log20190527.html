@@ -1,0 +1,283 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+	<div class="fixed-bar">
+		<div class="item-title" id="comm_li">
+			<div class="subject">
+				<h3>返佣日志</h3>
+				<h5>返佣日志</h5>
+			</div>
+			<ul class="tab-base nc-row">
+				<li>
+					<a href="{:U('distribution/commission_log',array('type'=>0))}" data-state="">
+						<span>全部</span>
+					</a>
+				</li>
+				<li>
+					<a href="{:U('distribution/commission_log',array('type'=>1))}" data-state="0">
+						<span>级差奖</span>
+					</a>
+				</li>
+				<li>
+					<a href="{:U('distribution/commission_log',array('type'=>2))}" data-state="0">
+						<span>直推奖</span>
+					</a>
+				</li>
+				<li>
+					<a href="{:U('distribution/commission_log',array('type'=>3))}" data-state="0">
+						<span>同级奖励</span>
+					</a>
+				</li>
+				<li>
+					<a href="{:U('distribution/commission_log',array('type'=>4))}" data-state="0">
+						<span>分红</span>
+					</a>
+				</li>
+				<li>
+					<a href="{:U('distribution/commission_log',array('type'=>5))}" data-state="0">
+						<span>自购优惠</span>
+					</a>
+				</li>
+				<li>
+					<a href="{:U('distribution/commission_log',array('type'=>6))}" data-state="0">
+						<span>全球分红</span>
+					</a>
+				</li>      
+			</ul>
+		</div>
+	</div>
+	<!-- 操作说明 -->
+	<div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+		<div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+			<h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+			<span title="收起提示" id="explanationZoom" style="display: block;"></span>
+		</div>
+		<ul>
+			<li>返佣日志，显示所有人的业绩日志，不可更改</li>
+		</ul>
+	</div>
+	<div class="flexigrid">
+		<div class="mDiv">
+			<div class="ftitle">
+				<h3>返佣日志</h3>
+				<h5>(共{$count}条记录)</h5>
+			</div>
+			<div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+			<form class="navbar-form form-inline" id="search-form" method="get" action="{:U('Distribution/commission_log')}" onsubmit="return check_form();">
+				<input type="hidden" name="ctime" id="ctime" value="{$ctime}">
+				<input type="hidden" name="log_ids" value="{$log_ids}" id="log_ids" />
+				<input type="hidden" name="type" value="{$type}" id="type"/>
+				<div class="sDiv">
+					<div class="sDiv2" style="margin-right: 10px;">
+						<input type="text" size="30" id="start_time" name="start_time" value="{$start_time}" placeholder="起始时间" class="qsbox">
+					</div>
+					<div class="sDiv2" style="margin-right: 10px;">
+						<input type="text" size="30" id="end_time" name="end_time" value="{$end_time}" placeholder="截止时间" class="qsbox">
+					</div>
+					<div class="sDiv2" style="margin-right: 10px;">
+						<input type="text" size="30" id="order_sn" name="order_sn" value="{$order_sn}" placeholder="订单编号" class="qsbox">
+					</div>
+					<div class="sDiv2">
+						<select class="form-control" id="user_type" name="user_type" style="border: none;">
+							<option value="1" <if condition="$user_type eq 1">selected</if>>用户名称</option>
+							<option value="2" <if condition="$user_type eq 2">selected</if>>获得返利用户</option>
+						</select>
+						<input size="30" value="{$user_name}" name="user_name" class="qsbox" type="text">
+						<input class="btn" value="搜索" type="submit">
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="tDiv">
+			<div class="tDiv2">
+				<div class="fbutton">
+					<a href="javascript:;" onclick="exportUser()">
+						<div class="add" title="导出返佣明细">
+							<span><i class="fa fa-share"></i>导出返佣明细</span>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div style="clear:both"></div>
+		</div>
+		<div class="hDiv">
+			<div class="hDivBox">
+				<table cellspacing="0" cellpadding="0">
+					<thead>
+					<tr>
+						<th class="sign" axis="col8">
+							<div style="width: 24px;"><i class="ico-check"></i></div>
+						</th>
+						<th align="center" abbr="ac_id" axis="col3" class="">
+							<div style="text-align: center; width: 80px;" class="">ID</div>
+						</th>
+						<neq name="$type" value="$is_type">
+							<th align="center" abbr="article_time" axis="col4" class="">
+								<div style="text-align: center; width: 150px;" class="">用户名称</div>
+							</th>
+							<th align="center" axis="col4" class="">
+								<div style="text-align: center; width: 50px;" class="">用户头像</div>
+							</th>
+						</neq>
+						<th align="center" abbr="article_time" axis="col4" class="">
+							<div style="text-align: center; width: 150px;" class="">获得返利用户</div>
+						</th>
+						<th align="center" axis="col4" class="">
+							<div style="text-align: center; width: 100px;" class="">获得返利用户头像</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col5" class="">
+							<div style="text-align: center; width: 100px;" class="">所得金额</div>
+						</th>
+						<neq name="$type" value="$is_type">
+							<th align="center" abbr="article_time" axis="col6" class="">
+								<div style="text-align: center; width: 150px;" class="">订单编号{$is_type}</div>
+							</th>
+							<th align="center" abbr="article_time" axis="col6" class="">
+								<div style="text-align: center; width: 100px;" class="">数量</div>
+							</th>
+						</neq>
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 150px;" class="">时间</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 200px;" class="">描述</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 200px;" class="">操作</div>
+						</th>
+						<th style="width:100%" axis="col7">
+							<div></div>
+						</th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		<div class="bDiv" style="height: auto;">
+			<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+				<table>
+					<tbody>
+					<foreach name="list" item="vo" key="k" >
+						<tr>
+							<td class="sign">
+								<div style="width: 24px;"><i class="ico-check"></i></div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 80px;">{$vo.log_id}</div>
+							</td>
+							<neq name="$type" value="$is_type">
+								<td align="center" class="">
+									<div style="text-align: center; width: 150px;">{$vo.user_name}</div>
+								</td>
+								<td align="left" class="">
+									<div style="text-align: center; width: 50px;">
+										<if condition="!empty($vo.user_name) and !empty($vo.user_head_pic)">
+											<img src="{$vo.user_head_pic}" style="width:30px;height:30px;" alt="">
+										<elseif condition="!empty($vo.user_name)"/>
+											<img src="/public/images/user_default_icon.jpg" style="width:30px;height:30px;" alt="">
+										</if>
+									</div>
+								</td>
+							</neq>
+							<td align="center" class="">
+								<div style="text-align: center; width: 150px;">{$vo.to_user_name}</div>
+							</td>
+							<td align="left" class="">
+			                    <div style="text-align: center; width: 100px;">
+			                        <if condition="!empty($vo.to_user_name) and !empty($vo.to_user_head_pic)">
+			                        	<img src="{$vo.to_user_head_pic}" style="width:30px;height:30px;" alt="">
+			                        <elseif condition="!empty($vo.to_user_name)"/>
+			                            <img src="/public/images/user_default_icon.jpg" style="width:30px;height:30px;" alt="">
+			                        </if>
+			                    </div>
+			                </td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 100px;">{$vo.money|default='0'}</div>
+							</td>
+							<neq name="$type" value="$is_type">
+								<td align="center" class="">
+									<div style="text-align: center; width: 150px;">{$vo.order_sn}</div>
+								</td>
+								<td align="center" class="">
+									<div style="text-align: center; width: 100px;">{$vo.num}</div>
+								</td>
+							</neq>
+							<td align="center" class="">
+								<div style="text-align: center; width: 150px;">{$vo.create_time|date="Y-m-d H:i:s",###}</div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 200px;">{$vo.desc}</div>
+                            </td>
+                            <td align="center" class="handle">
+								<div style="text-align: center; width: 200px; max-width:200px;">
+									<a class="btn blue" href="{:U('Distribution/commission_detail',array('id'=>$vo['log_id'],'type'=>$type))}"><i class="fa fa-search"></i>查看</a>
+								</div>
+							</td>
+							<td align="" class="" style="width: 100%;">
+								<div>&nbsp;</div>
+							</td>
+						</tr>
+					</foreach>
+					</tbody>
+				</table>
+			</div>
+			<div class="iDiv" style="display: none;"></div>
+		</div>
+		<!--分页位置-->
+		{$page} </div>
+</div>
+<script>
+	$(document).ready(function(){
+		var li_index = '';
+		var type = '{$type}';
+		//导航栏切换
+		$('#comm_li ul li').each(function(){
+			if($(this).index() == type){
+				console.log($(this).index());
+				$(this).children().addClass('current');
+			};
+		});
+
+		console.log(li_index)
+		// 表格行点击选中切换
+		$('#flexigrid > table>tbody >tr').click(function(){
+			$(this).toggleClass('trSelected');
+		});
+
+		// 点击刷新数据
+		$('.fa-refresh').click(function(){
+			location.href = location.href;
+		});
+
+		$('#start_time').layDate();
+        $('#end_time').layDate();
+	});
+
+	function check_form(){
+        var start_time = $.trim($('#start_time').val());
+        var end_time =  $.trim($('#end_time').val());
+        if(start_time == '' ^ end_time == ''){
+            layer.alert('请选择完整的时间间隔', {icon: 2});
+            return false;
+        }
+        if(start_time !== '' && end_time !== ''){
+            $('#ctime').val(start_time+" - "+end_time);
+        }
+        if(start_time == '' && end_time == ''){
+            $('#ctime').val('');
+        }
+        return true;
+    }
+
+	//导出Excel表格
+	function exportUser() {
+        $('#search-form').attr('action',"{:U('Distribution/export_commission_log')}")
+
+        $('#search-form').submit();
+    }
+</script>
+</body>
+</html>

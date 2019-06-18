@@ -1,0 +1,139 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>分销商等级管理 - 编辑分销商等级</h3>
+                <h5>网站系统分销商等级管理</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="handleposition" method="post">
+        <input type="hidden" name="act" value="{$act}">
+        <input type="hidden" name="level_id" value="{$info.level_id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="level_name"><em>*</em>等级名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="level_name" value="{$info.level_name}" id="level_name" class="input-txt">
+                    <span class="err" id="err_level_name"></span>
+                    <p class="notic">设置分销商等级名称</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="level_name"><em>*</em>等级级别</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="level" value="{$info.level}" id="level" class="input-txt">
+                    <span class="err" id="err_level"></span>
+                    <p class="notic">设置分销商等级级别</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="level_name"><em>*</em>个人业绩</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="ind_goods_sum" value="{$info.ind_goods_sum}" id="ind_goods_sum" class="input-txt">
+                    <span class="err" id="err_ind_goods_sum"></span>
+                    <p class="notic">升级需要的个人业绩</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="level_name"><em>*</em>团队业绩</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="agent_goods_sum" value="{$info.agent_goods_sum}" id="agent_goods_sum" class="input-txt">
+                    <span class="err" id="err_agent_goods_sum"></span>
+                    <p class="notic">升级需要的团队业绩</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="level_name"><em>*</em>同级人数</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="team_nums" value="{$info.team_nums}" id="team_nums" class="input-txt">
+                    <span class="err" id="err_team_nums"></span>
+                    <p class="notic">升级需要的同级人数</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="level_name"><em>*</em>分红百分比</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="ratio" value="{$info.ratio}" id="ratio" class="input-txt">
+                    <span class="err" id="err_ratio"></span>
+                    <p class="notic">该等级当日分红所占百分比</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="level_name"><em>*</em>固定分红金额</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="money" value="{$info.money}" id="money" class="input-txt">
+                    <span class="err" id="err_money"></span>
+                    <p class="notic">当选择了固定分红模式按这里的固定分红金额进行全球分红</p>
+                </dd>
+            </dl>
+			<!-- <dl class="row">
+                <dt class="tit">
+                    <label for="level_name"><em>*</em>团队分红百分比</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="team_bonus" value="{$info.team_bonus}" id="team_bonus" class="input-txt">
+                    <span class="err" id="err_team_bonus"></span>
+                    <p class="notic">购买商品直推上级获得业绩的占比</p>
+                </dd>
+            </dl> -->
+            <dl class="row">
+                <dt class="tit">
+                    等级描述
+                </dt>
+                <dd class="opt">
+                    <textarea  name="describe" class="tarea" rows="6">{$info.describe}</textarea>
+                    <span class="err" id="err_describe"></span>
+                    <p class="notic">分销商等级描述信息</p>
+                </dd>
+            </dl>
+            <div class="bot"><a href="JavaScript:void(0);" onclick="verifyForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function verifyForm(){
+        $('span.err').show();
+        $.ajax({
+            type: "POST",
+            url: "{:U('Admin/Distribution/levelHandle')}",
+            data: $('#handleposition').serialize(),
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {icon: 1});
+                    location.href = "{:U('Admin/Distribution/agent_level')}";
+                } else {
+                    layer.msg(data.msg, {icon: 2});
+                    $.each(data.result, function (index, item) {
+                        $('#err_' + index).text(item).show();
+                    });
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

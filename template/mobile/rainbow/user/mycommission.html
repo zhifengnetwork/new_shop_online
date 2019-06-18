@@ -1,0 +1,26 @@
+<include file="public/header" title="我的佣金" body="g4" />
+<include file="public/header_nav" title="我的佣金"  href="{:U('User/index')}"/>
+<div class="loginsingup-input mobil_topup" style="padding:0 0.64rem;">
+    <div class="recharge-curent" onclick="commission_log(1);">
+        <span>登录 | 签到<span class="cash"><i>￥</i>{$data.sign_money}</span></span>
+    </div>
+    <div class="recharge-curent" onclick="commission_log(2);">
+        <span>邀请注册<span class="cash"><i>￥</i>{$data.invite_money}</span></span>
+    </div>
+    <div class="recharge-curent" onclick="commission_log(3);">
+        <span>分销返利<span class="cash"><i>￥</i>{$data.distribution_rebate}</span></span>
+    </div>
+</div>
+<br>
+<br>
+<script>
+    function commission_log(t){
+        window.location.href = "/Mobile/User/commission_log?t="+t;
+    }
+</script>
+<!--底部导航-start-->
+<include file="public/footer_nav" />
+<!--底部导航-end-->
+</body>
+
+</html>

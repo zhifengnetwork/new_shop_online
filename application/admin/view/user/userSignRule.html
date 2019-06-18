@@ -1,0 +1,229 @@
+<include file="public/layout" />
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<style>
+    .addR{
+        color:blue;
+    }
+    .addR:hover{
+        color:blue;
+        cursor:pointer;
+    }
+    .delR{
+        color:red;
+        padding-left:5px;
+    }
+    .delR:hover{
+        cursor:pointer;
+    }
+    .opt .input-txt{
+        width:100px !important;
+    }
+</style>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title">
+      <div class="subject">
+        <h3>签到管理</h3>
+        <h5>会员签到及管理设置</h5>
+      </div>
+      <ul class="tab-base nc-row">
+      <li><a  href="{:U('user/userSignList')}" data-state="" ><span>签到列表</span></a></li>
+      <li><a href="{:U('user/userSignRule')}" data-state="0" class="current" ><span>签到规则</span></a></li>
+      
+      </ul>
+    </div>
+  </div>
+  <!-- 操作说明 -->
+  <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+    <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+      <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+      <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+    </div>
+    <ul>
+        <li>签到列表：签到人员记录，签到记录可无限持续</li>
+        <li>签到规则：可设置功能开启关闭，签到佣金和连续签到额外奖励</li>
+    </ul>
+  </div>
+    <form method="post" enctype="multipart/form-data" id="form1" name="form1" action="{:U('User/userSignRule')}">
+        <input type="hidden" name="inc_type" value="user_sign_rule">
+        <div class="ncap-form-default">
+            
+            <dl class="row">
+                <dt class="tit">
+                    <label>签到送佣金开关</label>
+                </dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label for="switch1" item='1' class="sign-lab cb-enable  <if condition="$config['sign_on_off'] eq 1">selected</if>">开启</label>
+                        <label for="switch0" item='0' class="sign-lab cb-disable <if condition="$config['sign_on_off'] eq 0">selected</if>">关闭</label>
+                        <input type="radio" onclick="$('#switch_on_off').show();"  id="switch1"  name="sign_on_off" value="1" <if condition="$config['sign_on_off'] eq 1">checked="checked"</if>>
+                        <input type="radio" onclick="$('#switch_on_off').hide();" id="switch0" name="sign_on_off" value="0" <if condition="$config['sign_on_off'] eq 0">checked="checked"</if> >
+                    </div>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="sign_integral">签到送</label>
+                </dt>
+                <dd class="opt">
+                    <input onKeyUp="preval(this)" onpaste="preval(this)" pattern="preval(this)" id="reg_integral" name="sign_integral" value="{$config.sign_integral}" class="input-txt" type="text"> 佣金
+
+                    <p class="notic">会员每次签到赠送的佣金</p>
+                </dd>
+            </dl>
+          
+            <dl class="row">
+                <dt class="tit">
+                    <label>连续签到规则</label>
+                </dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label for="switchs1" item='1' class="con-lab cb-enable  <if condition="$config['continued_on_off'] eq 1">selected</if>">开启</label>
+                        <label for="switchs0" item='0' class="con-lab cb-disable <if condition="$config['continued_on_off'] eq 0">selected</if>">关闭</label>
+                        <input type="hidden" name="continued_on_off" value="{$config.continued_on_off or '0'}" />
+                    </div>
+                </dd>
+            </dl>
+
+            <div id="continued" display="none">
+                <if condition="$config['rule']">
+                    <volist name="$config['rule']" id='v'>
+                        <dl class="row">
+                            <dt class="tit">
+                                <label for="sign_signcount"></label>
+                            </dt>
+                            <dd class="opt">
+                                <label for="sign_signcount">连续签到：</label>
+                                <input pattern="^\d{1,}$" id="sign_signcount" name="continuedk[]" value="{$key}" class="input-txt continued-input" type="text"> 天，
+                                <label for="sign_signcount">额外赠送：</label>
+                                <input onKeyUp="preval(this)" onpaste="preval(this)" pattern="preval(this)" id="sign_signcount" name="continuedv[]" value="{$v}" class="input-txt continued-input" type="text"> 佣金；
+                                <if condition="$key eq $first_key">
+                                    <a class="addR">增加</a>
+                                <p class="notic" style="color:red;">注意：只有同时设置了 连续签到天数 和 奖励佣金 方有效</p>
+                                <else/>
+                                    <a class="delR" onclick="delR(this);">删除</a>
+                                </if>
+                            </dd>
+                        </dl>
+                    </volist>
+                <else/>
+                    <dl class="row">
+                        <dt class="tit">
+                            <label for="sign_signcount"></label>
+                        </dt>
+                        <dd class="opt">
+                            <label for="sign_signcount">连续签到：</label>
+                            <input pattern="^\d{1,}$" id="sign_signcount" name="continuedk[]" value="" class="input-txt continued-input" type="text"> 天，
+                            <label for="sign_signcount">额外赠送：</label>
+                            <input onKeyUp="preval(this)" onpaste="preval(this)" pattern="preval(this)" id="sign_signcount" name="continuedv[]" value="" class="input-txt continued-input" type="text"> 佣金；
+                            <a class="addR">增加</a>
+                            <p class="notic" style="color:red;">注意：只有同时设置了 连续签到天数 和 奖励佣金 方有效</p>
+                        </dd>
+                        
+                    </dl>
+                </if>
+                
+            </div>
+            <div class="bot"><a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onclick="checkSubmit()">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(function(){
+        // 签到送佣金开关
+        var signlab = $('input[name=sign_on_off]:checked').val();
+        if(signlab == 0){
+            $('#continued').hide();
+            $('input[name=continued_on_off]').val(0);
+            $('.con-lab').removeClass('selected');
+            $('.con-lab[item=0]').addClass('selected');
+        }
+
+        // 连续签到规则开关
+        var conlab = $('input[name=continued_on_off]').val();
+        if(conlab == 1){
+            $('#continued').show();
+        }else{
+            $('#continued').hide();
+        }
+
+        $('.sign-lab').on('click',function(){
+            var item = $(this).attr('item');
+            if(item == 0){
+                $('input[name=continued_on_off]').val(item);
+                $('#continued').hide();
+                $('.con-lab').removeClass('selected');
+                $('.con-lab[item=0]').addClass('selected');
+            }
+        });
+
+        $('.continued-input').on('keyup',function(){
+            $(this).val($(this).val().replace(/[^\d\.]/g,''));
+        });
+
+        $('.con-lab').on('click',function(){
+            var item = $(this).attr('item');
+            if(item == 1){
+                $('#continued').show();
+            }else{
+                $('#continued').hide();
+            }
+            $('input[name=continued_on_off]').val(item);
+        });
+
+        $('.addR').on('click',function(){
+            var html =  '<dl class="row">'+
+                            '<dt class="tit">'+
+                                '<label for="sign_signcount"></label>'+
+                            '</dt>'+
+                            '<dd class="opt">'+
+                                '<label for="sign_signcount">连续签到：</label>'+
+                                '<input pattern="^\d{1,}$" name="continuedk[]" class="input-txt continued-input" type="text"> 天，'+
+                                '<label for="sign_signcount">额外赠送：</label>'+
+                                '<input onKeyUp="preval(this)" onpaste="preval(this)" pattern="preval(this)" name="continuedv[]" class="input-txt continued-input" type="text"> 佣金；'+
+                                '<a class="delR" onclick="delR(this);">删除</a>'+
+                            '</dd>'+
+                        '</dl>';
+            $('#continued').append(html);
+        });
+
+
+    })
+
+    function preval(obj){
+        var val = $(obj).val();
+        var reg = /^\d+(\.\d{0,2})?$/;
+        if(!reg.test(val)){
+            $(obj).val('');
+            layer.open({content:'只能输入整数和两位小数'});
+            return false;
+        }
+    }
+
+
+    function delR(obj){
+        $(obj).parents('.row').remove();
+    }
+
+	function checkSubmit(){		
+		if( $('input[name="sign_on_off"]:checked').val() == 1){
+			if( !$('input[name="sign_integral"]').val() ){
+				layer.alert('签到送积分不能空!', {icon: 2});
+				return false;
+            }
+		}
+		$('#form1').submit();
+	}
+</script>
+<div id="goTop">
+    <a href="JavaScript:void(0);" id="btntop">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    <a href="JavaScript:void(0);" id="btnbottom">
+        <i class="fa fa-angle-down"></i>
+    </a>
+</div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<table>
+    <tbody>
+    <empty name="list">
+        <tr>
+            <td class="no-data" align="center" axis="col0" colspan="50">
+                <i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+            </td>
+        </tr>
+        <else/>
+        <volist name="list" id="list">
+            <tr>
+                <td align="center" axis="col0">
+                    <div style="text-align: center; width: 80px;">                  
+                        {$list.id}
+                    </div>
+                </td>                
+                <td align="center" axis="col0">
+                    <div style="text-align: center; width: 150px;">{$list.nickname}</div>
+                </td>
+                <td align="center" class="">
+                    <div style="text-align: center; width: 50px;">
+                        <empty name="$list.head_pic">
+                            <img src="/public/images/user_default_icon.jpg" style="width:30px;height:30px;" alt="">
+                        <else/>
+                            <img src="{$list.head_pic}" style="width:30px;height:30px;" alt="">
+                        </empty>
+                    </div>
+                </td>
+                <td align="center" axis="col0">
+                    <div style="text-align: center; width: 150px;">{$list.mobile}</div>
+                </td>
+                <td align="center" axis="col0">
+                    <div style="text-align: center; width: 150px;">{$list.addnickname}</div>
+                </td>
+                <td align="center" axis="col0">
+                    <div style="text-align: center; width: 150px;">{$list.addmobile}</div>
+                </td>
+                <td align="center" axis="col0">
+                    <div style="text-align: center; width: 100px;">{$list.money}</div>
+                </td>
+                <td align="center" axis="col0">
+                    <div style="text-align: center; width: 100px;">{$list.addtime}</div>
+                </td>
+                <td align="center" axis="col0">
+                    <div style="text-align: center; width: 150px;">{$list.desc}</div>
+                </td>
+
+                <td align="" class="" style="width: 100%;">
+                              <div>&nbsp;</div>
+<!--                    <div style="text-align: center; width: 100px;">
+                        <a class="btn blue" href=javascript:void(0);" onclick="takeoff(this)"><i class="fa fa-search"></i>查看</a>
+                    </div>-->
+                </td>
+            </tr>
+        </volist>          
+
+    </empty>
+</tbody>
+</table>
+<!--分页位置--> {$page}
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function() {
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2', cur_page);
+    });
+
+    $('#ids').val('{$invite_id}');
+</script>        

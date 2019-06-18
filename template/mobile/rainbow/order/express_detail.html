@@ -1,0 +1,66 @@
+<include file="public/header" title="物流详情" body="pore_add"/>
+<include file="public/header_nav" title="物流详情" href="javascript:history.back(-1)"/>
+<!--地址-s-->
+<style type="text/css">
+    body {
+        min-height: auto !important;
+    }
+    .maleri30{
+        position: relative;
+        padding-left:.8rem;
+        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+    }
+    .maleri30::before{
+        position: absolute;
+        display: block;
+        content:"";
+        top: 0;
+        left: .2rem;
+        height:100%;
+        border-left: .05rem solid #ccc;
+    }
+    .jd_listaddless img{
+        position: absolute;
+        top:0;
+        left:.55rem;
+        bottom: 0;
+        margin: auto;
+        width:.6rem;
+        height:.6rem;
+        background: #fff;
+    }
+    .numberaddress{
+        border-bottom: 1px solid #e7e7e7;
+    }
+</style>
+<div style="overflow: scroll;">
+    <if condition="$result.status eq 0">
+
+        <div style="padding: 0 .6rem;line-height: 1rem;font-size: 0.6rem;font-weight: bold;"><span>物流公司: {$shipping_name}</span></div>
+
+        <div style="padding: 0 .6rem;line-height: 1rem;font-size: 0.6rem;font-weight: bold;"><span>物流单号: {$invoice_no}</span></div>
+        
+        <volist name="result.result" id="list">
+        <div class="jd_listaddless p" style="padding:0;line-height: 2rem;position: relative;border: 0;">
+                <div class="maleri30">
+
+                    <div class="name fl" style="width:100%;">
+                        <h1>{$list.time}</h1>
+                    </div>
+                    <div class="numberaddress fl" style="width:100%;">
+                        <span class="similars">{$list.status}</span>
+                    </div>
+                </div>
+                <img src="__STATIC__/images/site_yuan.png" alt="">
+            </div>
+        </volist>
+    <else/>
+        <div style="font-size:0.6rem;text-align:center;padding-top: 4.8rem;">
+            {$result.msg}
+        </div>
+    </if>
+</div>
+</body>
+</html>

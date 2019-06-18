@@ -1,0 +1,177 @@
+<include file="public/layout" />
+<style>
+    .preview{
+        width:300px;
+        height:auto;
+        min-height: 300px;
+        border: 1px solid rgb(245, 223, 223);
+        position: absolute;
+        left: 50%;
+        top: 150px;
+        z-index: 999;
+        background: rgba(245, 242, 242, 0.521);
+    }
+    .preview_default{
+        width:100%;
+        height:auto;
+        line-height: 200px;
+        text-align: center;
+        font-size: 24px;
+        color:burlywood;
+        background: #FFF;
+    }
+</style>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>分享海报设置</h3>
+                <h5>移动端 - 我的分享 海报设置</h5>
+            </div>
+            <ul class="tab-base nc-row">
+                <foreach name="group_list" item="v" key="k">
+                    <li><a href="{:U('System/index',['inc_type'=> $k])}" <if condition="$k==$inc_type">class="current"</if>><span>{$v}</span></a></li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span> </div>
+        <ul>
+            <li>设置分享海报背景底图，图层样式</li>
+            <li>注：请设置合理的数值</li>
+        </ul>
+    </div>
+    <form method="post" id="form" enctype="multipart/form-data" name="form1">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="store_logo">背景图片</label>
+                </dt>
+                <dd class="opt">
+                    <div class="input-file-show">
+                            <input type="text" id='text-file' value="" class="type-file-text">
+                            <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                        </span>
+                    </div>
+                    <span class="err"></span>
+                    <p class="notic">分享海报底部背景图片, 有图片时无需重复上传</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="record_no">二维码 * 宽</label>
+                </dt>
+                <dd class="opt">
+                    <input id="code_width" name="code_width" value="{$config.w}" class="input-txt" type="text" />
+                    <p class="notic">设置海报中的二维码的宽度</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="record_no">二维码 * 高</label>
+                </dt>
+                <dd class="opt">
+                    <input id="code_height" name="code_height" value="{$config.h}" class="input-txt" type="text" />
+                    <p class="notic">设置海报中的二维码的高度</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="record_no">二维码 * X</label>
+                </dt>
+                <dd class="opt">
+                    <input id="code_x" name="code_x" value="{$config.x}" class="input-txt" type="text" />
+                    <p class="notic">设置海报中的二维码在海报中的X轴坐标</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="record_no">二维码 * Y</label>
+                </dt>
+                <dd class="opt">
+                    <input id="code_y" name="code_y" value="{$config.y}" class="input-txt" type="text" />
+                    <p class="notic">设置海报中的二维码在海报中的Y轴坐标</p>
+                </dd>
+            </dl>
+            <div class="preview">
+                <img id="preview-image" alt="海报预览" class="preview_default" style="display:block;" src="{$poster_path}" />
+            </div>
+            <p style="clear: both;"></p>
+            <div class="bot">
+                <a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onclick="submit_preview()">预览</a>
+                <a href="JavaScript:void(0);" style="margin-left:30px;" class="ncap-btn-big ncap-btn-green" onclick="submit()">提交保存</a>
+            </div>
+        </div>
+    </form>
+    <form id="ajaxR_form" style="display: none;" action="{:U('System/silence_image')}" method="POST" enctype="multipart/form-data" target="Aj_Iframe">
+        <input type="text" name="t" value="temp_image">
+        <input type="file" name="image" id="aj_temp_file" value="" >
+    </form>
+    <iframe style="display:none;" id="Aj_Iframe" name="Aj_Iframe"></iframe>
+</div>
+</body>
+<script>
+$(function(){
+    $('#button1').on('click',function(){
+        $('#aj_temp_file').click();
+    });
+    $('#aj_temp_file').on('change',function(){
+        var file_path = $('#aj_temp_file').val();
+        $('#text-file').val(file_path);
+        $('#ajaxR_form').submit();
+    });
+})
+
+function submit(){
+
+    var w = $('#code_width').val();
+    var h = $('#code_height').val();
+    var x = $('#code_x').val();
+    var y = $('#code_y').val();
+
+    $.post("{:U('System/shareposter')}",{w:w, h:h, x:x, y:y},function(res){
+        if(res == 1){
+            layer.msg('操作成功')
+        }else{
+            layer.msg('操作失败，请重试！');
+        }
+    });
+
+}
+
+
+function submit_preview(){
+    var w = $('#code_width').val();
+    var h = $('#code_height').val();
+    var x = $('#code_x').val();
+    var y = $('#code_y').val();
+    var src = "{$poster_path}";
+
+    $.post("{:U('System/silence_image')}",{t:'preview',w:w, h:h, x:x, y:y},function(res){
+        res = JSON.parse(res);
+        if(res.status == 1){
+            $('.preview_default').css('display','none');
+            $('#preview-image').css('display','block');
+            src = src+'?'+res.time;
+            $('#preview-image').attr('src',src);
+        }else{
+            layer.msg(res.msg);
+        }
+    });
+}
+
+function temp_msg(msg){
+    layer.msg(msg);
+    $('#text-file').val('');
+    $('#aj_temp_file').val('');
+}
+
+</script>
+</html>

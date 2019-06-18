@@ -1,0 +1,309 @@
+<include file="public/header" title="我的VIP" body="g4"/>
+<include file="public/header_nav" title="我的VIP" href="javascript:history.back(-1)"/>
+<style>
+    .two-bothshop ul li {width: 33%;}
+    .no_team{
+        position: absolute;
+        left: 50%;
+        /* top: 50%; */
+        margin-top: 3rem;
+        color: rgb(218, 214, 214);
+        transform: translate(-50%,-50%);
+        font-size: 0.7rem;
+    }
+    .leader>p{
+        margin-top: 0.7em;
+        margin-bottom: 0.7em;
+        font-size:2em;
+    }
+    .re_tit{
+    display: flex;
+    justify-content:space-between;
+   
+    }
+    .re_tit li{
+
+     /* border: 1px solid green; */
+     position: relative;
+      
+     
+    
+
+    }
+    .ul_liebiao{
+        display: flex
+    }
+    .ul_liebiao li{
+         flex: 1;
+         height: 3rem !important;
+         line-height: 3rem !important;
+    }
+    .ul_liebiao li:first-child{
+        line-height: 0;
+        position: relative;
+    }
+    .touxiang{
+         position: absolute;
+         left: 0;
+         right: 0;
+         margin: 0 auto;
+         top: .3rem;
+         width: 1.5rem;
+         height: 1.5rem;
+    }
+    .nickname{
+       position: absolute;
+       top:.8rem;
+       left: 0;
+       right: 0;
+       margin: 0 auto;
+
+    }
+    .re_tit li{
+        flex: 1;
+    }
+    .user_top_tx{
+        width: 2.88rem;
+        height: 2.88rem;
+        margin: 0 auto;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-bottom:0.3rem;
+    }
+    .user_top_tx img{
+        width: 100%;
+        height: 100%;
+    }
+    .hh{
+        background-color: rgba(111, 9, 245, 0.637);
+        padding-bottom: 1rem;
+        margin-bottom: 0.3rem;
+    }
+    .hh h2{
+        margin-bottom: 0.3rem;
+        text-align: center;
+        font-weight: normal;
+        color:rgb(253, 253, 251);
+    }
+    .tab1 li a{
+        /* width: 3rem;
+        height: 1.5rem; */
+        display: block;
+        font-size: 0.5rem;
+        /* background: rgba(47, 77, 248, 0.767); */
+        background:rgba(111, 9, 245, 0.637);
+        border-radius: .6rem;
+        height:1.5rem; 
+        line-height:1.5rem ;
+        width:3.5rem;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        -moz-transform: translate(-50%,-50%);
+        -ms-transform: translate(-50%,-50%);
+        -o-transform: translate(-50%,-50%);
+        -webkit-transform: translate(-50%,-50%);
+        color: white;
+    }
+    .team_list{
+        margin-bottom: .3rem;
+    }
+
+    .top_team_level_count{
+        display:inline-block;
+        position: relative;
+        top:0px;
+        width:100%;
+        height:1rem;
+        font-size:.68267rem;
+        display:flex;
+        
+    }
+    .top_team_level_count span{
+        display:inline-block;
+        height:2rem;
+        line-height: 2rem;
+        text-align: center;
+        flex: 1;
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+    
+    }
+</style>
+<div class="application-record">
+    <notempty name="leader">
+        <div class="hh" style="padding-top: 1rem;">
+            <div class="user_top_tx">
+                <notempty name="$leader.head_pic"><img src="{$leader.head_pic}"/><else/><img src="/public/images/user_default_icon.jpg"/></notempty>
+            </div>
+            <h2 id="nickname">上级名称：{$leader.nickname}</h2>
+            <h2 id="">上级联系方式：{$leader.mobile}</h2>
+        </div>
+    </notempty>
+    <div class="maleri30">
+        <!-- <ul class="re_tit">
+            <div style="height:10.5em;">
+                <div class="leader">
+                    <notempty name="$leader[head_pic]">
+                        <img src="$leader[head_pic]" style="width:1rem;height:5rem;border-radius:50%;">
+                    <else/>
+                        <img src="/public/images/user_default_icon.jpg" style="width:3rem;height:3rem;border-radius:50%;">
+                    </notempty>
+                    <p>上级名称：{$leader.nickname}</p>
+                    <p>上级联系方式：{$leader.mobile}</p>
+                </div>
+            </div>
+        </ul> -->
+        <ul class="re_tit">
+            <li>我的团队 <span>{$team_count}</span> 人</li>
+        </ul>
+        <!-- <ul class="re_tit">
+            <li class="li1">团队总人数：</li>
+            <li class="li1" id="team_count"></li>
+            <li class="li2"></li>
+        </ul> -->
+        <p class="top_team_level_count">
+            <span style="font-size:.68267rem;">{$first_count} 人</span>
+            <span style="font-size:.68267rem;">{$second_count} 人</span>
+            <span style="font-size:.68267rem;">{$third_count} 人</span>
+        </p>
+	<br>
+        <ul class="re_tit tab1">
+            <li class="li1">
+                <span>
+                    <!-- <p>{$first_count}</p> -->
+                    <a href="javascript:void(0)" onclick="get_distribut(1)">城市</a>
+                </span>
+            </li>
+            <li class="li1">
+                <span>
+                    <!-- <p>{$second_count}</p> -->
+                    <a href="javascript:void(0)" onclick="get_distribut(2)">乡镇</a>
+                </span>
+            </li>
+            <li class="li1">
+                <span>
+                    <!-- <p>{$third_count}</p> -->
+                    <a href="javascript:void(0)" onclick="get_distribut(3)">村庄</span></a>
+                </span>
+            </li>
+        </ul>
+        <ul class="re_tit">
+            <li class="li1"><span>用户</span></li>
+            <li class="li1"><span>ID</span></li>
+            <li class="li2" ><span>等级</span></li>
+            <li class="li3"><span>所得佣金</span></li>
+            <li class="li1"><span>操作</span></li>
+        </ul>
+        <ul class="team_list"></ul>
+        <div id="getmore" style="font-size:.38rem;text-align: center;color:rgba(226, 226, 226, 0.904);padding:.25rem .24rem .4rem; clear:both;"></div>
+        <!-- <empty name="team">
+            <div class="no_team">
+                您还没有下级
+            </div>
+        <else/>
+            
+            <foreach name="team" item="v">
+                <ul class="ul_liebiao">
+                    <li class="li1" style="margin:line-height;">
+                        <span>
+                            <notempty name="$v.head_pic">
+                                <img src="{$v.head_pic}" style="border-radius:50%;" class="touxiang">
+                            <else/>
+                                <img src="/public/images/user_default_icon.jpg" style="border-radius:50%;" class="touxiang">
+                            </notempty>
+                           <span class="nickname">{$v.nickname ? $v.nickname : $v.mobile}</span>
+                        </span>
+                    </li> 
+                    <li class="li2" style="width:30%;"><span>{$v.level_name}</span></li>  
+                    <li class="li2"><span>{$v.distribut_money}</span></li>
+                    <li class="li1" style="width:25%; margin:line-height;"><span><a href="{:url('Mobile/User/purchase_log', array('id'=>$v.user_id))}" style="color:dodgerblue">查看</a></span></li>
+                </ul>
+            </foreach>
+        </empty> -->
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/js/layer/layer.js"></script>
+<script>
+     $(document).ready(function(){
+        get_distribut(1);
+    });
+
+    //滚动加载更多
+    var type_1 = '';
+    var page = 1;
+    var temp = 0;
+    var bool = true;
+
+    function get_distribut(type){
+        bool = false;
+        if (type != type_1) {
+            temp = 0;
+            page = 1;
+            $('.team_list').empty();
+            $('#getmore').html("加载中...");
+        }
+        type_1 = type;
+        $.ajax({
+            type: 'POST',
+            url: '/mobile/user/three_vip_level',
+            data: {'type':type,'page':page},
+            success: function(data){
+                console.log(data);
+                if(data.length > 0){
+                    page ++;
+                    bool = true;
+                    var html = '';
+                    for(let i = 0; i < data.length; i++){
+                        var user_name = data[i].nickname ? data[i].nickname : data[i].mobile;
+                        var head_pic = data[i].head_pic ? data[i].head_pic : '/public/images/user_default_icon.jpg';
+                        var url = '/Mobile/User/vip_purchase_log';
+                        html += '<ul class="ul_liebiao"><li class="li1" style="margin:line-height;"><span><img src="' + head_pic
+                             + '" style="border-radius:50%;" class="touxiang"><span class="nickname">' +user_name
+                             + '</span></span></li><li class="li2" style="width:20%;">'+data[i].user_id
+                             + '</li><li class="li2" style="width:30%;"><span>' + data[i].level_name
+                             + '</span></li><li class="li2"><span>' + data[i].distribut_money_vip
+                             + '</span></li><li class="li1" style="width:25%; margin:line-height;"><span><a href="' + url 
+                             + '?id=' + data[i].user_id 
+                             + '" style="color:dodgerblue">查看</a></span></li></ul>';
+                    }
+                    // console.log(html);
+                    $('.team_list').append(html);
+                } else {
+                    if($('.team_list').children().length == 0){
+                        $('#getmore').html("暂无数据");
+                    } else {
+                        $('#getmore').html("没有更多数据啦");
+                    }
+                }
+            }
+        });
+        
+        // if ($('.team_list').children().length < 15) {
+        //     $('#getmore').html("没有更多数据啦");
+        // }
+    }
+
+    $(window).scroll(
+        function() {
+            var scrollTop = parseInt($(this).scrollTop());
+            var scrollHeight = parseInt($(document).height());
+            var windowHeight = parseInt($(this).height());
+            
+            if (!bool) {
+                return false;
+            }
+            if (temp > scrollTop) {
+                return false;
+            }
+            if (scrollTop + windowHeight >= scrollHeight-60) {
+                temp = scrollTop;
+                get_distribut(type_1);//调用加载更多
+            }
+        }
+    );
+</script>
+</body>
+</html>

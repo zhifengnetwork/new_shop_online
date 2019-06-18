@@ -1,0 +1,76 @@
+<include file="public/layout" />
+<style>
+
+.ncap-order-style .ncap-order-details{
+	margin:20px auto;
+  width:950px;
+}
+.contact-info h3,.contact-info {
+  display: inline-block;
+  vertical-align: middle;
+}
+.user-info{
+  width: 250px;
+}
+.good-info{
+  width: 250px;
+}
+
+</style>
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title"><a class="back" href="javascript:history.go(-1)" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+      <div class="subject">
+        <h3>业绩日志查看</h3>
+        <h5>日志详情</h5>
+      </div>
+    </div>
+  </div>
+  <div class="ncap-order-style">
+    <div class="titile">
+      <h3></h3>
+    </div>
+    <div class="ncap-order-details">
+      <div class="tabs-panels">
+          <div class="contact-info">
+              <h4>基本信息</h4>
+              <neq name="$detail.type" value="$is_type">
+                <dl>
+                    <dt>用户名：</dt>
+                    <dd class='user-info'>{$detail.user_id|user_name}</dd>
+                    <dt>商品名称：</dt>
+                    <dd>{$detail.goods_id|goods_name}</dd>
+                </dl>
+              </neq>
+              <dl>
+                  <dt>获得返利用户名：</dt>
+                  <dd class='user-info'>{$detail.to_user_id|user_name}</dd>
+                  <neq name="$detail.type" value="$is_type">
+                    <dt>数量：</dt>
+                    <dd>{$detail.num}</dd>
+                  </neq>
+              </dl>
+              <dl>
+                <dt>时间：</dt>
+                <dd class='user-info'>{$detail.create_time|date="Y-m-d H:i:s",###}</dd>
+                <neq name="$detail.type" value="$is_type">
+                  <dt>订单编号：</dt>
+                  <dd>{$detail.order_sn}</dd>
+                </neq>
+              </dl>
+          </div>       
+      <div class="contact-info">
+        <h3>描述</h3>
+        <dl class="row">
+          <dt>描述内容</dt>
+          <dd class="opt" style="margin-left:10px">
+            <textarea id="note" name="note" style="width:500px; height: 50px;" rows="10" class="row" maxlength="200" placeholder="记录描述" class="tarea">{$detail.desc}</textarea>
+          </dd>
+        </dl> 
+      </div>
+  	</div>
+  </div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>首页-{$tpshop_config['shop_info_store_title']}</title>
+		<link rel="stylesheet" href="__STATIC__/css/style.css">
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css" />
+		<!--<link rel="stylesheet" href="__STATIC__/css/bottom_nav.css" />-->
+		<script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="__STATIC__/js/zepto-1.2.0-min.js" type="text/javascript" charset="utf-8"></script>-->
+		<script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__STATIC__/js/swipeSlide.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__PUBLIC__/js/global.js"></script>
+		<script src="__STATIC__/js/layer.js" type="text/javascript"></script>
+		<link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen" />
+		<style>
+			.header .sea-box span {
+				margin-left: 1rem!important;
+			}
+			
+			.header {
+				width: 16rem;
+				position: fixed;
+				left: 50%;
+				top: 0;
+				margin-left: -8rem;
+				z-index: 999;
+				height: 1.87733rem;
+				/*background:-webkit-linear-gradient(rgba(0,0,0,0.3),rgba(255,255,255,0));
+	              background:linear-gradient(rgba(0,0,0,0.3),rgba(255,255,255,0));*/
+				-webkit-transition: -webkit-transform 3s, opacity 4s, background 10s;
+				/* background: ; */
+
+			}
+			
+			@media screen and (min-width:1300px) {
+				.header {
+					height: .93867rem
+				}
+			}
+			
+			.header .content {
+				padding-top: .29867rem;
+				margin: 0;
+			}
+			
+			@media screen and (min-width:1300px) {
+				.header .content {
+					padding-top: .128rem
+				}
+			}
+			
+			.header .logo {
+				float: left;
+				width: 1.024rem;
+				height: 1.024rem;
+				margin: .106667rem .384rem;
+				border-radius: 50%;
+				overflow: hidden;
+			}
+			
+			.header .logo img {
+				width: 100%
+			}
+			
+			@media screen and (min-width:1300px) {
+				.header .logo {
+					width: .64rem;
+					height: .64rem;
+					margin: 0 .384rem;
+				}
+			}
+			
+			.header .sea-box {
+				width: 12.8rem;
+				height: 1.23733rem;
+				background: #f8f8f8;
+				position: relative;
+				margin: 0 .512rem;
+				border-radius: .618667rem;
+				overflow: hidden;
+			}
+			
+			@media screen and (min-width:1300px) {
+				.header .sea-box {
+					height: .64rem;
+					width: 12.8rem;
+				}
+			}
+			
+			.header .sea-box span {
+				background-image: url("__STATIC__/images/search.png");
+				background-repeat: no-repeat;
+				background-size: cover;
+				height: .64rem;
+				width: .64rem;
+				float: left;
+				margin: .298667rem 0;
+			}
+			
+			#search_text {
+				outline: none;
+				border: none;
+				margin-top: .33rem;
+				font-size: .5rem;
+				margin-left: .5rem;
+				background: #f8f8f8
+			}
+			
+			.nav {
+				margin-top: 1.5rem;
+				display: flex;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: -ms-flexbox;
+				justify-content: space-around;
+			}
+			
+			.nav span {
+				/*border: 1px solid green;*/
+				-webkit-box-flex: 1;
+				-webkit-flex: 1;
+				-ms-flex: 1;
+				flex: 1;
+				text-align: center;
+				padding: .8rem 0;
+			}
+			
+			.nav span img {
+				width: 1.6rem;
+			}
+			
+			.nav span p {
+				margin-top: .3rem;
+				font-size: .5rem;
+			}
+			
+			.pic_box {
+				width: 90%;
+				/* height: 3.8rem; */
+				margin-left: 5%;
+				background-size: 100%
+			}
+			
+			.store_ear {
+				position: relative;
+				width: 90%;
+				height: 280px;
+				margin-left: 5%;
+				margin-top: 1rem;
+				margin-bottom: 1rem;
+				background: white;
+				/*border: 1px solid green;*/
+			}
+			
+			.good {
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 40%;
+				height: 100%;
+			}
+			
+			.right_text {
+				position: absolute;
+				left: 43%;
+				width: 53%;
+				height: 280px;
+				display: inline-block;
+				/*border: 1px solid blue;*/
+			}
+			
+			.bottom_text {
+				position: absolute;
+				bottom: 0px;
+				/*border: 1px solid red;*/
+				width: 100%;
+			}
+			
+			.top_text {
+				position: absolute;
+				top: 0px;
+			}
+			
+			.old_buy {
+				color: red;
+				font-size: .47rem;
+				background: rgba(204, 0, 1, 0.2);
+				display: inline-block;
+			}
+			
+			.money {
+				font-size: .8rem;
+				color: red;
+			}
+			
+			.mianfei {
+				color: gray;
+				font-size: .5rem;
+				padding-left: .4rem;
+			}
+			
+			#bottomNavWrap {
+				position: fixed;
+				bottom: 0px;
+			}
+			
+			.top_text span {
+				font-size: .5rem;
+			}
+			/* banner ban1 */
+			.guesslike ul li .similer-product img {
+				width: 100%!important;
+				
+                }
+            .layermmain{
+            	
+            	background: white;
+            	opacity: 1;
+            	z-index: 1;
+            	
+            }
+              .guanzhu{
+                	
+                	width: .6rem;
+                	height: 4rem;  
+                	text-align: center;           	
+                	position: fixed;
+                	right: 0;
+                	top: 0;
+                	bottom:0;
+                	margin: auto 0;
+                	font-size: .5rem;
+                	background: #CCC;
+                	display: flex;
+                	align-items: center;
+                	background: #37afe6;
+                	color: white;
+                }
+                .erweima{
+                	width: 8rem;
+                	height: 8rem;
+                	
+                }
+                .layermmain .section{
+                	opacity: 1;
+                }
+               
+                
+		</style>
+	</head>
+
+	<body>
+		<!--顶部搜索栏-s-->
+		<div class="header">
+			<div class="content">
+				<div class="ds-in-bl search">
+					<div class="sea-box">
+						<!--<div class="logo">
+                        <a href=""><img src="{$tpshop_config.shop_info_wap_home_logo|default='/public/static/images/logo/wap_home_logo_default.png'}" alt="LOGO"></a>
+                    </div>-->
+						<span></span>
+						<form action="" method="post">
+							<div class="sear-input">
+								<a href="{:U('Goods/ajaxSearch')}">
+									<input type="text" name="q" id="search_text" class="search_text" value="" placeholder="请输入您所搜索的商品">
+								</a>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="ds-in-bl login">
+					<span>
+                <if condition="$user_id gt 0">
+                    <a href="{:U('Mobile/User/index')}"> <img class="after_login" src="__STATIC__/images/my.png"></a>
+					 <script>
+                        var uid={$user_id};
+                    </script>
+                <else/>
+                    <a href="{:U('Mobile/User/login')}"> 登录</a>
+					 <script>
+                        var uid=0;
+                    </script>
+                </if>
+            </span>
+				</div>
+			</div>
+		</div>
+		<!--顶部搜索栏-e-->
+
+		<!--顶部滚动广告栏-s-->
+		<div class="banner ban1">
+			<div class="mslide" id="slideTpshop">
+				<ul>
+					<!--广告表-->
+					<adv pid="537" limit="3" item="v">
+						<li>
+							<a href="{$v.ad_link}">
+								<img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}" alt="">
+							</a>
+						</li>
+					</adv>
+				</ul>
+			</div>
+		</div>
+		<!--顶部滚动广告栏-e-->
+
+		<!--nav区域开始-->
+
+		<div class="nav">
+			<span><a href="{:U('Mobile/Goods/goodsList',array('id'=>$goods_id))}"><img src="__STATIC__/images/goods.png"/><p>每日好货</p></a></span>
+			<span><a href="{:U('Mobile/User/sign_list')}"><img src="__STATIC__/images/sign_in.gif"/><p>现金签到</p></a></span>
+			<span><a href="{:U('Mobile/Goods/goodsList',array('id'=>$black_technology))}"><img src="__STATIC__/images/black_technology.png"/><p>黑科技馆</p></a></span>
+			<span><a href="{:U('Mobile/Goods/goodsList',array('id'=>$quantum))}"><img src="__STATIC__/images/quantum.png"/><p>量子体验</p></a></span>
+			<span><a href="#"><img src="__STATIC__/images/the_pig.gif"/><p>猪年大发</p></a></span>
+		</div>
+
+		<!--nav区域结束-->
+
+		<!--图片-->
+		<a href="{:U('Index/index3')}"><img src="__STATIC__/images/index_center.gif" class="pic_box" /></a>
+
+		<!--商品start-->
+		<div class="store_ear">
+			<div class="floor guesslike m-b-0">
+				<!-- <div class="banner banner_imgs">
+					<img src="__STATIC__/images/tp-will.png" alt="即将上线"/>
+				</div> -->
+				<div class="likeshop " >
+					<div id="J_ItemList">
+						<ul class="product single_item info">
+						</ul>
+					</div>
+				</div>
+				<div class="jz-loods get_more">
+					<span>商品加载中...</span>
+				</div>
+				<div class="jz-loods get_end" style="display: none">
+					<span>商品已加载完...</span>
+				</div>
+			</div>
+			<!-- <img src="__STATIC__/images/guozhi.png" class="good" />
+			<div class="right_text">
+
+				<div class="top_text">
+
+					<img src="__STATIC__/images/baokuan.png" />
+					<span>【抖音爆款】充电便携榨汁机 家用迷你多功能 小型超方</span>
+
+				</div>
+				<div class="bottom_text">
+					<p class="old_buy">两个好友买过</p>
+					<p style="margin-top: .3rem;"><span class="money">￥0.00</span><span class="mianfei">免费送366件</span></p>
+
+				</div>
+
+			</div> -->
+
+		</div>
+		<!--商品end-->
+        <p class="guanzhu">点击关注公众号</p>
+		<!--底部导航-start-->
+
+		<!-- <div class="bottomNavWrap container1" id="bottomNavWrap" data-id="0"></div> -->
+		<include file="public/footer_nav"/>
+		<!--底部导航-end-->
+		<script src="__STATIC__/js/style.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+		
+		<script>
+			$(document).ready(function(){
+				var nowtime=Date.parse(new Date());
+				// console.log(123)
+				// console.log(mytime)
+				nowtime=nowtime/1000;
+				var username = window.localStorage.getItem('key_username');
+				var endtime = window.localStorage.getItem('key_endtime');
+				console.log(uid)
+				// console.log(endtime)
+				// console.log(password)
+				// if((!username && typeof username != "undefined" && username != 0) || (!endtime && typeof endtime != "undefined" && endtime != 0)){
+
+				// }else{
+				if(username && username.length==11 && endtime>nowtime && uid==0){
+					var data = {username:username,mobile_code:'000000',referurl:encodeURIComponent(''),sms_type:5};
+					// console.log(uid)
+					$.ajax({
+						type : 'post',
+						url : '/index.php?m=Mobile&c=User&a=do_login&t='+Math.random(),
+						data : data,
+						dataType : 'json',
+						success : function(data){
+							console.log(data)
+							if(data.status == 1){
+								// window.location.href = '/index.php/mobile/index';
+							}else{
+
+							}
+						},
+						error : function(XMLHttpRequest, textStatus, errorThrown) {
+							showErrorMsg('网络异常，请稍后重试');
+						}
+					})
+				}
+
+				// }
+				ajax_sourch_submit();
+			});
+			/**
+			* 继续加载猜您喜欢
+			* */
+			var before_request = 1; // 上一次请求是否已经有返回来, 有才可以进行下一次请求
+			var page = 0;
+			function ajax_sourch_submit(){
+				if(before_request == 0)// 上一次请求没回来 不进行下一次请求
+					return false;
+				before_request = 0;
+				page++;
+				$.ajax({
+					type : "get",
+					url:"/index.php?m=Mobile&c=Index&a=ajaxGetMore&p="+page,
+					success: function(data)
+					{
+						if(data){
+							$("#J_ItemList>ul").append(data);
+							before_request = 1;
+						}else{
+							$('.get_more').hide();
+							$('.get_end').show();
+						}
+					}
+				});
+			}
+			$(".guanzhu").click(function(){
+				
+				//自定页
+				layer.open({
+						  type: 1,
+						  title: false,
+						  closeBtn: 0,
+						  shadeClose: true,
+						  skin: 'yourclass',
+						  content: '<img src="{$wechat_qr.qr}" class="erweima"/>'
+						});
+									
+			})
+			
+		</script>
+	</body>
+
+</html>

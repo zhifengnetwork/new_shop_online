@@ -1,0 +1,348 @@
+<include file="public/header" title="账户明细" body="" />
+<include file="public/header_nav" title="账户明细" href="{:U('User/account')}" />
+<style>
+body{
+    font-size:16px;
+    padding:0;
+    margin:0;
+}
+ ul,li,dl,dd{
+    list-style:none;
+    padding:0;margin:0;
+} 
+.wrap{
+    width:94%;
+    margin: auto;
+    color:#E45050;
+    border-radius: .4rem;
+} 
+
+.tit{
+    text-align:left;
+}
+ #tab1 li{  
+    background: #fff none repeat scroll 0 0;
+    float: left;
+    line-height: 30px;
+    /* margin-left: -1px; */
+    text-align: center;
+}
+.titles1{
+    border-top-left-radius: .3rem;
+    border-bottom-left-radius: .3rem;
+}
+.titles2{
+    border-top-right-radius: .3rem;
+    border-bottom-right-radius: .3rem;
+}
+
+ #tab1 li.active{
+  
+    background:#E45050;
+    color: white
+} 
+.box1,.box2,.box3{
+    width:100%;
+    display:none;       /*让box都隐藏*/
+    /* margin-top:-1px;  */
+    /* padding: 20px 0; */
+} 
+.titles{
+    width: 50%;
+    box-sizing: border-box
+}
+#tab2{
+    margin-top: 1rem
+}
+#tab22{
+    width: 100%;
+    display: flex;
+    border-radius: .4rem;
+    border:.06rem solid #E45050
+}
+#tab22 li{
+    flex: 1;
+    height: 1rem;
+    line-height: 1rem
+}
+#tab22 li:first-child{
+
+    border-top-left-radius: .3rem;
+    border-bottom-left-radius: .3rem;
+}
+#tab22 li:last-child{
+    border-top-right-radius: .3rem;
+    border-bottom-right-radius: .3rem;
+}
+.wrap2{
+    width: 100%
+    /* ddd */
+}
+#tab11{
+
+    height: 1.5rem;
+    border-radius: .4rem;
+    border:.09rem solid #E45050;
+    box-sizing: border-box;
+}
+#tab11 li{
+    font-size: .5rem;
+    height: 100%;
+    line-height: 1.3rem;
+}
+#tab22{
+    font-size: .35rem
+}
+.list_item {
+    width: 100%;
+    color:gray;
+    font-size: .52rem;
+    padding:.4rem 0;
+    border-bottom: .04rem solid #ccc;
+}
+.tit_ul .list_item:last-child{
+    border: none
+}
+.list_item span:first-child{
+     box-sizing: border-box;
+     display: inline-block;
+     width: 78%;
+     text-align: left;
+     border-right:1px solid gray;
+}
+.list_item span:last-child{
+  display: inline-block;
+  width: 20%;
+ /* ddddd */
+}
+.wu{
+    color:gray;
+    margin-top:2rem;
+    font-size:.5rem;
+    text-align:center;
+}
+.list_item li p{
+    margin-bottom: 0.2rem;
+}
+</style>
+<!-- <div class="allaccounted">
+    <div class="maleri30"> -->
+        <!-- <div class="head_acc ma-to-20">
+            <ul>
+                <li <if condition="$type eq 'all'">class="red"</if>">
+                    <a href="{:U('User/account_list',array('type'=>'all'))}"  data-list="1">全部</a>
+                </li>
+                <li <if condition="$type eq 'plus'">class="red"</if>>
+                    <a href="{:U('User/account_list',array('type'=>'plus'))}"   data-list="2">赚取</a>
+                </li>
+                <li  <if condition="$type eq 'minus'">class="red"</if>>
+                    <a href="{:U('User/account_list',array('type'=>'minus'))}"  data-list="3">消费</a>
+                </li>
+            </ul>
+        </div> -->
+        <!-- 
+        <div class="allpion">
+            <div class="fll_acc fll_acc-h">
+              <ul><li class="orderid-h">订单</li><li class="price-h">金额</li><li class="time-h">时间</li></ul>
+            </div>      
+              <foreach name="account_log" item="v">
+                  <div class="fll_acc" onclick="ajax_account_detail(this)" data-url="{:U('Mobile/User/account_detail',['log_id'=>$v['log_id']])}">
+                      <ul>
+                          <li class="orderid-h">{$v[order_sn]|default='无'}</li>
+                          <li class="price-h">{$v[user_money]}</li>
+                          <li class="time-h">{:date('Y-m-d H:i:s',$v[change_time])}</li>
+                      </ul>
+                      <div class="des-h">描述:{$v[desc]}</div>
+                  </div>
+              </foreach>
+        </div> -->
+
+        <!-- <div id="getmore"  style="font-size:.32rem;text-align: center;color:#888;padding:.25rem .24rem .4rem; clear:both;display: none">
+            <a >已显示完所有记录</a>
+        </div> -->
+
+
+        <!-- tab切换开始 -->
+
+    <div id="tab1" class="wrap">
+        <!-- 最外层导航 -->
+        <ul id="tab11">
+            <li class="active titles titles1" onclick="all_record('income',0)">进账记录</li>
+            <li class="titles titles2" onclick="all_record('spending',0)">支出记录</li>
+        </ul>
+        <div class="box1" style="display:block;">
+            <!-- 默认选中哪个，就让哪个block -->
+          
+            <div id="tab2" class="wrap wrap2">
+                <!-- 第二层导航 -->
+                <ul id="tab22">
+                    <li class="active" onclick="all_record('income',0)">全部</li> <!-- 默认选中哪个，就让哪个active -->
+                    <li onclick="all_record('income',1)">级差奖</li>
+                    <li onclick="all_record('income',2)">直推奖</li>
+                    <li onclick="all_record('income',3)">同级奖励</li>
+                    <li onclick="all_record('income',4)">分红</li>
+                    <li onclick="all_record('income',5)">自购优惠</li>
+                    <li onclick="all_record('income',6)">全球分红</li>
+                    <li onclick="all_record('income',7)">VIP奖励</li>
+                </ul>
+                <div class="box_box"> 
+                    <div class="box2" style="display:block;">
+                      
+                    </div>
+                    <div class="box2">
+                       
+                    </div>
+                    <div class="box2">
+                       
+                    </div>
+                    <div class="box2">
+                      
+                    </div>
+                    <div class="box2">
+                       
+                    </div>
+                    <div class="box2">
+                      
+                    </div>
+                    <div class="box2">
+                      
+                    </div>
+                    <div class="box2">
+                      
+                    </div>
+                </div>
+            </div>
+        </div>       
+            <div class="box1">
+                <div class="tit"></div>
+        </div>
+    </div>
+        <!-- tab切换结束 -->
+    <!-- </div>
+</div> -->
+
+<!-- <script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script> -->
+<script type="text/javascript" src="__PUBLIC__/js/layer/layer.js"></script>
+<script type="text/javascript">
+    //    var record=$('.record').val();   //获取记录类型
+    //加载更多记录
+    // var type = '{$type}';
+    // var page = 1;
+    // var before_request = 1
+    
+    // function ajax_sourch_submit() {
+    //     if (before_request == 0) return false;
+    //     before_request = 0
+    //     page++;
+    //     $.ajax({
+    //         type: "GET",
+    //         url: "/index.php?m=Mobile&c=User&a=account_list&is_ajax=1&type={$type}&p=" + page,//+tab,
+    //         success: function (data) {
+    //             before_request = 1
+    //             if ($.trim(data) == '') {
+    //                 $('#getmore').show();
+    //                 return false;
+    //             } else {
+    //                 $(".allpion").append(data);
+    //             }
+    //         }
+    //     });
+    // }
+    //滚动加载更多
+    var type_1 = '';
+    var distribut_type_1 = '';
+    var page = 1;
+    var temp = 0;
+    var bool = true;
+
+    function all_record(type,distribut_type){
+        if (type != type_1 || distribut_type != distribut_type_1) {
+            temp = 0;
+            page = 1;
+            $(".box_box .box2").eq(distribut_type).empty();
+            $(".box1 .tit").empty();
+        }
+        bool = false;
+        type_1 = type;
+        distribut_type_1 = distribut_type;
+        
+        $.ajax({
+            type: "POST",
+            data: {'type':type,'distribut_type':distribut_type,'page':page},
+            url: '/mobile/user/get_record',
+            success: function(data){
+                console.log(data);
+                $(".box_box .box2").removeClass("wu")
+                $(".box1 .tit").removeClass("wu")
+                if (data.length > 0) {
+                    bool = true;
+                    page ++;
+                    var html = '<ul class="tit_ul">';
+                    var str = '';
+                    for (let i = 0; i < data.length; i++) {
+                        str = (data[i].status == 1) ? "成功" : "成功";
+                        html += '<li class="list_item"><span><p style="margin-bottom: 0.2rem;">金额：' + data[i].money +
+                        '</p><p>' + data[i].create_time +
+                        '</p></span><span>' + str +
+                        '</span>';     
+                    }
+                    html += '</ul>';
+                   
+                   $(".box_box .box2").eq(distribut_type).append(html)
+                   $(".box1 .tit").append(html);
+                    // console.log(html);
+                }else{
+                    if ($(".box_box .box2").eq(distribut_type).children().length == 0) {
+                        $(".box_box .box2").addClass("wu")
+                        $(".box_box .box2").eq(distribut_type).html("暂无数据")
+                    }
+                    if ($(".box1 .tit").children().length == 0) {
+                        $(".box1 .tit").addClass("wu")
+                        $(".box1 .tit").html("暂无数据");
+                    }
+                }
+            },
+            error:function(){
+                layer.alert('系统繁忙！稍后再试！');
+            }
+        });
+    }
+    $(window).scroll(
+        function() {
+            var scrollTop = parseInt($(this).scrollTop());
+            var scrollHeight = parseInt($(document).height());
+            var windowHeight = parseInt($(this).height());
+            
+            if (!bool) {
+                return false;
+            }
+            if (temp > scrollTop) {
+                return false;
+            }
+            if (scrollTop + windowHeight >= scrollHeight-60) {
+                temp = scrollTop;
+                all_record(type_1,distribut_type_1);//调用加载更多
+            }
+        }
+    );
+    function ajax_account_detail(obj) {
+        window.location.href = $(obj).data('url');
+    }
+    function tab(tabID,box){ $(tabID).click(function(){
+         $(tabID).removeClass('active'); //先将所有同级去掉active   
+          $(box).hide(); //所有同级box隐藏   
+          $(this).addClass('active'); //当前li显示
+           $(box).eq($(this).index()).show(); 
+        }); 
+    } 
+    $(document).ready(function(){ 
+        //选项卡  
+        tab("#tab11 li",'.box1'); 
+        tab("#tab22 li",'.box2'); 
+        tab("#tab33 li",'.box3'); 
+        all_record('income',0);
+    }); 
+</script>
+</body>
+
+</html>

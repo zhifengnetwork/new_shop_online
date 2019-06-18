@@ -1,0 +1,193 @@
+<include file="public/layout" />
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default;">
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title">
+      <div class="subject">
+        <h3>关系图</h3>
+        <h5>分销关系图</h5>
+      </div>
+    </div>
+  </div>
+  <div id="explanation" class="explanation">
+    <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+      <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+      <span title="收起提示" id="explanationZoom"></span>
+    </div>
+    <ul>
+      <li>温馨提示：第一级为顶级</li>
+      <li>可有会有无限级</li>
+    </ul>
+  </div>
+  <form method="post">
+    <input type="hidden" value="ok" name="form_submit">
+    <div class="flexigrid">
+      <div class="mDiv">
+        <div class="ftitle">
+          <h3>关系图</h3>
+          <h5>(共{$count}条记录)</h5>
+        </div>
+          <a href=""><div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div></a>
+
+      </div>
+      <div class="hDiv">
+        <div class="hDivBox">
+          <table cellspacing="0" cellpadding="0">
+            <thead>
+              <tr>
+                <th align="center" axis="col0" class="sign">
+                  <div style="text-align: center; width: 24px;"><i class="ico-check"></i></div>
+                </th>
+                <th align="center" axis="col1" class="handle"><div style="text-align: center; width: 120px;">用户名</div></th>
+                <th align="center" axis="col2"><div style="text-align: center; width: 60px;">id</div></th>
+                <th align="center" axis="col4"><div style="text-align: center; width: 100px;">手机号码</div></th>
+                <th align="center" axis="col5"><div style="text-align: center; width: 80px;">分销商</div></th>
+                <th align="center" axis="col8"><div style="text-align: center; width: 120px;">分销等级</div></th>
+                <th axis="col10"><div></div></th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+      <div class="tDiv">
+        <div class="tDiv2">
+        
+          <div class="fbutton">
+            <div class="add" title="收缩等级">
+              <span onclick="tree_open(this);"><i class="fa fa-angle-double-up"></i>收缩等级</span>
+            </div>
+          </div>
+        </div>
+        <div style="clear:both"></div>
+      </div>      
+      <div style="height: auto;" class="bDiv" id="flexigrid"  data-url="#">
+        <table cellspacing="0" cellpadding="0" border="0" id="article_cat_table" class="flex-table autoht">
+          <tbody id="treet1">
+         <foreach name="cat_list" item="vo" key="k" >
+          <input type="hidden" <if condition="" name="" id="highest-level">
+          <tr data-level="{$vo[level]}" id="{$vo.level}_{$vo.user_id}"
+          <if condition="$vo.level eq 1">class="parent_id_{$vo.first_leader}"<else />class="parent_id_{$vo.first_leader} tohide"</if>>
+              <td class="sign">
+                <div style="text-align: center; width: 24px;"> 
+                	<img src="/public/static/images/tv-collapsable-last.gif" fieldid="2" status="open" id="icon_{$vo.level}_{$vo.user_id}" onClick="treeClicked(this,{$vo[user_id]})" data-id="{$vo.level}_{$vo.user_id}">
+                </div>
+              </td>
+              <td class="handle">
+                <div style="text-align:left;   min-width:120px !important; max-width:inherit !important;">
+                  <span style="margin-left:<?php echo ($vo['level'] * 1); ?>em"><em>|--&nbsp;&nbsp;{$vo.nickname}</em>
+                  </span>
+                </div>
+              </td>
+              <td class="sort">
+	              <div style="text-align: center; width: 60px;">{$vo.user_id}</div>
+              </td>
+              <td class="name">
+                <div style="text-align: left; width: 100px;">                 
+                  {$vo.mobile}
+                </div>
+              </td>
+              <td align="center" class="">
+                <div style="text-align: center; width: 80px;">
+                  <if condition='$vo[is_distribut] eq 1'>是<else />否</if>
+                </div>
+              </td>                    
+              <td class="sort">
+                <div style="text-align: center; width: 100px;">{$vo.level_name}
+                </div>
+              </td>                                
+              <td style="width: 100%;">
+                <div>&nbsp;</div>
+              </td>
+            </tr>
+           </foreach>                                 
+          </tbody>
+        </table>        
+      </div>
+    </div>
+</div>
+  <script>
+      $(document).ready(function(){	
+	    // 表格行点击选中切换
+	    $('.bDiv > table>tbody >tr').click(function(){
+		    $(this).toggleClass('trSelected');
+		});				
+	 });
+      
+      // 点击展开 收缩节点
+      function  tree_open(obj)
+  	{
+      var heightLevel = '{$heightLevel}';
+      var tree;
+      var tr = "";
+      
+      for (var i = 2; i < heightLevel+2; i++) {
+        if(i == 2){
+          tr = '#article_cat_table tr[id^="'+i+'_"]';
+        }else{
+          tr += ',#article_cat_table tr[id^="'+i+'_"]';
+        }
+      }
+      tree = $(tr);
+  		// var tree = $('#article_cat_table tr[id^="2_"], #article_cat_table tr[id^="3_"],#article_cat_table tr[id^="4_"]'); //,'table-row
+
+  		if(tree.css('display')  == 'table-row')
+  		{
+  			$(obj).html("<i class='fa fa-angle-double-down'></i>展开等级");
+  			tree.css('display','none');
+  			$("img[id^='icon_']").attr('src','/public/static/images/tv-expandable.gif');
+  		}else
+  		{
+  			$(obj).html("<i class='fa fa-angle-double-up'></i>收缩等级");
+  			tree.css('display','table-row');
+  			$("img[id^='icon_']").attr('src','/public/static/images/tv-collapsable-last.gif');
+  		}
+  	}
+       
+       function treeClicked(obj,cat_id){
+        var dataId = $(obj).attr('data-id')
+  		 var src = $(obj).attr('src');
+  		 if(src == '/public/static/images/tv-expandable.gif')
+  		 {
+  			 $(".parent_id_"+cat_id).show();
+  			 $(obj).attr('src','/public/static/images/tv-collapsable-last.gif');
+  		 }else{			 
+  			 $(obj).attr('src','/public/static/images/tv-expandable.gif');			 
+  			 
+  			 // 如果是点击减号, 遍历循环他下面的所有都关闭
+  			 var tbl = document.getElementById("article_cat_table");
+  			 cur_tr = obj.parentNode.parentNode.parentNode;
+  			 var fnd = false;
+  			  for (i = 0; i < tbl.rows.length; i++)
+  			  {
+  				  var row = tbl.rows[i];
+  				  
+  				  if (row == cur_tr)
+  				  {
+  					  fnd = true;         
+  				  }
+  				  else
+  				  {
+  					  if (fnd == true)
+  					  {
+  						 
+  						  var level = parseInt($(row).data('level'));
+  						  var cur_level = $(cur_tr).data('level');
+  						 
+  						  if (level > cur_level)
+  						  {
+  							  $(row).hide();		
+  							  $(row).find('img').attr('src','/public/static/images/tv-expandable.gif');
+  						  }
+  						  else
+  						  {
+  							  fnd = false;
+  							  break;
+  						  }
+  					  }
+  				  }
+  			  }			 
+  		 }		 
+  	 }  	
+  </script>
+</body>
+</html>
