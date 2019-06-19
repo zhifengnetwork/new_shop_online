@@ -19,14 +19,13 @@ use app\common\logic\wechat\WechatUtil;
 class Index extends MobileBase {
 
 	public function index(){
+        
         $goods_cat = M('goods')->where('is_hot',1)->column('cat_id');
         $goods_cat = array_filter($goods_cat);
         $count = count($goods_cat);
         $rand_num = mt_rand(0,$count);
         $goods_id = $count ? $goods_cat[$rand_num] : 0;
         $cate_name = array(1=>"黑科技",2=>"量子");
-
-
         $where_technology['name|mobile_name'] = ['like',"%$cate_name[1]%"];
         $where_quantum['name|mobile_name'] = ['like',"%$cate_name[2]%"];
         $black_technology = M('goods_category')->where($where_technology)->value('id');
