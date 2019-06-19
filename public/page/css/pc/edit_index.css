@@ -728,7 +728,7 @@
 .slide {
 	position: relative;
 	width: 100%;
-	height: 3rem;
+	height: 1000px;
 }
 
 .slide_item,
@@ -1931,8 +1931,8 @@
 	float: left;
 	margin: 0 5px 5px;
 	width: 46.8%;
-	height: 2.4rem;
-	border: 1px solid green
+	height: 170px;
+	
 }
 
 .modle_shop_item2 .modle_shop_img {
