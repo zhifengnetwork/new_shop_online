@@ -196,6 +196,7 @@ EOF;
 
         $res = $this->http_post($pay_url, $wget, $wxchat);
 
+       
     	if(!$res){
     		return array('status'=>1, 'msg'=>"Can't connect the server" );
     	}
