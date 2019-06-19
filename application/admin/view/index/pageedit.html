@@ -639,7 +639,6 @@
                 <div class="edit_modle" v-show="puStateObj['id'] == 'signageId'">
                     <div class="edit_signage">
                         <div class="edit_title">单图设置<span class="tips">提示:图片最低高度为40像素~</span></div>
-
                         <!--单图-上传图片 -->
                         <div class="edit_addimg clearfloat" v-for="(v,i) in backData['data'][puStateObj['key_num']]['data']['images']">
                             <!--上传图片(弹出遮罩层)=>@click="call_off(i)"-->
@@ -1392,139 +1391,139 @@
                     },
                 },
                 /*滑动按钮组，数据初始化*/ 
-						sldBtnObj:{
-							// 组件id
-							id: "slidingBtnId",
-							// 组件名
-							temp: "slidingBtn",
-							// 页面渲染-组件位置，从0开始
-							key_num: null,
-							// 组件style
-							params: {
-								// 按钮数量
-								btnNum: '0',
-								// 背景颜色
-								background: '#FFFFFF',
-							},
-							data: {
-								btnList:[
+                sldBtnObj:{
+                    // 组件id
+                    id: "slidingBtnId",
+                    // 组件名
+                    temp: "slidingBtn",
+                    // 页面渲染-组件位置，从0开始
+                    key_num: null,
+                    // 组件style
+                    params: {
+                        // 按钮数量
+                        btnNum: '0',
+                        // 背景颜色
+                        background: '#FFFFFF',
+                    },
+                    data: {
+                        btnList:[
 
-								]
-							}
-						},
+                        ]
+                    }
+                },
                 /*滑动商品组，数据初始化*/ 
-						sldObj:{
-							// 组件id
-							id: "slidingShopId",
-							// 组件名
-							temp: "slidingShop",
-							// 页面渲染-组件位置，从0开始
-							key_num: null,
-							// 组件style
-							params: {
-								// 是否显示标题
-								title: 'false',
-								/*默认标题内容*/
-								default: '请填写商品组标题',
-								// 标题文字
-								titleText: '',
-								// 标题颜色
-								titleClor: '#000000',
-								// 背景颜色
-								background: '#FFFFFF',
-								// 是否显示边框
-								border: 'false',
-								/*商品属性*/
-								attr: 'sale_rx',
-								/*价格显示 show==>显示 price==>显示原价 none==>隐藏*/
-								price: 'price',
-								/*名字显示 show==>显示 none==>隐藏 */
-								name: 'show',
-								/*购买按钮样式*/
-								btnStyle: 'buy_3'
-							},
-							data: {
-								/*商品组的数据*/
-								msg: [
-		//								{
-		//									desc: "82年阔落82年阔落",
-		//									/*商品id*/
-		//									goods_id: 3,
-		//									/*商品名称*/
-		//									goods_name: "82年阔落",
-		//									/*商品封面*/
-		//									img: "../../img/0004.png",
-		//									/*限时卖开始时间*/
-		//									limited_end: 0,
-		//									/*限时卖结束时间*/
-		//									limited_start: 0,
-		//									/*商品原价*/
-		//									original_price: "5.00",
-		//									/*商品现价*/
-		//									price: "4.00",
-		//									/*商品库存*/
-		//									stock: 5255,
-		//								},
-								],
-							}
-						},
-                    /*固定搜索栏，数据初始化*/
-						fixedsObj: {
-							// 组件id
-							id: "fixedsId",
-							// 组件名
-							temp: "fixeds",
-							// 页面渲染-组件位置，从0开始
-							key_num: null,
-							// 组件style
-							params: {
-								/*0=>样式一，1=>样式二*/
-								resStyle: 'sty1',
-								/*0=>样式一，1=>样式二，2=>样式三*/
-								reswStyle: 'style02',
-								/*文字颜色*/
-								textColor: '#717171',
-								/*边框颜色*/
-								borderColor: '#C0C0C0',
-								/*边框圆角*/
-								borderRadius: '0',
-								/*背景颜色*/
-								backColor: '#171717',
-							},
-							data: {
-								/*提示文字*/
-								tipeText: '搜索：输入关键字在店内搜索',
-							}
-						},
-                    /*店招，数据初始化*/
-						shopObj: {
-							// 组件id
-							id: "shopinviting",
-							// 组件名
-							temp: "shopinvit",
-							// 页面渲染-组件位置，从0开始
-							key_num: null,
-							// 组件style
-							params: {
-								// 样式选择
-								style: 'shop_invating_ear',
-								
-								// 商城logo的显示和隐藏
-								show:"shop_boxson_logopic",
-								
-							    //商城名字的显示和隐藏
-							    nameshow:"shop_boxson_logotitle",
-								
-								//底部导航栏的显示和隐藏
-								navshow:"shop_boxson_bottom",
-								
-								//底部导航栏字体和图标的颜色
-								navcolor:"backColor",			
-							},
-							data: {
-								icon: '__PAGE__/img/0006.png',
-							}
-						},
+                sldObj:{
+                    // 组件id
+                    id: "slidingShopId",
+                    // 组件名
+                    temp: "slidingShop",
+                    // 页面渲染-组件位置，从0开始
+                    key_num: null,
+                    // 组件style
+                    params: {
+                        // 是否显示标题
+                        title: 'false',
+                        /*默认标题内容*/
+                        default: '请填写商品组标题',
+                        // 标题文字
+                        titleText: '',
+                        // 标题颜色
+                        titleClor: '#000000',
+                        // 背景颜色
+                        background: '#FFFFFF',
+                        // 是否显示边框
+                        border: 'false',
+                        /*商品属性*/
+                        attr: 'sale_rx',
+                        /*价格显示 show==>显示 price==>显示原价 none==>隐藏*/
+                        price: 'price',
+                        /*名字显示 show==>显示 none==>隐藏 */
+                        name: 'show',
+                        /*购买按钮样式*/
+                        btnStyle: 'buy_3'
+                    },
+                    data: {
+                        /*商品组的数据*/
+                        msg: [
+//								{
+//									desc: "82年阔落82年阔落",
+//									/*商品id*/
+//									goods_id: 3,
+//									/*商品名称*/
+//									goods_name: "82年阔落",
+//									/*商品封面*/
+//									img: "../../img/0004.png",
+//									/*限时卖开始时间*/
+//									limited_end: 0,
+//									/*限时卖结束时间*/
+//									limited_start: 0,
+//									/*商品原价*/
+//									original_price: "5.00",
+//									/*商品现价*/
+//									price: "4.00",
+//									/*商品库存*/
+//									stock: 5255,
+//								},
+                        ],
+                    }
+                },
+                /*固定搜索栏，数据初始化*/
+                fixedsObj: {
+                    // 组件id
+                    id: "fixedsId",
+                    // 组件名
+                    temp: "fixeds",
+                    // 页面渲染-组件位置，从0开始
+                    key_num: null,
+                    // 组件style
+                    params: {
+                        /*0=>样式一，1=>样式二*/
+                        resStyle: 'sty1',
+                        /*0=>样式一，1=>样式二，2=>样式三*/
+                        reswStyle: 'style02',
+                        /*文字颜色*/
+                        textColor: '#717171',
+                        /*边框颜色*/
+                        borderColor: '#C0C0C0',
+                        /*边框圆角*/
+                        borderRadius: '0',
+                        /*背景颜色*/
+                        backColor: '#171717',
+                    },
+                    data: {
+                        /*提示文字*/
+                        tipeText: '搜索：输入关键字在店内搜索',
+                    }
+                },
+                /*店招，数据初始化*/
+                shopObj: {
+                    // 组件id
+                    id: "shopinviting",
+                    // 组件名
+                    temp: "shopinvit",
+                    // 页面渲染-组件位置，从0开始
+                    key_num: null,
+                    // 组件style
+                    params: {
+                        // 样式选择
+                        style: 'shop_invating_ear',
+                        
+                        // 商城logo的显示和隐藏
+                        show:"shop_boxson_logopic",
+                        
+                        //商城名字的显示和隐藏
+                        nameshow:"shop_boxson_logotitle",
+                        
+                        //底部导航栏的显示和隐藏
+                        navshow:"shop_boxson_bottom",
+                        
+                        //底部导航栏字体和图标的颜色
+                        navcolor:"backColor",			
+                    },
+                    data: {
+                        icon: '__PAGE__/img/0006.png',
+                    }
+                },
                 /*搜索框，数据初始化*/
                 seObj: {
                     /**组件id*/
@@ -1613,7 +1612,7 @@
                     key_num: null,
                     // 组件style
                     params: {
-
+                        attribute:'type1'
                     },
                     data: {
                         /*单图的图片路径*/
