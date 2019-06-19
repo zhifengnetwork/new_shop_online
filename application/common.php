@@ -1145,7 +1145,7 @@ function update_pay_status($order_sn,$ext=array())
         M('buy_vip')->where("order_sn",$order_sn)->save(array('pay_status'=>1,'pay_time'=>$time));
         //叠加会员过期时间
         vip_end_time($order['user_id']);
-        buy_vip_rebate($order['user_id'],$order['order_sn'],$order['order_id']);
+        buy_vip_rebate($order['user_id'],$order['order_sn'],$order['order_id'],0);
     }else{
          // 如果这笔订单已经处理过了
         $count = M('order')->master()->where("order_sn = :order_sn and (pay_status = 0 OR pay_status = 2)")->bind(['order_sn'=>$order_sn])->count();   // 看看有没已经处理过这笔订单  支付宝返回不重复处理操作
