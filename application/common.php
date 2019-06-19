@@ -1054,23 +1054,29 @@ function rechargevip_rebate($order) {
  * 购买VIP返佣
  * $user_id 用户ID
  */
-function buy_vip_rebate($user_id = 8840,$order_sn = 0,$order_id=0){
-    $first_leader = M('users')->where(['user_id' => $user_id,'end_time' => ['gt',time()]])->value('first_leader');
-    if($first_leader != 0 && $first_leader > 0){
-         $num ++;
-         $my_prize = 0.1;
-         $user     = M('users')->where('user_id',$first_leader)->field('user_money,distribut_money,openid')->find();
-         $my_user_money       = $my_prize + $user['user_money'];
-         $my_distribut_money  = $my_prize + $user['distribut_money'];
-         $distribut_money_vip = $my_prize + $user['distribut_money_vip'];
-         $bool = M('users')->where('user_id',$first_leader)->update(['user_money'=>$my_user_money,'distribut_money'=>$my_distribut_money,'distribut_money_vip' => $distribut_money_vip]);
-         //记录用户余额变动
-         setBalanceLog($first_leader,13,$my_prize,$my_user_money,'VIP返佣奖：'.$my_prize,$order_sn);
-         //购买VIP返佣日志
-         vip_commission_log($order_id,$user_id,$first_leader,$order_sn,0.1);
-         if($num < 6){
-             buy_vip_rebate($first_leader,$order_sn,$order_id); 
-         }
+function buy_vip_rebate($user_id = 8831,$order_sn = 0,$order_id=0,$num){
+    $userinfo     = M('users')->where(['user_id' => $user_id])->find();
+    $first_leader = $userinfo['first_leader'];
+    $end_time     =  $userinfo['end_time'];
+    $num ++;
+    if($first_leader == 0){
+        return true;
+    }else{
+        if($end_time > time()){
+            $my_prize = 0.1;
+            $user     = M('users')->where('user_id',$first_leader)->field('user_money,distribut_money,openid')->find();
+            $my_user_money       = $my_prize + $user['user_money'];
+            $my_distribut_money  = $my_prize + $user['distribut_money'];
+            $distribut_money_vip = $my_prize + $user['distribut_money_vip'];
+            $bool = M('users')->where('user_id',$first_leader)->update(['user_money'=>$my_user_money,'distribut_money'=>$my_distribut_money,'distribut_money_vip' => $distribut_money_vip]);
+            setBalanceLog($first_leader,13,$my_prize,$my_user_money,'VIP返佣奖：'.$my_prize,$order_sn);
+            //购买VIP返佣日志
+            vip_commission_log($order_id,$user_id,$first_leader,$order_sn,0.1);
+        }
+    }
+    if($num < 7){
+        // var_dump($num);
+        buy_vip_rebate($first_leader,$order_sn,$order_id,$num); 
     }
 }
 
