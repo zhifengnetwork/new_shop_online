@@ -224,7 +224,7 @@
                           <div class="modle_shop_info">
                             <p class="modle_shop_name">{{item.goods_name}}</p>
                             <p class="modle_shop_price" :class="v.params.price">
-                              会员价￥{{item.shop_price}}<s>会员价￥{{item.market_price}}</s>
+                              会员价￥{{item.shop_price}}<s class="dssds">￥{{item.market_price}}</s>
                             </p>
                             <div class="modle_shop_buybtn" :class="v.params.btnStyle"></div>
                           </div>
@@ -236,7 +236,7 @@
                             <img :src="item.original_img" alt="">
                             <div class="modle_shop_attr" :class="v.params.attr"></div>
                             <p class="modle_shop_price" :class="v.params.price">
-                              会员价￥{{item.shop_price}}<s>会员价￥{{item.market_price}}</s>
+                              会员价￥{{item.shop_price}}<s class="dssds">￥{{item.market_price}}</s>
                             </p>
                           </div>
                           <div class="modle_shop_info" :class="v.params.name">
