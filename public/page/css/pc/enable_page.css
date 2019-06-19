@@ -150,14 +150,15 @@
 .slide {
 	position: relative;
 	width: 100%;
-	height: 200px !important;
+	height: 8rem !important;
 }
 
 .slide_item,
 .slide_item>img {
 	display: block;
-	width: 100%;
+	width: 95%;
 	height: 100%;
+	margin: 0 auto;
 }
 
 .slide_but {
@@ -411,7 +412,7 @@
 .modle_shop_item2 .modle_shop_price,.modle_shop_item3 .modle_shop_price{
 	position: absolute;
 	left: 0;
-	bottom: 0;
+	bottom: -2.4rem;
 	width: 100%;
 	font-size: 14px;
 	color: #f3f3f3;
