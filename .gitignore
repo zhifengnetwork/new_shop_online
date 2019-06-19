@@ -2,7 +2,6 @@
 /application/database.php
 /vendor/topthink/think-captcha/assets/bgs/*
 .vscode
-.well-known
 .project
 .idea
 /public/upload/*
