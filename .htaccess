@@ -5,11 +5,17 @@ RewriteEngine On
 #用于saas小程序
 RewriteCond %{REQUEST_URI} ^/saas/
 RewriteRule ^saas/(.*?)/(.*)$ $2?_saas_app=$1 [QSA,L]
+<<<<<<< HEAD
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php [L,QSA,E=PATH_INFO:$1]
+=======
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ index.php [L,QSA,E=PATH_INFO:$1]
 
+>>>>>>> 804f940ceed10d0c08c77a6866445d6f20102b56
 RewriteCond %{SCRIPT_FILENAME} \.php [NC]
 RewriteCond % !^$
 RewriteRule ^/?application/.*\.php - [F]
@@ -18,6 +24,10 @@ RewriteRule ^/?backup/.*\.php - [F]
 RewriteRule ^/?miniapp/.*\.php - [F]
 RewriteRule ^/?runtime/.*\.php - [F]
 RewriteRule ^/?template/.*\.php - [F]
+<<<<<<< HEAD
+
+=======
+>>>>>>> 804f940ceed10d0c08c77a6866445d6f20102b56
 </IfModule>
 ErrorDocument 400 /error/400.html
 
