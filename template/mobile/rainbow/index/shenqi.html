@@ -72,7 +72,7 @@
 		</div>
 
 		<!--单图模块 box-->
-		<div class="modle_box" v-if="v.id == 'signageId'? true:''" :key="v.id">
+		<div class="modle_box vip_pay" v-if="v.id == 'signageId'? true:''" :key="v.id">
 			<div class="signage">
 				<div class="signage_img" v-for="item in v['data']['images']">
 					<img :src="item['imgUrl']" alt="">
@@ -145,6 +145,7 @@
 					v-if="v.params.titleText!=''&&v.params.title=='true'">{{v.params.titleText}}</div>
 				<div class="slidingShop_title" :style="{color:v.params.titleColor}"
 					v-if="v.params.titleText==''&&v.params.title=='true'">{{v.params.default}}</div>
+
 				<div class="slidingShop_list">
 					<div class="slidingShop_item" v-for="item in v.data.msg">
 						<div class="slidingShop_item_imgwrap">
@@ -160,6 +161,7 @@
 						</div>
 					</div>
 				</div>
+
 				<!--初始化(无商品)-->
 				<p class="modle_shop_init" v-show="v['data']['msg'].length == 0 ?true:false">一个商品都没有...</p>
 			</div>
@@ -264,6 +266,12 @@
 </div>
 
 <p class="guanzhu">点击关注公众号</p>
+
+<form method="post"  id="recharge_form" action="{:U('Mobile/Payment/getvipPay')}">
+	<div class="loginsingup-input mobil_topup" style="padding:0 0.64rem;">
+		<input type="hidden" value="pay_code={$pay_code}" name="pay_radio" >
+		<input type="hidden" name="order_id" value="{$order.order_id}">
+</form>
 <div class="foohi">
 	<div class="footer">
 		<ul>
@@ -314,7 +322,15 @@
 <script src="__PUBLIC__/js/jqueryUrlGet.js"></script>
 <!--获取get参数插件-->
 <script>
+
+
+        
+
+
 	$(document).ready(function () {
+		$('.vip_pay').on('click',function(){
+		    $('#recharge_form').submit();
+		})
 		// var nowtime=Date.parse(new Date());
 		// console.log(123)
 		// console.log(mytime)
