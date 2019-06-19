@@ -265,9 +265,9 @@ EOF;
     	curl_setopt($oCurl, CURLOPT_POST, true);
     	curl_setopt($oCurl, CURLOPT_POSTFIELDS, $strPOST);
     	if($wxchat){
-    		curl_setopt($oCurl,CURLOPT_SSLCERT,$wxchat['api_cert']);
-    		curl_setopt($oCurl,CURLOPT_SSLKEY,$wxchat['api_key']);
-    		curl_setopt($oCurl,CURLOPT_CAINFO,$wxchat['api_ca']);
+    		curl_setopt($oCurl,CURLOPT_SSLCERT,dirname(THINK_PATH).$wxchat['api_cert']);
+    		curl_setopt($oCurl,CURLOPT_SSLKEY,dirname(THINK_PATH).$wxchat['api_key']);
+    		// curl_setopt($oCurl,CURLOPT_CAINFO,dirname(THINK_PATH).$wxchat['api_ca']);
     	}
     	$sContent = curl_exec($oCurl);
     	$aStatus = curl_getinfo($oCurl);
