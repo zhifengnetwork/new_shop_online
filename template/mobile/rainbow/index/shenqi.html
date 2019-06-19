@@ -106,7 +106,7 @@
 				</a>
 				<!-- 显示多个 -->
 				<a :class="v.params.listStyle" v-if="v.params.listStyle!='modle_shop_item'" v-for="item in v.data.msg"
-					:href="{:U('Mobile/Goods/goodsInfo',[],false)}/id/'+item.goods_id">
+					:href="'{:U('Mobile/Goods/goodsInfo',[],false)}/id/'+item.goods_id">
 					<div class="modle_shop_img">
 						<img :src="item.original_img" alt="">
 						<div class="modle_shop_attr" :class="v.params.attr"></div>
