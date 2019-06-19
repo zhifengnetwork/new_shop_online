@@ -72,7 +72,8 @@
 		</div>
 
 		<!--单图模块 box-->
-		<div class="modle_box vip_pay" v-if="v.id == 'signageId'? true:''" :key="v.id">
+		<div
+		 class="modle_box" v-if="v.id == 'signageId'? true:''" :key="v.id">
 			<div class="signage">
 				<div class="signage_img" v-for="item in v['data']['images']">
 					<img :src="item['imgUrl']" alt="">
