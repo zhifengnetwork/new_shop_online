@@ -72,9 +72,8 @@
 		</div>
 
 		<!--单图模块 box-->
-		<div
-		 class="modle_box" v-if="v.id == 'signageId'? true:''" :key="v.id">
-			<div class="signage">
+		<div class="modle_box" v-if="v.id == 'signageId'? true:''" :key="v.id">
+			<div class="signage" @click="pay">
 				<div class="signage_img" v-for="item in v['data']['images']">
 					<img :src="item['imgUrl']" alt="">
 				</div>
@@ -148,7 +147,7 @@
 					v-if="v.params.titleText==''&&v.params.title=='true'">{{v.params.default}}</div>
 
 				<div class="slidingShop_list">
-					<div class="slidingShop_item" v-for="item in v.data.msg">
+					<a class="slidingShop_item" v-for="item in v.data.msg" :href="'{:U('Mobile/Goods/goodsInfo',[],false)}/id/'+item.goods_id">
 						<div class="slidingShop_item_imgwrap">
 							<img class="slidingShop_item_img" :src="item.original_img">
 							<div class="modle_shop_attr" :class="v.params.attr"></div>
@@ -160,7 +159,7 @@
 								<div class="slidingShop_item_buybtn" :class="v.params.btnStyle"></div>
 							</div>
 						</div>
-					</div>
+					</a>
 				</div>
 
 				<!--初始化(无商品)-->
@@ -265,6 +264,11 @@
 
 	</div>
 </div>
+<form method="post"  id="recharge_form" action="{:U('Mobile/Payment/getvipPay')}">
+	<div class="loginsingup-input mobil_topup" style="padding:0 0.64rem;">
+		<input type="hidden" value="pay_code={$pay_code}" name="pay_radio" >
+		<input type="hidden" name="order_id" value="{$order.order_id}">
+</form>
 
 <p class="guanzhu">点击关注公众号</p>
 
@@ -369,6 +373,9 @@
 		// }
 		// ajax_sourch_submit();
 	});
+	$(".signage").click(function(){
+		alert("dd")
+	})
 	/**
 	 * 继续加载猜您喜欢
 	 * */
@@ -495,6 +502,10 @@
 						}
 					});
 				},
+				//拉起支付
+				pay(){
+					$('#recharge_form').submit();
+				},
 				/*（轮播图）根据传过来的data=>创建 swiper 的分页器*/
 				carousel(res) {
 					for (let l = 0; l < res.length; l++) {
@@ -591,10 +602,10 @@
 	.footer {
 		position: fixed;
 		bottom: 0px;
+		left: 0px;
 		width: 100%;
 		background: white;
-		z-index: 1000;
-	}
+		z-index: 1000;}
 
 	.footer ul {
 
