@@ -56,6 +56,8 @@
             <switch name="$menu['menu_id']">
                 <case value="1">
                         <div class="z_user_list border10">
+
+                               
                             <a href="{$menu.menu_url}">
                                 <div class="user_list_cont padd10">
                                     <div class="cont_fl">
@@ -112,19 +114,44 @@
                     </div>
                 </case>
                 <default />
-                <a href="{$menu.menu_url}">
-                    <div class="z_user_list <if condition='$menu.is_tab eq 1'>border10</if>">
-                        <div class="user_list_cont padd10">
-                            <div class="cont_fl">
-                                <img src="__PUBLIC__/static/images/ww{$menu.menu_id}.png"/>
-                                <span>{$menu.menu_name}</span>
+
+                <if condition="$is_vip eq 0">
+                        <if condition="($menu.menu_name == '我的分销') OR ($menu.menu_name == '我的VIP')">
+                                  <else/>
+                                  <a href="{$menu.menu_url}">
+                                        <div class="z_user_list <if condition='$menu.is_tab eq 1'>border10</if>">
+                                            <div class="user_list_cont padd10">
+                                                <div class="cont_fl">
+                                                    <img src="__PUBLIC__/static/images/ww{$menu.menu_id}.png"/>
+                                                    <span>{$menu.menu_name}</span>
+                                                </div>
+                                                <div class="cont_fr">
+                                                    <i class="zMright"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                  </a>
+
+                         </if>  
+                        
+                    <else/>
+                    <a href="{$menu.menu_url}">
+                            <div class="z_user_list <if condition='$menu.is_tab eq 1'>border10</if>">
+                                <div class="user_list_cont padd10">
+                                    <div class="cont_fl">
+                                        <img src="__PUBLIC__/static/images/ww{$menu.menu_id}.png"/>
+                                        <span>{$menu.menu_name}</span>
+                                    </div>
+                                    <div class="cont_fr">
+                                        <i class="zMright"></i>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="cont_fr">
-                                <i class="zMright"></i>
-                            </div>
-                        </div>
-                    </div>
-                </a>
+                      </a>
+                    
+                </if>
+
+             
             </switch>
         </volist>
         <if condition="isset($app)">
