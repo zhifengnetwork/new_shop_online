@@ -927,9 +927,9 @@ class User extends Base
                             }else{
 
                                 $result['payment_time'] = strtotime($result['payment_time']);
-                                $result['money'] = $falg['money'];
-                                $result['user_id'] = $falg['user_id'];
-                                $flag = M('withdrawals_weixin')->insert($result);
+                                $result['money'] = $v['money'];
+                                $result['user_id'] = $v['user_id'];
+                                M('withdrawals_weixin')->insert($result);
 
                                 if($v['openid']){
                                     $this->Withdrawal_Success($v['openid'],'恭喜你提现成功！',$v['money'],time(),'感谢你的努力付出，有付出就有回报！希望你再接再厉！');
