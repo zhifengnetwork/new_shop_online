@@ -1054,7 +1054,7 @@ function rechargevip_rebate($order) {
  * 购买VIP返佣
  * $user_id 用户ID
  */
-function buy_vip_rebate($user_id = 8831,$order_sn = 0,$order_id=0,$num){
+function buy_vip_rebate($user_id = 8831,$order_sn = 0,$order_id=0,$num = 0){
     $userinfo     = M('users')->where(['user_id' => $user_id])->find();
     $first_leader = $userinfo['first_leader'];
     $end_time     =  $userinfo['end_time'];

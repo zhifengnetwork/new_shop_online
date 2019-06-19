@@ -19,6 +19,7 @@ use app\common\logic\wechat\WechatUtil;
 class Index extends MobileBase {
 
 	public function index(){
+        
         $goods_cat = M('goods')->where('is_hot',1)->column('cat_id');
         $goods_cat = array_filter($goods_cat);
         $count = count($goods_cat);
