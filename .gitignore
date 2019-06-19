@@ -2,7 +2,6 @@
 /application/database.php
 /vendor/topthink/think-captcha/assets/bgs/*
 .vscode
-.well-known
 .project
 .idea
 /public/upload/*
@@ -13,3 +12,6 @@ cron.txt
 cron_team.sh
 /sql
 /logs/*
+*.txt
+.well-known
+/plugins/payment/weixin/cert

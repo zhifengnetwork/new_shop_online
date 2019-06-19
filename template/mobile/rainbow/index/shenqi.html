@@ -23,60 +23,6 @@
 	<script type="text/javascript" src="__PUBLIC__/static/js/jquery.js"></script>
 	<script type="text/javascript" src="__PUBLIC__/static/js/jquery-ui/jquery-ui.min.js"></script>
 	<script src="https://cdn.bootcss.com/Swiper/4.5.0/js/swiper.js"></script>
-	<style>
-		.guanzhu {
-			width: .3rem;
-			height: 2.9rem;
-			text-align: center;
-			position: fixed;
-			right: 0;
-			top: 0;
-			bottom: 0;
-			margin: auto 0;
-			font-size: .26rem;
-			background: #CCC;
-			display: flex;
-			align-items: center;
-			background: #37afe6;
-			color: white;
-			z-index: 999999;
-		}
-
-		.footer {
-			position:fixed;
-			bottom: 0px;
-			width:100%;
-			background:white;
-			z-index:1000;
-		}
-
-		.footer ul {
-
-			display: flex;
-		}
-
-		.footer ul li {
-			display: inline-block;
-			width: 25%;
-			text-align: center;
-		}
-
-		.icon_tps img {
-			width: .5rem
-		}
-		[v-cloak]{
-		  display:none;
-		}
-		.layermcont{
-			background:white;
-		}
-		.erweima{
-				width:3rem;
-		}
-		.laymshade{
-			background:white
-		}
-	</style>
 </head>
 <div id="app" class="home" v-cloak>
 	<!--div 循环-->
@@ -97,13 +43,13 @@
 		<!--搜索模块 box-->
 		<div class="modle_box" v-if="v.id == 'searchId'? true:''" :key="v.id">
 			<div class="search" :style="{'background':v.params.backColor}">
-					<a href="{:U('Goods/ajaxSearch')}"  :style="{color:v.params.textColor}">
-				<form action="#" :style="{'border-color':v.params.borderColor}" :class="v.params.reStyle">
-							<input type="submit" class="searchBtn" value="">
-							<input type="text" class="searchText" :placeholder="v.data.tipeText"
-								:style="{'color':v.params.textColor}">
-				</form>
-			</a>
+				<a href="{:U('Goods/ajaxSearch')}" :style="{color:v.params.textColor}">
+					<form action="#" :style="{'border-color':v.params.borderColor}" :class="v.params.reStyle">
+						<input type="submit" class="searchBtn" value="">
+						<input type="text" class="searchText" :placeholder="v.data.tipeText"
+							:style="{'color':v.params.textColor}">
+					</form>
+				</a>
 				<!--跳转-搜索页面-->
 				<a class="mask_input"></a>
 			</div>
@@ -127,7 +73,7 @@
 
 		<!--单图模块 box-->
 		<div class="modle_box" v-if="v.id == 'signageId'? true:''" :key="v.id">
-			<div class="signage">
+			<div class="signage" @click="pay">
 				<div class="signage_img" v-for="item in v['data']['images']">
 					<img :src="item['imgUrl']" alt="">
 				</div>
@@ -153,19 +99,19 @@
 					<div class="modle_shop_info">
 						<p class="modle_shop_name">{{item.goods_name}}</p>
 						<div class="modle_shop_price" :class="v.params.price">
-							￥{{item.shop_price}}<s>￥{{item.market_price}}</s>
+							会员价￥{{item.shop_price}}<s class="dssds">￥{{item.market_price}}</s>
 							<div class="modle_shop_buybtn" :class="v.params.btnStyle"></div>
 						</div>
 					</div>
 				</a>
 				<!-- 显示多个 -->
 				<a :class="v.params.listStyle" v-if="v.params.listStyle!='modle_shop_item'" v-for="item in v.data.msg"
-					href="#">
+					:href="'{:U('Mobile/Goods/goodsInfo',[],false)}/id/'+item.goods_id">
 					<div class="modle_shop_img">
 						<img :src="item.original_img" alt="">
 						<div class="modle_shop_attr" :class="v.params.attr"></div>
 						<p class="modle_shop_price" :class="v.params.price">
-							￥{{item.shop_price}}<s>￥{{item.market_price}}</s>
+							会员价￥{{item.shop_price}}<s class="dssds">￥{{item.market_price}}</s>
 						</p>
 					</div>
 					<div class="modle_shop_info" :class="v.params.name">
@@ -177,8 +123,8 @@
 				</a>
 			</div>
 		</div>
-		 <!--滑动按钮组模块 box，拖拽的div-->
-		 <div class="modle_box" v-if="v.id == 'slidingBtnId'? true:''" :key="v.id" >
+		<!--滑动按钮组模块 box，拖拽的div-->
+		<div class="modle_box" v-if="v.id == 'slidingBtnId'? true:''" :key="v.id">
 			<div class="slidingBtn">
 				<div class="slidingBtn_list" :style="{background:v.params.background}">
 					<div class="slidingBtn_tips" v-if="v.data.btnList.length == 0">
@@ -191,13 +137,17 @@
 				</div>
 			</div>
 		</div>
-		 <!--滑动商品组模块 box，拖拽的div-->
-		 <div class="modle_box" v-if="v.id == 'slidingShopId'? true:''" :key="v.id"  :style="{background:v.params.background}">
+		<!--滑动商品组模块 box，拖拽的div-->
+		<div class="modle_box" v-if="v.id == 'slidingShopId'? true:''" :key="v.id"
+			:style="{background:v.params.background}">
 			<div class="slidingShop">
-				<div class="slidingShop_title" :style="{color:v.params.titleColor}" v-if="v.params.titleText!=''&&v.params.title=='true'">{{v.params.titleText}}</div>
-				<div class="slidingShop_title" :style="{color:v.params.titleColor}" v-if="v.params.titleText==''&&v.params.title=='true'">{{v.params.default}}</div>
+				<div class="slidingShop_title" :style="{color:v.params.titleColor}"
+					v-if="v.params.titleText!=''&&v.params.title=='true'">{{v.params.titleText}}</div>
+				<div class="slidingShop_title" :style="{color:v.params.titleColor}"
+					v-if="v.params.titleText==''&&v.params.title=='true'">{{v.params.default}}</div>
+
 				<div class="slidingShop_list">
-					<div class="slidingShop_item" v-for="item in v.data.msg">
+					<a class="slidingShop_item" v-for="item in v.data.msg" :href="'{:U('Mobile/Goods/goodsInfo',[],false)}/id/'+item.goods_id">
 						<div class="slidingShop_item_imgwrap">
 							<img class="slidingShop_item_img" :src="item.original_img">
 							<div class="modle_shop_attr" :class="v.params.attr"></div>
@@ -209,48 +159,54 @@
 								<div class="slidingShop_item_buybtn" :class="v.params.btnStyle"></div>
 							</div>
 						</div>
-					</div>
+					</a>
 				</div>
+
 				<!--初始化(无商品)-->
 				<p class="modle_shop_init" v-show="v['data']['msg'].length == 0 ?true:false">一个商品都没有...</p>
 			</div>
-			
-			</div>
-		 <!--固定搜索栏模板 box，拖拽的div-->
-		 <div class="modle_box" v-if="v.id == 'fixedsId'? true:''" :key="v.id">
+
+		</div>
+		<!--固定搜索栏模板 box，拖拽的div-->
+		<div class="modle_box" v-if="v.id == 'fixedsId'? true:''" :key="v.id">
 			<div class="fixeds_wrap" :style="{'background':v.params.backColor}">
 				<div class="res" :style="{'background':v.params.backColor}">
-				<a href="{:U('Goods/ajaxSearch')}"  :style="{color:v.params.textColor}">
-					<form action="#" :style="{'border-color':v.params.borderColor}" :class="[v.params.resStyle,v.params.reswStyle]">
-						  <input type="submit" class="searchBtn" value="">
-						  <input type="text" class="searchText" :placeholder="v.data.tipeText_null" :style="{'color':v.params.textColor}" v-model="v.data.tipeText">
-					</form>
-				</a>
+					<a href="{:U('Goods/ajaxSearch')}" :style="{color:v.params.textColor}">
+						<form action="#" :style="{'border-color':v.params.borderColor}"
+							:class="[v.params.resStyle,v.params.reswStyle]">
+							<input type="submit" class="searchBtn" value="">
+							<input type="text" class="searchText" :placeholder="v.data.tipeText_null"
+								:style="{'color':v.params.textColor}" v-model="v.data.tipeText">
+						</form>
+					</a>
 				</div>
 			</div>
 		</div>
-		 <!--店招模块 box，拖拽的div-->
-		 <div class="modle_box" v-if="v.id == 'shopinviting'? true:''" :key="v.id"  >
+		<!--店招模块 box，拖拽的div-->
+		<div class="modle_box" v-if="v.id == 'shopinviting'? true:''" :key="v.id">
 			<!-- :style="{textAlign:v.params.alignPosition,color:v.params.textColor,backgroundColor:v.params.bgColor}" -->
 			<div :class="v.params.style" :style="{'background-image':'url('+v.data.icon+')',}">
 				<div class="shop_boxson">
-					<img src="__PUBLIC__/page/img/1.jpg" :class="v.params.show"/>
+					<img src="__PUBLIC__/page/img/1.jpg" :class="v.params.show" />
 					<p :class="v.params.nameshow">神器商城</p>
 				</div>
 				<div :class="v.params.navshow">
 					<div class="shop_boxson_item">
 						<i class="iconfont" :style="{'color':v.params.backColor}">&#xe77e;</i>
 						<p class="icon_title" :style="{'color':v.params.backColor}">首页</p>
-					</div><div class="shop_boxson_item">
+					</div>
+					<div class="shop_boxson_item">
 						<i class="iconfont" :style="{'color':v.params.backColor}">&#xe64a;</i>
 						<p class="icon_title" :style="{'color':v.params.backColor}">全部商品</p>
-					</div><div class="shop_boxson_item">
+					</div>
+					<div class="shop_boxson_item">
 						<i class="iconfont" :style="{'color':v.params.backColor}">&#xe601;</i>
 						<p class="icon_title" :style="{'color':v.params.backColor}">促销商品</p>
-					</div><div class="shop_boxson_item">
+					</div>
+					<div class="shop_boxson_item">
 						<i class="iconfont" :style="{'color':v.params.backColor}">&#xe646;</i>
 						<p class="icon_title" :style="{'color':v.params.backColor}">店铺公告</p>
-					</div>			
+					</div>
 				</div>
 			</div>
 		</div>
@@ -260,7 +216,7 @@
 			<div class="notice" :style="{backgroundColor:v.params.bgColor}">
 				<div class="notice_icon">
 					<!-- <img class="vertical_centering" src="v['data']['icon']" /> -->
-					<img class="vertical_centering" src="__PUBLIC__/page/img/pc/notice-icon.png" />
+					<img class="vertical_centering" :src="v['data']['icon']" />
 				</div>
 
 				<div class="scroll_notice">
@@ -304,12 +260,23 @@
 					{{v.data.subTitle}}</h4>
 			</div>
 		</div>
-		
+
 
 	</div>
 </div>
+<form method="post"  id="recharge_form" action="{:U('Mobile/Payment/getvipPay')}">
+	<div class="loginsingup-input mobil_topup" style="padding:0 0.64rem;">
+		<input type="hidden" value="pay_code={$pay_code}" name="pay_radio" >
+		<input type="hidden" name="order_id" value="{$order.order_id}">
+</form>
 
 <p class="guanzhu">点击关注公众号</p>
+
+<form method="post"  id="recharge_form" action="{:U('Mobile/Payment/getvipPay')}">
+	<div class="loginsingup-input mobil_topup" style="padding:0 0.64rem;">
+		<input type="hidden" value="pay_code={$pay_code}" name="pay_radio" >
+		<input type="hidden" name="order_id" value="{$order.order_id}">
+</form>
 <div class="foohi">
 	<div class="footer">
 		<ul>
@@ -360,96 +327,105 @@
 <script src="__PUBLIC__/js/jqueryUrlGet.js"></script>
 <!--获取get参数插件-->
 <script>
-	$(document).ready(function(){
-				// var nowtime=Date.parse(new Date());
-				// console.log(123)
-				// console.log(mytime)
-				// nowtime=nowtime/1000;
-				var username = window.localStorage.getItem('key_username');
-				// var endtime = window.localStorage.getItem('key_endtime');
-				// console.log(uid)
-				// console.log(endtime)
-				// console.log(password)
-				// if((!username && typeof username != "undefined" && username != 0) || (!endtime && typeof endtime != "undefined" && endtime != 0)){
 
-				// }else{
-				if(username && username.length==11 && uid==0){
-					var data = {username:username,mobile_code:'000000',referurl:encodeURIComponent(''),sms_type:5};
-					// console.log(uid)
-					$.ajax({
-						type: 'post',
-						url: '/index.php?m=Mobile&c=User&a=do_login&t=' + Math.random(),
-						data: data,
-						dataType: 'json',
-						success: function(data) {
-							console.log(data)
-							if(data.status == 1) {
-								// window.location.href = '/index.php/mobile/index';
-							} else {
+    var uid = '{$uid}';
 
-							}
-						},
-						error: function(XMLHttpRequest, textStatus, errorThrown) {
-							showErrorMsg('网络异常，请稍后重试');
-						}
-					})
-				}
+	$(document).ready(function () {
+		$('.vip_pay').on('click',function(){
+		    $('#recharge_form').submit();
+		})
+		// var nowtime=Date.parse(new Date());
+		// console.log(123)
+		// console.log(mytime)
+		// nowtime=nowtime/1000;
+		var username = window.localStorage.getItem('key_username');
+		// var endtime = window.localStorage.getItem('key_endtime');
+		// console.log(uid)
+		// console.log(endtime)
+		// console.log(password)
+		// if((!username && typeof username != "undefined" && username != 0) || (!endtime && typeof endtime != "undefined" && endtime != 0)){
 
-				// }
-				// ajax_sourch_submit();
-			});
-			/**
-			 * 继续加载猜您喜欢
-			 * */
-			var before_request = 1; // 上一次请求是否已经有返回来, 有才可以进行下一次请求
-			var page = 1;
-			function ajax_sourch_submit(){
-				if(before_request == 0)// 上一次请求没回来 不进行下一次请求
-					return false;
-				before_request = 0;
-				page++;
-				$.ajax({
-					type: "get",
-					url: "/index.php?m=Mobile&c=Index&a=ajaxGetMore&p=" + page,
-					success: function(data) {
-						if(data) {
-							$("#J_ItemList>ul").append(data);
-							before_request = 1;
-						} else {
-							$('.get_more').hide();
-							$('.get_end').show();
-						}
+		// }else{
+		if (username && username.length == 11 && uid == 0) {
+			var data = { username: username, mobile_code: '000000', referurl: encodeURIComponent(''), sms_type: 5 };
+			// console.log(uid)
+			$.ajax({
+				type: 'post',
+				url: '/index.php?m=Mobile&c=User&a=do_login&t=' + Math.random(),
+				data: data,
+				dataType: 'json',
+				success: function (data) {
+					console.log(data)
+					if (data.status == 1) {
+						// window.location.href = '/index.php/mobile/index';
+					} else {
+
 					}
-				});
-			}
-			$(".guanzhu").click(function() {
-
-				//自定页
-				layer.open({
-					type: 1,
-					title: false,
-					closeBtn: 0,
-					shadeClose: true,
-					skin: 'yourclass',
-					content: '<img src="{$wechat_qr.qr}" class="erweima"/>'
-				});
-
+				},
+				error: function (XMLHttpRequest, textStatus, errorThrown) {
+					showErrorMsg('网络异常，请稍后重试');
+				}
 			})
-				//eleId.style.right ='2.8rem';
-			// 公告区域代码
-			// var test1 = function (x, y, text){
-			// 					    // eleId 自己定义的变量名，任意取
-			// 					    // document.createElement ('marquee'); 勿改变
-			// 					        var eleId = document.createElement ('marquee');
-			// 					        eleId.style.position = 'absolute';
-			// 					        eleId.style.top = y +'rem';
-			// 					        eleId.style.right ='100rem';
-			// 							eleId.style.left ='2.8rem';
-			// 					        eleId.innerText = text;
-			// 					        document.body.appendChild (eleId);
-			// 					    }
+		}
 
-			var eleId = document.getElementsByTagName('marquee');
+		// }
+		// ajax_sourch_submit();
+	});
+	$(".signage").click(function(){
+		alert("dd")
+	})
+	/**
+	 * 继续加载猜您喜欢
+	 * */
+	var before_request = 1; // 上一次请求是否已经有返回来, 有才可以进行下一次请求
+	var page = 1;
+	function ajax_sourch_submit() {
+		if (before_request == 0)// 上一次请求没回来 不进行下一次请求
+			return false;
+		before_request = 0;
+		page++;
+		$.ajax({
+			type: "get",
+			url: "/index.php?m=Mobile&c=Index&a=ajaxGetMore&p=" + page,
+			success: function (data) {
+				if (data) {
+					$("#J_ItemList>ul").append(data);
+					before_request = 1;
+				} else {
+					$('.get_more').hide();
+					$('.get_end').show();
+				}
+			}
+		});
+	}
+	$(".guanzhu").click(function () {
+
+		//自定页
+		layer.open({
+			type: 1,
+			title: false,
+			closeBtn: 0,
+			shadeClose: true,
+			skin: 'yourclass',
+			content: '<img src="{$wechat_qr.qr}" class="erweima"/>'
+		});
+
+	})
+	//eleId.style.right ='2.8rem';
+	// 公告区域代码
+	// var test1 = function (x, y, text){
+	// 					    // eleId 自己定义的变量名，任意取
+	// 					    // document.createElement ('marquee'); 勿改变
+	// 					        var eleId = document.createElement ('marquee');
+	// 					        eleId.style.position = 'absolute';
+	// 					        eleId.style.top = y +'rem';
+	// 					        eleId.style.right ='100rem';
+	// 							eleId.style.left ='2.8rem';
+	// 					        eleId.innerText = text;
+	// 					        document.body.appendChild (eleId);
+	// 					    }
+
+	var eleId = document.getElementsByTagName('marquee');
 
 	window.onload = function () {
 		new Vue({
@@ -523,6 +499,10 @@
 							alert("请求失败");
 						}
 					});
+				},
+				//拉起支付
+				pay(){
+					$('#recharge_form').submit();
 				},
 				/*（轮播图）根据传过来的data=>创建 swiper 的分页器*/
 				carousel(res) {
@@ -599,6 +579,63 @@
 		overflow-x: hidden;
 	}
 
+	.guanzhu {
+		width: .3rem;
+		height: 2.9rem;
+		text-align: center;
+		position: fixed;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		margin: auto 0;
+		font-size: .26rem;
+		background: #CCC;
+		display: flex;
+		align-items: center;
+		background: #37afe6;
+		color: white;
+		z-index: 999999;
+	}
+
+	.footer {
+		position: fixed;
+		bottom: 0px;
+		left: 0px;
+		width: 100%;
+		background: white;
+		z-index: 1000;}
+
+	.footer ul {
+
+		display: flex;
+	}
+
+	.footer ul li {
+		display: inline-block;
+		width: 25%;
+		text-align: center;
+	}
+
+	.icon_tps img {
+		width: .5rem
+	}
+
+	[v-cloak] {
+		display: none;
+	}
+
+	.layermcont {
+		background: white;
+	}
+
+	.erweima {
+		width: 3rem;
+	}
+
+	.laymshade {
+		background: white
+	}
+
 	/*public=>包着组件div*/
 
 	.modle_box {
@@ -635,19 +672,24 @@
 		letter-spacing: .01rem;
 	}
 
+	.dssds {
+		color: gray;
+	}
+
 	/* 轮播图 -s */
 
 	.slide {
 		position: relative;
 		width: 100%;
-		height: 5rem;
+		height: 3rem;
 	}
 
 	.slide_item,
 	.slide_item>img {
 		display: block;
-		width: 100%;
+		width: 95%;
 		height: 100%;
+		margin: 0 auto;
 	}
 
 	.slide_but {
@@ -923,7 +965,7 @@
 	}
 
 	.modle_shop_item .modle_shop_info .modle_shop_name {
-		font-size: .28rem;
+		font-size: .31rem;
 		height: .9rem;
 		margin-top: .05rem;
 		margin-bottom: .1rem;
@@ -957,15 +999,16 @@
 	/* 显示俩个 */
 
 	.modle_shop_item2 {
-		background: #fff;
-		text-align: left;
 		float: left;
-		margin: 0 .05rem .05rem;
-		width: 48.5%;
+		margin: 0 .1rem .04rem .18rem;
+		width: 45.6%;
+		height: 4.4rem;
+		text-align: left;
+		
 	}
 
 	.modle_shop_item2 .modle_shop_img {
-		height: 4rem;
+		height: 3.5rem;
 	}
 
 	/* 显示三个 */
@@ -976,6 +1019,7 @@
 		float: left;
 		margin: 0 .05rem .05rem;
 		width: 32%;
+		height: 3.4rem
 	}
 
 	.modle_shop_img {
@@ -1012,15 +1056,17 @@
 	.modle_shop_item3 .modle_shop_price {
 		position: absolute;
 		left: 0;
-		bottom: 0;
+		bottom: -.8rem;
 		width: 100%;
-		margin: 0;
-		font-size: .24rem;
+		font-size: 14px;
 		color: #f3f3f3;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
-		background: rgba(0, 0, 0, .3);
+		/* background: rgba(0,0,0,.3); */
+		color: orange;
+
+
 	}
 
 	.modle_shop_item2 .modle_shop_price s,
@@ -1483,349 +1529,389 @@
 	.slide .right {
 		text-align: right;
 	}
+
 	/* 店招s */
-.shop_invating_ear{
-	height:250px;
-	background: no-repeat;
-	background-size: cover;
+	.shop_invating_ear {
+		height: 250px;
+		background: no-repeat;
+		background-size: cover;
 
-}
-.shop_invating_ear .shop_boxson{
+	}
 
-	width: 18%;
-	margin:0 auto;
-}
-.shop_invating_ear .shop_boxson_logopic{
+	.shop_invating_ear .shop_boxson {
 
-	width:100%;
-	border-radius: 50%;
-	margin-top: 50px
+		width: 18%;
+		margin: 0 auto;
+	}
 
-}
-.shop_invating_ear .shop_boxson_logotitle{
-	position: absolute;
-	top:130px;
-	left:50%;
-	transform: translate(-50%,0);
-	-moz-transform: translate(-50%,0);
-	-mis-transform: translate(-50%,0);
-	-webit-transform: translate(-50%,0);
-	text-align: center;
-	padding:5px 10px;
-	border-radius: 10px;
-	background:rgba(0,0,0,0.1)
-}
-.shop_invating_ear .shop_boxson_bottom{
+	.shop_invating_ear .shop_boxson_logopic {
 
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	text-align:center;
-}
-/* 阿里云字体图标*/
-@font-face{
-	font-family: 'iconfont';  /* project id 1237089 */
-	src: url('http://at.alicdn.com/t/font_1237089_c3gaqvoylsw.eot');
-	src: url('http://at.alicdn.com/t/font_1237089_c3gaqvoylsw.eot?#iefix') format('embedded-opentype'),
-	url('http://at.alicdn.com/t/font_1237089_c3gaqvoylsw.woff2') format('woff2'),
-	url('http://at.alicdn.com/t/font_1237089_c3gaqvoylsw.woff') format('woff'),
-	url('http://at.alicdn.com/t/font_1237089_c3gaqvoylsw.ttf') format('truetype'),
-	url('http://at.alicdn.com/t/font_1237089_c3gaqvoylsw.svg#iconfont') format('svg');
-}
-.iconfont{
-    font-family:"iconfont" !important;
-    font-size:20px;font-style:normal;
-    -webkit-font-smoothing: antialiased;
-    -webkit-text-stroke-width: 0.2px;
-	-moz-osx-font-smoothing: grayscale;
-	
-	
-}
-/* .icon_title{
+		width: 100%;
+		border-radius: 50%;
+		margin-top: 50px
+	}
+
+	.shop_invating_ear .shop_boxson_logotitle {
+		position: absolute;
+		top: 130px;
+		left: 50%;
+		transform: translate(-50%, 0);
+		-moz-transform: translate(-50%, 0);
+		-mis-transform: translate(-50%, 0);
+		-webit-transform: translate(-50%, 0);
+		text-align: center;
+		padding: 5px 10px;
+		border-radius: 10px;
+		background: rgba(0, 0, 0, 0.1)
+	}
+
+	.shop_invating_ear .shop_boxson_bottom {
+
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		text-align: center;
+	}
+
+	/* 阿里云字体图标*/
+	@font-face {
+		font-family: 'iconfont';
+		/* project id 1237089 */
+		src: url('https://at.alicdn.com/t/font_1237089_c3gaqvoylsw.eot');
+		src: url('https://at.alicdn.com/t/font_1237089_c3gaqvoylsw.eot?#iefix') format('embedded-opentype'),
+			url('https://at.alicdn.com/t/font_1237089_c3gaqvoylsw.woff2') format('woff2'),
+			url('https://at.alicdn.com/t/font_1237089_c3gaqvoylsw.woff') format('woff'),
+			url('https://at.alicdn.com/t/font_1237089_c3gaqvoylsw.ttf') format('truetype'),
+			url('https://at.alicdn.com/t/font_1237089_c3gaqvoylsw.svg#iconfont') format('svg');
+	}
+
+	.iconfont {
+		font-family: "iconfont" !important;
+		font-size: 20px;
+		font-style: normal;
+		-webkit-font-smoothing: antialiased;
+		-webkit-text-stroke-width: 0.2px;
+		-moz-osx-font-smoothing: grayscale;
+
+
+	}
+
+	/* .icon_title{
 	color:gray;
 } */
 
-.shop_invating_ear .shop_boxson_bottom{
+	.shop_invating_ear .shop_boxson_bottom {
 
-	position: absolute;
-	bottom: 0px;
-	width: 100%;
-	height:45px;
-	z-index: 99;
-	background:rgb(0,0,0,.2);	
-}
-.shop_invating_two{
-	height:285px;
-	background: no-repeat;
-	background-size: cover;
-}
-.shop_invating_two .shop_boxson{
+		position: absolute;
+		bottom: 0px;
+		width: 100%;
+		height: 45px;
+		z-index: 99;
+		background: rgb(0, 0, 0, .2);
+	}
 
-	/* width: 22%; */
-	
-}
-.shop_invating_two .shop_boxson_logopic{
+	.shop_invating_two {
+		height: 285px;
+		background: no-repeat;
+		background-size: cover;
+	}
 
-	width: 22%;
-	position: absolute;
-	bottom:15px;
-	left:5%
+	.shop_invating_two .shop_boxson {
 
-}
-.shop_invating_two .shop_boxson_logotitle{
-	
-	position: absolute;
-	bottom:55px;
-	left:30%;
-	font-size: 20px;
-	/* color:white; */
-}
-.shop_invating_two .shop_boxson_bottom{
+		/* width: 22%; */
 
-	width:70%;
-	position: absolute;
-	bottom: 0;
-	right: 0;
-	background:white
+	}
 
-}
-.shop_invating_two .shop_boxson_item{
-	width:25%;
-	display: inline-block;
-	text-align: center;
-	margin: 0
-}
-.shop_invating_ear .shop_boxson_logopic,
-.shop_invating_two .shop_boxson_logopic
- {
-	display:show;
-}
-.shop_invating_ear .yingcang,
-.shop_invating_two .yingcang
-{
-	display: none;
-}
-.shop_invating_ear .shop_boxson_logotitle,
-.shop_invating_two .shop_boxson_logotitle
- {
+	.shop_invating_two .shop_boxson_logopic {
 
-	display:show;
-	
-}
-.shop_invating_ear .nameyingcang,
-.shop_invating_two .nameyingcang
-{
-	display: none;
-}
+		width: 22%;
+		position: absolute;
+		bottom: 15px;
+		left: 5%
+	}
 
-.shop_invating_ear .shop_boxson_bottom,
-.shop_invating_two .shop_boxson_bottom
- {
+	.shop_invating_two .shop_boxson_logotitle {
 
-	display:show;
-	
-}
-.shop_invating_ear .navyingcang,
-.shop_invating_two .navyingcang
-{
-	display: none;
-}
+		position: absolute;
+		bottom: 55px;
+		left: 30%;
+		font-size: 20px;
+		/* color:white; */
+	}
 
-/* 店招e */
-/* 固定搜索栏 s */
-.fixeds_wrap {
-	font-size: 18px;
-	background: #000;
-	
-}
-.fixeds {
-	background: #000;
-	border: 1px solid #C0C0C0;
-	border-radius: 6px;
-}
-.fixeds .img {
-	padding: 2px 0 0 6px;
-	width: 8%;
-	height: auto;
-}
-.fixeds .img img {
-	display: block;
-}
-.fixeds .img,.inp {
-	display: inline-block;
-	vertical-align: middle;
-}
-.fixeds .inp {
-	padding: 0 0 0 25px;
-	width: 80%;
-    height: 32px;
-}
-.fixeds .inp input {
-	width: 100%;
-	line-height: 32px;
-	vertical-align: middle;
-	border: none;
-	outline: none; 
-}
+	.shop_invating_two .shop_boxson_bottom {
 
-.res {
-	padding: 10px;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-}
+		width: 70%;
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		background: white
+	}
 
-.res .searchBtn {
-	width: 40px;
-	height: 40px;
-	background: url(__PAGE__/img/pc/searchObj/search_ico.png) no-repeat center;
-	background-size: 60%;
-	float: left;
-	border: 0;
-	padding: 0;
-}
+	.shop_invating_two .shop_boxson_item {
+		width: 25%;
+		display: inline-block;
+		text-align: center;
+		margin: 0
+	}
 
-.res .searchText {
-	width: 85%;
-	height: 40px;
-	border: 0px;
-	padding: 0px 8px;
-	box-sizing: border-box;
-	margin: 0px;
-	outline: none;
-	color: #999;
-	float: left;
-	border-radius: 50px;
-	background: #d5d5d5;
-}
+	.shop_invating_ear .shop_boxson_logopic,
+	.shop_invating_two .shop_boxson_logopic {
+		display: show;
+	}
 
-.res .sty2 .searchBtn {
-	float: right;
-}
+	.shop_invating_ear .yingcang,
+	.shop_invating_two .yingcang {
+		display: none;
+	}
 
-.res form {
-	width: 100%;
-	height: 40px;
-	align-items: center;
-	background: #d5d5d5;
-	border: 1px solid #c0c0c0;
-}
-.fixeds_wrap .res .style02{
-	width: 100%;
-	height: 40px;
-	align-items: center;
-	background: #fff;
-	border: 1px solid #c0c0c0;
-	border-radius: 6px;
-	background: #d5d5d5;
-}
-.fixeds_wrap .res .style03{
-	width: 100%;
-	height: 40px;
-	align-items: center;
-	background: #fff;
-	border: 1px solid #c0c0c0;
-	border-radius: 50px;
-	background: #d5d5d5;
-}
-.funeirong{
+	.shop_invating_ear .shop_boxson_logotitle,
+	.shop_invating_two .shop_boxson_logotitle {
 
-	min-height: 20px
-}
-/* 固定搜索栏 e */
-/* 滑动按钮组-s */
-.slidingBtn_list{
-	width: 100%;
-	white-space:nowrap;
-	overflow: hidden;
-}
-.slidingBtn_tips{
-	width: 100%;
-	height: 100%;
-	line-height: 40px;
-	text-align: center;
-}
-.slidingBtn_item{
-	position: relative;
-	display: inline-block;
-	width: 80px;
-	height: 100%;
-	line-height: 40px;
-	padding: 0 5px;
-	text-align: center;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-}
-/* 滑动按钮组-e */
-/*初始化-商品box*/
+		display: show;
 
-.modle_shop_init {
-	width: 100%;
-	height: 120px;
-	font-size: 14px;
-	text-align: center;
-	line-height: 120px;
-	color: #999;
-}
-/* 滑动商品组-s */
-.slidingShop{
-	overflow: hidden;
-	padding: 5px;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-}
-.slidingShop_title{
-	line-height: 20px;
-}
-.slidingShop_list{
-	width: 100%;
-	white-space:nowrap;
-	overflow-x: scroll;
-}
-.slidingShop_item{
-	position: relative;
-	display: inline-block;
-	margin-left: 3px;
-	width: 106px;
-	height: 100%;
-}
-.slidingShop_item_imgwrap{
-	width: 100%;
-	height: 110px;
-}
-.slidingShop_item_img{
-	width: 100%;
-	height: 100%;
-}
-.slidingShop_item_info{
-	position: relative;
-}
-.slidingShop_item_info .price s{
-	display: none;
-}
-.slidingShop_item_name,.slidingShop_item_price{
-	font-size: 14px;
-	line-height: 24px;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-.slidingShop_item_price s{
-	color: #ccc;
-}
-.slidingShop_item_buybtn{
-	position: absolute;
-	right: 5px;
-	bottom: -5px;
-	width: 24px;
-	height: 24px;
-}
-.slidingShop_item_price{
-	color: #ff0000;
-}
-/* 滑动商品组-e */
+	}
+
+	.shop_invating_ear .nameyingcang,
+	.shop_invating_two .nameyingcang {
+		display: none;
+	}
+
+	.shop_invating_ear .shop_boxson_bottom,
+	.shop_invating_two .shop_boxson_bottom {
+
+		display: show;
+
+	}
+
+	.shop_invating_ear .navyingcang,
+	.shop_invating_two .navyingcang {
+		display: none;
+	}
+
+	/* 店招e */
+	/* 固定搜索栏 s */
+	.fixeds_wrap {
+		font-size: 18px;
+		background: #000;
+
+	}
+
+	.fixeds {
+		background: #000;
+		border: 1px solid #C0C0C0;
+		border-radius: 6px;
+	}
+
+	.fixeds .img {
+		padding: 2px 0 0 6px;
+		width: 8%;
+		height: auto;
+	}
+
+	.fixeds .img img {
+		display: block;
+	}
+
+	.fixeds .img,
+	.inp {
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	.fixeds .inp {
+		padding: 0 0 0 25px;
+		width: 80%;
+		height: 32px;
+	}
+
+	.fixeds .inp input {
+		width: 100%;
+		line-height: 32px;
+		vertical-align: middle;
+		border: none;
+		outline: none;
+	}
+
+	.res {
+		padding: 10px;
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+	}
+
+	.res .searchBtn {
+		width: 40px;
+		height: 40px;
+		background: url(__PAGE__/img/pc/searchObj/search_ico.png) no-repeat center;
+		background-size: 60%;
+		float: left;
+		border: 0;
+		padding: 0;
+	}
+
+	.res .searchText {
+		width: 85%;
+		height: 40px;
+		border: 0px;
+		padding: 0px 8px;
+		box-sizing: border-box;
+		margin: 0px;
+		outline: none;
+		color: #999;
+		float: left;
+		border-radius: 50px;
+		background: #d5d5d5;
+	}
+
+	.res .sty2 .searchBtn {
+		float: right;
+	}
+
+	.res form {
+		width: 100%;
+		height: 40px;
+		align-items: center;
+		background: #d5d5d5;
+		border: 1px solid #c0c0c0;
+	}
+
+	.fixeds_wrap .res .style02 {
+		width: 100%;
+		height: 40px;
+		align-items: center;
+		background: #fff;
+		border: 1px solid #c0c0c0;
+		border-radius: 6px;
+		background: #d5d5d5;
+	}
+
+	.fixeds_wrap .res .style03 {
+		width: 100%;
+		height: 40px;
+		align-items: center;
+		background: #fff;
+		border: 1px solid #c0c0c0;
+		border-radius: 50px;
+		background: #d5d5d5;
+	}
+
+	.funeirong {
+
+		min-height: 20px
+	}
+
+	/* 固定搜索栏 e */
+	/* 滑动按钮组-s */
+	.slidingBtn_list {
+		width: 100%;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+
+	.slidingBtn_tips {
+		width: 100%;
+		height: 100%;
+		line-height: 40px;
+		text-align: center;
+	}
+
+	.slidingBtn_item {
+		position: relative;
+		display: inline-block;
+		width: 80px;
+		height: 100%;
+		line-height: 40px;
+		padding: 0 5px;
+		text-align: center;
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+	}
+
+	/* 滑动按钮组-e */
+	/*初始化-商品box*/
+
+	.modle_shop_init {
+		width: 100%;
+		height: 120px;
+		font-size: 14px;
+		text-align: center;
+		line-height: 120px;
+		color: #999;
+	}
+
+	/* 滑动商品组-s */
+	.slidingShop {
+		overflow: hidden;
+		padding: 5px;
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+	}
+
+	.slidingShop_title {
+		line-height: 20px;
+	}
+
+	.slidingShop_list {
+		width: 100%;
+		white-space: nowrap;
+		overflow-x: scroll;
+	}
+
+	.slidingShop_item {
+		position: relative;
+		display: inline-block;
+		margin-left: 3px;
+		width: 106px;
+		height: 100%;
+	}
+
+	.slidingShop_item_imgwrap {
+		width: 100%;
+		height: 110px;
+	}
+
+	.slidingShop_item_img {
+		width: 100%;
+		height: 100%;
+	}
+
+	.slidingShop_item_info {
+		position: relative;
+	}
+
+	.slidingShop_item_info .price s {
+		display: none;
+	}
+
+	.slidingShop_item_name,
+	.slidingShop_item_price {
+		font-size: 14px;
+		line-height: 24px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.slidingShop_item_price s {
+		color: #ccc;
+	}
+
+	.slidingShop_item_buybtn {
+		position: absolute;
+		right: 5px;
+		bottom: -5px;
+		width: 24px;
+		height: 24px;
+	}
+
+	.slidingShop_item_price {
+		color: #ff0000;
+	}
+
+	/* 滑动商品组-e */
 </style>
 
 </html>

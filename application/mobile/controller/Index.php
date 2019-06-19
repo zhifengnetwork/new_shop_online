@@ -19,14 +19,13 @@ use app\common\logic\wechat\WechatUtil;
 class Index extends MobileBase {
 
 	public function index(){
+        
         $goods_cat = M('goods')->where('is_hot',1)->column('cat_id');
         $goods_cat = array_filter($goods_cat);
         $count = count($goods_cat);
         $rand_num = mt_rand(0,$count);
         $goods_id = $count ? $goods_cat[$rand_num] : 0;
         $cate_name = array(1=>"黑科技",2=>"量子");
-
-
         $where_technology['name|mobile_name'] = ['like',"%$cate_name[1]%"];
         $where_quantum['name|mobile_name'] = ['like',"%$cate_name[2]%"];
         $black_technology = M('goods_category')->where($where_technology)->value('id');
@@ -57,16 +56,54 @@ class Index extends MobileBase {
         ];
         $favourite_goods = Db::name('goods')->where($where)->order('sort DESC')->page(1,C('PAGESIZE'))->cache(true,TPSHOP_CACHE_TIME)->select();//首页推荐商品
         $this->assign('favourite_goods',$favourite_goods);
-        $res = Db::name('diy_ewei_shop')->where(['status' => 1])->find();
+         $res = Db::name('diy_ewei_shop')->where(['status' => 1])->find();
+
+        $this->assign('uid',$this->user_id);
+
         if(!empty($res)){
             return $this->fetch('shenqi');
         }else{
             return $this->fetch('index');
-        }
+         }
 
 		
 		
-	}
+    }
+    
+    /**
+     * 更新会员总佣金
+     */
+    public function updateData(){
+        $arr = [];
+        //佣金记录表
+        $sql = "SELECT sum(money) as money,user_id as user_id FROM tp_commission_log group by user_id";
+        $commission_log = Db::query($sql);
+        foreach($commission_log as $k=>$v){
+            $arr[$v['user_id']] = isset($arr[$v['user_id']]) ? $arr[$v['user_id']] += $v['money'] : $v['money'];
+        }
+
+        //返佣金表
+        $sql = "SELECT sum(money) as money,to_user_id as user_id FROM tp_distrbut_commission_log group by to_user_id";
+        $distrbut_log = Db::query($sql);
+        foreach($distrbut_log as $k=>$v){
+            $arr[$v['user_id']] = isset($arr[$v['user_id']]) ? $arr[$v['user_id']] += $v['money'] : $v['money'];
+        }
+
+        //返佣金表
+        $sql = "SELECT sum(money) as money,to_user_id as user_id FROM tp_vip_commission_log group by to_user_id";
+        $vip_log = Db::query($sql);
+        foreach($vip_log as $k=>$v){
+            $arr[$v['user_id']] = isset($arr[$v['user_id']]) ? $arr[$v['user_id']] += $v['money'] : $v['money'];
+        }
+
+        //更新用户佣金余额
+        foreach($arr as $k=>$v){
+            Db::name('users')->where(['user_id'=>$k])->save(['distribut_money'=>$v]);
+//            echo Db::name('users')->getLastSql();
+//            exit;
+        }
+    }
+
     public function index3(){
         $diy_index = M('mobile_template')->where('is_index=1')->field('template_html,block_info')->find();
         if($diy_index){
