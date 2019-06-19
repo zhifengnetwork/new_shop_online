@@ -1,0 +1,46 @@
+<IfModule mod_rewrite.c>
+Options +FollowSymlinks
+RewriteEngine On
+
+#用于saas小程序
+RewriteCond %{REQUEST_URI} ^/saas/
+RewriteRule ^saas/(.*?)/(.*)$ $2?_saas_app=$1 [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php [L,QSA,E=PATH_INFO:$1]
+
+RewriteCond %{SCRIPT_FILENAME} \.php [NC]
+RewriteCond % !^$
+RewriteRule ^/?application/.*\.php - [F]
+RewriteRule ^/?backup/.*\.php - [F]
+#RewriteRule ^/?install/.*\.php - [F]
+RewriteRule ^/?miniapp/.*\.php - [F]
+RewriteRule ^/?runtime/.*\.php - [F]
+RewriteRule ^/?template/.*\.php - [F]
+</IfModule>
+ErrorDocument 400 /error/400.html
+
+ErrorDocument 403 /error/403.html
+
+ErrorDocument 404 /error/404.html
+
+ErrorDocument 500 /error/500.html
+
+ErrorDocument 501 /error/501.html
+
+ErrorDocument 502 /error/502.html
+
+ErrorDocument 503 /error/503.html
+
+ErrorDocument 504 /error/504.html
+
+ErrorDocument 505 /error/505.html
+
+ErrorDocument 506 /error/506.html
+
+ErrorDocument 507 /error/507.html
+
+ErrorDocument 508 /error/508.html
+
+ErrorDocument 510 /error/510.html

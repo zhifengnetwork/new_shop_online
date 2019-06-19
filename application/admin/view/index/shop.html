@@ -377,6 +377,15 @@
                           :style="{fontSize:v.params.subfontSize}">{{v.data.subTitle}}</h4>
                       </div>
                     </div>
+                    <!--魔方模块 box，拖拽的div-->
+                    <div class="modle_box" v-if="v.id == 'cubeId'? true:''" :key="v.id" @click="editMode(v.id,v.key_num)">
+                        <div class="cube" v-if="v.data.cube_img==''" >
+                            未设置魔方
+                        </div>
+                        <div class="cube_box" v-if="v.data.cube_img!=''">
+                            <img :src="item.img" v-for="(item,index) in v.data.cube_img" class="col1 row1"  onerror="onerror=null;src='__PAGE__/img/pc/transparency.png'" :class="[item.col=='2'?'col2':'',item.col=='3'?'col3':'',item.col=='4'?'col4':'',item.row=='2'?'row2':'',item.row=='3'?'row3':'',item.row=='4'?'row4':'']">
+                        </div>
+                    </div>
   
                   </div>
                 </div>
