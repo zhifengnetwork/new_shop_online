@@ -57,6 +57,9 @@ class Index extends MobileBase {
         $favourite_goods = Db::name('goods')->where($where)->order('sort DESC')->page(1,C('PAGESIZE'))->cache(true,TPSHOP_CACHE_TIME)->select();//首页推荐商品
         $this->assign('favourite_goods',$favourite_goods);
          $res = Db::name('diy_ewei_shop')->where(['status' => 1])->find();
+
+        $this->assign('uid',$this->user_id);
+
         if(!empty($res)){
             return $this->fetch('shenqi');
         }else{
