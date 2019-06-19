@@ -224,7 +224,7 @@ class Task{
         }
         $maxlen = 1024;
         # 查找有上级关系，上级列缓存未完成的用户
-        $user = Db::name('users')->field('user_id,first_leader,parents_cache')->where(['parents_cache' => ['=', 0], 'first_leader' => ['>', 0],'end_time' => ['neq',0]])->order('first_leader asc')->find();
+        $user = Db::name('users')->field('user_id,first_leader,parents_cache_vip')->where(['parents_cache_vip' => ['=', 0], 'first_leader' => ['>', 0],'end_time' => ['neq',0]])->order('first_leader asc')->find();
 
         if($user){
             if($user['first_leader'] == $user['user_id']){
@@ -232,7 +232,7 @@ class Task{
                 goto OnceMore;
             }
             # 找到用户顺位上级列
-            $pcache = Db::name('parents_cache')->where(['sort' => 1, 'user_id' => $user['user_id']])->find();
+            $pcache = Db::name('parents_vip_cache')->where(['sort' => 1, 'user_id' => $user['user_id']])->find();
             
             if(!$pcache){
                 # 尚未开始组装上级缓存的情况....
@@ -240,7 +240,7 @@ class Task{
                 $parents[] = $first_leader;
 
                 # 查找上级的上级缓存
-                $first_parents_cache = Db::name('parents_cache')->where('user_id', $first_leader)->select();
+                $first_parents_cache = Db::name('parents_vip_cache')->where('user_id', $first_leader)->select();
                 if($first_parents_cache){
                     # 组装上级列
                     foreach($first_parents_cache as $fpc){
@@ -256,9 +256,9 @@ class Task{
                     if($count <= $maxlen){
                         krsort($parents);
                         $parents_str = implode(',', $parents);
-                        Db::name('parents_cache')->insert(['user_id' => $user['user_id'], 'sort' => 1, 'parents' => $parents_str, 'count' => $count]);
+                        Db::name('parents_vip_cache')->insert(['user_id' => $user['user_id'], 'sort' => 1, 'parents' => $parents_str, 'count' => $count]);
                         if($parents[$count] == 0){
-                            Db::name('users')->where('user_id', $user['user_id'])->update(['parents_cache' => 1]);
+                            Db::name('users')->where('user_id', $user['user_id'])->update(['parents_cache_vip' => 1]);
                         }
                         goto OnceMore;
                     }else{
@@ -287,18 +287,18 @@ class Task{
                                 krsort($d);
                                 $parents_str = implode(',', $d) ;
                             }else{
-                                Db::name('parents_cache')->where('user_id', $user['user_id'])->setDec('sort');
-                                $dec_parents = Db::name('parents_cache')->where(['user_id'=>$user['user_id'],'sort'=>1])->value('parents');
+                                Db::name('parents_vip_cache')->where('user_id', $user['user_id'])->setDec('sort');
+                                $dec_parents = Db::name('parents_vip_cache')->where(['user_id'=>$user['user_id'],'sort'=>1])->value('parents');
                                 $dec_parents = '0,'.$dec_parents;
-                                Db::name('parents_cache')->where(['user_id'=>$user['user_id'],'sort'=>1])->update(['parents'=>$dec_parents]);
-                                Db::name('users')->where(['user_id'=>$user['user_id']])->update(['parents_cache' => 1]);
+                                Db::name('parents_vip_cache')->where(['user_id'=>$user['user_id'],'sort'=>1])->update(['parents'=>$dec_parents]);
+                                Db::name('users')->where(['user_id'=>$user['user_id']])->update(['parents_cache_vip' => 1]);
                                 goto OnceMore;
                             }
-                            Db::name('parents_cache')->insert(['user_id'=>$user['user_id'], 'sort' => $len, 'parents'=>$parents_str, 'count' => $c]);
+                            Db::name('parents_vip_cache')->insert(['user_id'=>$user['user_id'], 'sort' => $len, 'parents'=>$parents_str, 'count' => $c]);
                             $d = '';
                         }
                         if($e){
-                            Db::name('users')->where('user_id', $user['user_id'])->update(['parents_cache' => 1]);
+                            Db::name('users')->where('user_id', $user['user_id'])->update(['parents_cache_vip' => 1]);
                         }
                         goto OnceMore;
                     }
@@ -308,9 +308,9 @@ class Task{
                     krsort($parents);
                     $count = count($parents) - 1;
                     $parents_str = implode(',', $parents);
-                    Db::name('parents_cache')->insert(['user_id' => $user['user_id'], 'sort' => 1, 'parents' => $parents_str, 'count' => $count]);
+                    Db::name('parents_vip_cache')->insert(['user_id' => $user['user_id'], 'sort' => 1, 'parents' => $parents_str, 'count' => $count]);
                     if($parents[$count] == 0){
-                        Db::name('users')->where('user_id', $user['user_id'])->update(['parents_cache' => 1]);
+                        Db::name('users')->where('user_id', $user['user_id'])->update(['parents_cache_vip' => 1]);
                     }
                     goto OnceMore;
                 }
@@ -318,11 +318,11 @@ class Task{
                 
                 $parents = explode(',',$pcache['parents']);
                 if($parents[0] == 0){
-                    Db::name('users')->where('user_id', $user['user_id'])->update(['parents_cache' => 1]);
+                    Db::name('users')->where('user_id', $user['user_id'])->update(['parents_cache_vip' => 1]);
                     goto OnceMore;
                 }else{
                     $parent_id = $parents[0];
-                    $parent_first_parents_cache = Db::name('parents_cache')->where('user_id', $parent_id)->select();
+                    $parent_first_parents_cache = Db::name('parents_vip_cache')->where('user_id', $parent_id)->select();
                     if($parent_first_parents_cache){
                         # 组装上级列
                         foreach($parent_first_parents_cache as $fpc){
@@ -338,9 +338,9 @@ class Task{
                         if($count <= $maxlen){
                             $parents_str = implode(',', $parents);
                             
-                            Db::name('parents_cache')->where(['user_id' => $user['user_id'], 'sort' => 1])->update(['parents' => $parents_str, 'count' => $count]);
+                            Db::name('parents_vip_cache')->where(['user_id' => $user['user_id'], 'sort' => 1])->update(['parents' => $parents_str, 'count' => $count]);
                             if($parents[0] == 0){
-                                Db::name('users')->where(['user_id', $user['user_id']])->update(['parents_cache' => 1]);
+                                Db::name('users')->where(['user_id', $user['user_id']])->update(['parents_cache_vip' => 1]);
                             }
                             goto OnceMore;
                         }else{
@@ -351,7 +351,7 @@ class Task{
                             }
                             
                             $e = 0;
-                            $inc = Db::name('parents_cache')->where('user_id', $user['user_id'])->setInc('sort',$len-1);
+                            $inc = Db::name('parents_vip_cache')->where('user_id', $user['user_id'])->setInc('sort',$len-1);
                             krsort($parents);
                             for($len; $len>0; $len--){
                                 for($i=0; $i<3;$i++){
@@ -368,23 +368,23 @@ class Task{
                                 krsort($d);
                                 $d = array_filter($d);
                                 if(!$d){
-                                    Db::name('parents_cache')->where('user_id', $user['user_id'])->setDec('sort');
-                                    $dec_parents = Db::name('parents_cache')->where(['user_id'=>$user['user_id'],'sort'=>1])->value('parents');
+                                    Db::name('parents_vip_cache')->where('user_id', $user['user_id'])->setDec('sort');
+                                    $dec_parents = Db::name('parents_vip_cache')->where(['user_id'=>$user['user_id'],'sort'=>1])->value('parents');
                                     $dec_parents = '0,'.$dec_parents;
-                                    Db::name('parents_cache')->where(['user_id'=>$user['user_id'],'sort'=>1])->update(['parents'=>$dec_parents]);
-                                    Db::name('users')->where(['user_id'=>$user['user_id']])->update(['parents_cache' => 1]);
+                                    Db::name('parents_vip_cache')->where(['user_id'=>$user['user_id'],'sort'=>1])->update(['parents'=>$dec_parents]);
+                                    Db::name('users')->where(['user_id'=>$user['user_id']])->update(['parents_cache_vip' => 1]);
                                     goto OnceMore;
                                 }
 
                                 $parents_str = implode(',', $d);
-                                $ins = Db::name('parents_cache')->where(['user_id'=>$user['user_id'],'sort'=>$len])->value('id');
+                                $ins = Db::name('parents_vip_cache')->where(['user_id'=>$user['user_id'],'sort'=>$len])->value('id');
                                 
                                 if($ins){
-                                    Db::name('parents_cache')->where('id', $ins)->update(['parents'=>$parents_str,'count'=>count($d)]);
+                                    Db::name('parents_vip_cache')->where('id', $ins)->update(['parents'=>$parents_str,'count'=>count($d)]);
                                     
                                 }else{
                                     
-                                    Db::name('parents_cache')->insert(['user_id'=>$user['user_id'],'sort'=>$len,'parents'=>$parents_str,'count'=>count($d)]);
+                                    Db::name('parents_vip_cache')->insert(['user_id'=>$user['user_id'],'sort'=>$len,'parents'=>$parents_str,'count'=>count($d)]);
                                 }
 
                                 $ins = '';
@@ -395,7 +395,7 @@ class Task{
                     }else{
                         array_unshift($parents, 0);
                         $parents_str = implode(',', $parents);
-                        Db::name('parents_cache')->where(['user_id'=>$user['user_id'],'sort'=>1])->update(['parents'=>$parents_str]);
+                        Db::name('parents_vip_cache')->where(['user_id'=>$user['user_id'],'sort'=>1])->update(['parents'=>$parents_str]);
                         goto OnceMore;
                     }
                 }
