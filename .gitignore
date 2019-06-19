@@ -14,3 +14,4 @@ cron_team.sh
 /logs/*
 *.txt
 .well-known
+/plugins/payment/weixin/cert
