@@ -96,9 +96,6 @@ class User extends MobileBase
 
     public function index()
     {
-        buy_vip_rebate(8831,0,0);
-        var_dump(111);
-        die;
         $agent_level = M('agent_level')->field('level,level_name')->select();
         if($agent_level){
             foreach($agent_level as $v){
