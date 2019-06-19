@@ -1,17 +1,4 @@
 <?php
-/**
- * tpshop
- * ============================================================================
- * 版权所有 2015-2027 深圳搜豹网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.tp-shop.cn
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * 采用最新Thinkphp5助手函数特性实现单字母函数M D U等简写方式
- * ============================================================================
- * Author: 当燃
- * Date: 2015-09-09
- */
 
 namespace app\admin\controller;
 
@@ -901,53 +888,102 @@ class User extends Base
     {
         $id_arr = I('id/a');
         $ids = implode(',', $id_arr);
+
         $data['status'] = $status = I('status');
         $data['remark'] = I('remark');
         $users = '';
-        if ($status == 1) {
-            $data['check_time'] = time();
-            $lsql = "select a.*,b.openid from `tp_withdrawals` as a left join `tp_users` as b on a.user_id = b.user_id where a.id in ('$ids')";
-            $user_list = Db::query($lsql);
-            foreach($user_list as $v){
-                $users[$v['user_id']] = $v; 
-            }
-        }
+       
+        $data['check_time'] = time();
+
+        $users = M('withdrawals')->alias('w')->join('__USERS__ u', 'u.user_id = w.user_id', 'INNER')->whereIn('w.id',$ids)->select();
+
         if ($status != 1) {
             $data['refuse_time'] = time();
         }
-//        var_dump($ids);die;
-        $r = Db::name('withdrawals')->whereIn('id', $ids)->update($data);
-        if ($r !== false) {
+
+       $r = Db::name('withdrawals')->whereIn('id', $ids)->update($data);
+       if ($r !== false) {
+
             if($users){
                 foreach($users as $v){
-                    if($v['openid']){
-                        $this->Withdrawal_Success($v['openid'],'恭喜你提现成功！',$v['money'],time(),'感谢你的努力付出，有付出就有回报！希望你再接再厉！');
-                    }
-                    //记录用户余额变动
-                    $user_money=Db::name('users')->where(['user_id'=>$v['user_id']])->value('user_money');
-                    //看看这次之后有没有提现了
-                    $other=Db::name("withdrawals")->where(['user_id'=>$v['user_id']])->where('create_time','>',$v['create_time'])->sum('money');
-                    $user_money+=$other;
-                    setBalanceLog($v['user_id'],2,$v['money'],$user_money,'成功提现：'.$v['money']);
-                }
-            }
-            if($status != 1){
-                if(is_array($ids)){
-                    foreach ($ids as $key=>$value){
-                        Db::query("update tp_users set user_money=user_money+(select money from tp_withdrawals where id =".$value." ) where user_id=(select user_id from tp_withdrawals where id=".$value.")");
-                    }
-                }else{
-                    Db::query("update tp_users set user_money=user_money+(select money from tp_withdrawals where id =".$ids." ) where user_id=(select user_id from tp_withdrawals where id=".$ids.")");
-                }
 
-//                Db::name('users')->where('user_id',$v['user_id'])->setInc('user_money',$v['money']);
+                    //记录用户余额变动
+                    $user_money = Db::name('users')->where(['user_id'=>$v['user_id']])->value('user_money');
+
+                    //提现成功
+                    if($status == 1){
+
+                        //微信提现
+                        if($v['bank_name'] == '微信'){
+                             //微信
+                            $result = $this->withdrawals_weixin($v['id']);
+                            if(isset($result['status'])){
+                                // 操作失败
+                                accountLog($v['user_id'], $v['money'] , 0, '提现失败退回：'.$v['money'].'元', 0, 0 , '');
+                                if($v['openid']){
+                                    $this->Withdrawal_Success($v['openid'],'提现失败！',$v['money'],time(),'微信提现接口出错：'.$result['result_code']);
+                                }
+                               
+                            }else{
+
+                                $result['payment_time'] = strtotime($result['payment_time']);
+                                $result['money'] = $falg['money'];
+                                $result['user_id'] = $falg['user_id'];
+                                $flag = M('withdrawals_weixin')->insert($result);
+
+                                if($v['openid']){
+                                    $this->Withdrawal_Success($v['openid'],'恭喜你提现成功！',$v['money'],time(),'感谢你的努力付出，有付出就有回报！希望你再接再厉！');
+                                }
+                                setBalanceLog($v['user_id'],2,$v['money'],$user_money,'成功提现：'.$v['money']);
+
+                            } 
+                        }
+
+                    }else{
+                        //提现失败
+                        //退钱
+
+                        accountLog($v['user_id'], $v['money'] , 0, '提现失败退回：'.$v['money'].'元', 0, 0 , '');
+                        if($v['openid']){
+                            $this->Withdrawal_Success($v['openid'],'提现失败！',$v['money'],time(),'拒绝理由：'.$data['remark']);
+                        }
+
+                        setBalanceLog($v['user_id'],2,$v['money'],$user_money,'提现失败：'.$v['money']);
+                    }
+
+                }
             }
             $this->ajaxReturn(array('status' => 1, 'msg' => "操作成功"), 'JSON');
         } else {
-
             $this->ajaxReturn(array('status' => 0, 'msg' => "操作失败"), 'JSON');
         }
     }
+
+
+     //用户微信提现
+     private function withdrawals_weixin($id){
+        $falg = M('withdrawals')->where(['id'=>$id])->find();
+        $openid = M('users')->where('user_id', $falg['user_id'])->value('openid');
+        $data['openid'] = $openid;
+        $data['pay_code'] = $falg['id'].$falg['user_id'];
+        $data['desc'] = '提现ID'.$falg['id'];
+        // if($falg['taxfee'] >= $falg['money']){
+        //     return array('status'=>1, 'msg'=>"提现额度必须大于手续费！" );
+        // }else{
+            $data['money'] = bcsub($falg['money'], $falg['taxfee'], 2);
+        // }
+        include_once PLUGIN_PATH . "payment/weixin/weixin.class.php";
+        $weixin_obj = new \weixin();
+        $result = $weixin_obj->transfer($data);
+        // if($result){
+        //     $result['payment_time'] = strtotime($result['payment_time']);
+        //     $result['money'] = $falg['money'];
+        //     $result['user_id'] = $falg['user_id'];
+        // }
+        return $result;
+    }
+
+
 
     // 用户申请提现
     public function transfer()
