@@ -224,7 +224,7 @@
                           <div class="modle_shop_info">
                             <p class="modle_shop_name">{{item.goods_name}}</p>
                             <p class="modle_shop_price" :class="v.params.price">
-                              ￥{{item.shop_price}}<s>￥{{item.market_price}}</s>
+                              会员价￥{{item.shop_price}}<s class="dssds">￥{{item.market_price}}</s>
                             </p>
                             <div class="modle_shop_buybtn" :class="v.params.btnStyle"></div>
                           </div>
@@ -236,7 +236,7 @@
                             <img :src="item.original_img" alt="">
                             <div class="modle_shop_attr" :class="v.params.attr"></div>
                             <p class="modle_shop_price" :class="v.params.price">
-                              ￥{{item.shop_price}}<s>￥{{item.market_price}}</s>
+                              会员价￥{{item.shop_price}}<s class="dssds">￥{{item.market_price}}</s>
                             </p>
                           </div>
                           <div class="modle_shop_info" :class="v.params.name">
@@ -332,12 +332,6 @@
 													</div>
 												</div>
 											</div>
-											<!--删除按钮 wrap-->
-											<div class="cursor_wrap">
-												<p class="cursor_box_del" @click.stop="delDataFun(i)">移除</p>
-											</div>
-											<!--选中-虚框-->
-											<p class="border_line" :class="puStateObj['key_num'] == i ? 'border_box' : ''"></p>
 										</div>
                       <!--滑动商品组模块 box，拖拽的div-->
 										<div class="modle_box" v-if="v.id == 'slidingShopId'? true:''" :key="v.id" @click="editMode(v.id,v.key_num)" :style="{background:v.params.background}">
@@ -382,6 +376,15 @@
                         <h4 :class="{hide_box:v.data.subTitleState == 0}"
                           :style="{fontSize:v.params.subfontSize}">{{v.data.subTitle}}</h4>
                       </div>
+                    </div>
+                    <!--魔方模块 box，拖拽的div-->
+                    <div class="modle_box" v-if="v.id == 'cubeId'? true:''" :key="v.id" @click="editMode(v.id,v.key_num)">
+                        <div class="cube" v-if="v.data.cube_img==''" >
+                            未设置魔方
+                        </div>
+                        <div class="cube_box" v-if="v.data.cube_img!=''">
+                            <img :src="item.img" v-for="(item,index) in v.data.cube_img" class="col1 row1"  onerror="onerror=null;src='__PAGE__/img/pc/transparency.png'" :class="[item.col=='2'?'col2':'',item.col=='3'?'col3':'',item.col=='4'?'col4':'',item.row=='2'?'row2':'',item.row=='3'?'row3':'',item.row=='4'?'row4':'']">
+                        </div>
                     </div>
   
                   </div>
