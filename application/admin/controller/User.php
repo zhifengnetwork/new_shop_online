@@ -921,7 +921,7 @@ class User extends Base
                                 // 操作失败
                                 accountLog($v['user_id'], $v['money'] , 0, '提现失败退回：'.$v['money'].'元', 0, 0 , '');
                                 if($v['openid']){
-                                    $this->Withdrawal_Success($v['openid'],'提现失败！',$v['money'],time(),'微信提现接口出错：'.$result['result_code']);
+                                    $this->Withdrawal_Success($v['openid'],'提现失败！',$v['money'],time(),'微信提现接口出错：'.json_encode($result));
                                 }
                                
                             }else{
