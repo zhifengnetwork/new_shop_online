@@ -154,6 +154,7 @@ class Vip extends Base
         if ($order_sn) {
             $where['order_sn'] = ['like',"%$order_sn%"];
         }
+            $where['pay_status'] = 1;
 
         $res = $Ad->where($where)->order('ctime','desc')->page($p . ',20')->select();
 
