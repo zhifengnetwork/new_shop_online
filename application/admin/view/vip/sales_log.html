@@ -92,7 +92,7 @@
 							</th>
 						</neq>
 						<th align="center" abbr="article_time" axis="col5" class="">
-							<div style="text-align: center; width: 100px;" class="">所得金额</div>
+							<div style="text-align: center; width: 100px;" class="">所付金额</div>
 						</th>
 						<neq name="$type" value="$is_type">
 							<th align="center" abbr="article_time" axis="col6" class="">
@@ -208,7 +208,7 @@
             layer.alert('请选择完整的时间间隔', {icon: 2});
             return false;
         }
-		
+
         if(start_time !== '' && end_time !== ''){
             $('#ctime').val(start_time+" - "+end_time);
         }
