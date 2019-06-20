@@ -98,7 +98,7 @@
 					<div class="modle_shop_info">
 						<p class="modle_shop_name">{{item.goods_name}}</p>
 						<div class="modle_shop_price" :class="v.params.price">
-							<s class="dssds">￥{{item.market_price}}</s><br/>会员价￥{{item.shop_price}}
+							<s class="dssds">￥{{item.market_price}}</s><br/><span class="shop_shop">会员价￥{{item.shop_price}}</span>
 							<div class="modle_shop_buybtn" :class="v.params.btnStyle"></div>
 						</div>
 					</div>
@@ -110,7 +110,7 @@
 						<img :src="item.original_img" alt="">
 						<div class="modle_shop_attr" :class="v.params.attr"></div>
 						<p class="modle_shop_price" :class="v.params.price">
-							<s class="dssds">￥{{item.market_price}}</s><br/>会员价￥{{item.shop_price}}
+							<s class="dssds">￥{{item.market_price}}</s><br/><span>会员价￥{{item.shop_price}}</span>
 						</p>
 					</div>
 					<div class="modle_shop_info" :class="v.params.name">
@@ -675,6 +675,10 @@
 
 	.dssds {
 		color: gray;
+		font-size: .25rem
+	}
+	.shop_shop{
+		font-size: .28rem
 	}
 
 	/* 轮播图 -s */
@@ -948,7 +952,7 @@
 
 	.modle_shop_item .modle_shop_img {
 		float: left;
-		width: 48%;
+		width: 40%;
 		height: 100%;
 	}
 
@@ -960,9 +964,9 @@
 	.modle_shop_item .modle_shop_info {
 		text-align: left;
 		float: left;
-		width: 50%;
+		width: 52%;
 		height: 100%;
-		margin-left: .1rem;
+		margin-left: .3rem;
 	}
 
 	.modle_shop_item .modle_shop_info .modle_shop_name {
@@ -986,13 +990,13 @@
 
 	.modle_shop_item .modle_shop_info .modle_shop_price {
 		position: relative;
-		bottom:-.8rem;
+		bottom:-.6rem;
 		width: 100%;
 		font-size: .24rem;
 	}
 
 	.modle_shop_item .modle_shop_info .modle_shop_price s {
-		font-size: .22rem;
+		font-size: .28rem;
 	}
 
 	.modle_shop_item .modle_shop_info .modle_shop_buybtn {
