@@ -412,24 +412,6 @@ class Api extends Base {
         $this->AjaxReturn($res);
     }
 
-    /**
-     * 检查订单状态
-     */
-    public function check_order_pay_status()
-    {
-        $order_id = I('order_id/d');
-        if(empty($order_id)){
-            $res = ['message'=>'参数错误','status'=>-1,'result'=>''];
-            $this->AjaxReturn($res);
-        }
-        $order = M('order')->field('pay_status')->where(['order_id'=>$order_id])->find();
-        if($order['pay_status'] != 0){
-            $res = ['message'=>'已支付','status'=>1,'result'=>$order];
-        }else{
-            $res = ['message'=>'未支付','status'=>0,'result'=>$order];
-        }
-        $this->AjaxReturn($res);
-    }
 
      /**
      * 检查订单状态
