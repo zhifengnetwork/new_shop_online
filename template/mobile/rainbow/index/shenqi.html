@@ -59,7 +59,7 @@
 		<div class="modle_box" v-if="v.id == 'bottonsId'? true:''" :key="v.id">
 			<div class="modle_bottons" :style="{backgroundColor:v.params.iconColor}">
 				<!--四个按钮=>20%，五个按钮=>25%-->
-				<a href="" class="modle_mod_nav" v-for="item in v.data.iconList"
+				<a :href="item.newLoc" class="modle_mod_nav" v-for="item in v.data.iconList"
 					:style="{width: v.params.iconNum == '4' ? '25%':'20%'}">
 					<!--四个按钮=>margin: 0 16px; 五个按钮=>margin: 0 12px;-->
 					<p class="modle_mod_img" :style="{margin: v.params.iconNum == '4' ? '0 16px':'0 12px'}">
@@ -99,7 +99,7 @@
 					<div class="modle_shop_info">
 						<p class="modle_shop_name">{{item.goods_name}}</p>
 						<div class="modle_shop_price" :class="v.params.price">
-							会员价￥{{item.shop_price}}<s class="dssds">￥{{item.market_price}}</s>
+							<s class="dssds">￥{{item.market_price}}</s><br/>会员价￥{{item.shop_price}}
 							<div class="modle_shop_buybtn" :class="v.params.btnStyle"></div>
 						</div>
 					</div>
@@ -111,7 +111,7 @@
 						<img :src="item.original_img" alt="">
 						<div class="modle_shop_attr" :class="v.params.attr"></div>
 						<p class="modle_shop_price" :class="v.params.price">
-							会员价￥{{item.shop_price}}<s class="dssds">￥{{item.market_price}}</s>
+							<s class="dssds">￥{{item.market_price}}</s><br/>会员价￥{{item.shop_price}}
 						</p>
 					</div>
 					<div class="modle_shop_info" :class="v.params.name">
@@ -966,14 +966,15 @@
 
 	.modle_shop_item .modle_shop_info .modle_shop_name {
 		font-size: .31rem;
-		height: .9rem;
+		height: .4rem;
 		margin-top: .05rem;
 		margin-bottom: .1rem;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-line-clamp: 2;
-		-webkit-box-orient: vertical;
+		white-space: nowrap; 
+		
 	}
 
 	.modle_shop_item .modle_shop_info .modle_shop_price {
@@ -1000,15 +1001,15 @@
 
 	.modle_shop_item2 {
 		float: left;
-		margin: 0 .1rem .04rem .18rem;
+		margin: 0 .1rem .4rem .18rem;
 		width: 45.6%;
-		height: 4.4rem;
+		height: 5.1rem;
 		text-align: left;
-		
+		background: white;
 	}
 
 	.modle_shop_item2 .modle_shop_img {
-		height: 3.5rem;
+		height: 2.9rem;
 	}
 
 	/* 显示三个 */
@@ -1019,7 +1020,7 @@
 		float: left;
 		margin: 0 .05rem .05rem;
 		width: 32%;
-		height: 3.4rem
+		height: 3.8rem
 	}
 
 	.modle_shop_img {
@@ -1030,7 +1031,6 @@
 	.modle_shop_item3 .modle_shop_img {
 		height: 2.5rem;
 	}
-
 	.modle_shop_item2 .modle_shop_img img,
 	.modle_shop_item3 .modle_shop_img img {
 		position: absolute;
@@ -1052,11 +1052,11 @@
 		height: .6rem;
 	}
 
-	.modle_shop_item2 .modle_shop_price,
+	
 	.modle_shop_item3 .modle_shop_price {
 		position: absolute;
 		left: 0;
-		bottom: -.8rem;
+		bottom: -1.3rem;
 		width: 100%;
 		font-size: 14px;
 		color: #f3f3f3;
@@ -1064,8 +1064,23 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		/* background: rgba(0,0,0,.3); */
-		color: orange;
+		color: red;
 
+
+	}
+	.modle_shop_item2 .modle_shop_price{
+
+		position: absolute;
+		left: 0;
+		bottom: -2.1rem;
+		width: 100%;
+		font-size: 14px;
+		color: #f3f3f3;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		/* background: rgba(0,0,0,.3); */
+		color: red;
 
 	}
 
@@ -1079,13 +1094,26 @@
 		position: relative;
 		height: .4rem;
 	}
-
-	.modle_shop_item2 .modle_shop_name,
 	.modle_shop_item3 .modle_shop_name {
+		
 		float: left;
 		font-size: .28rem;
 		line-height: .4rem;
 		height: .4rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		
+		
+	}
+	.modle_shop_item2 .modle_shop_name{
+
+		float: left;
+		font-size: .35rem;
+		line-height: .4rem;
+		height: .8rem;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		display: -webkit-box;
