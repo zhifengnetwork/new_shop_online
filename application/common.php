@@ -1069,6 +1069,10 @@ function buy_vip_rebate($user_id = 8831,$order_sn = 0,$order_id=0,$num = 0){
             $my_distribut_money  = $my_prize + $user['distribut_money'];
             $distribut_money_vip = $my_prize + $user['distribut_money_vip'];
             $bool = M('users')->where('user_id',$first_leader)->update(['user_money'=>$my_user_money,'distribut_money'=>$my_distribut_money,'distribut_money_vip' => $distribut_money_vip]);
+            $Sales = new Sales($user_id,$order_id,0);
+            if($user['openid']){
+                $Sales->distribution_success($user['openid'],"你好，你已分销商品成功。",'一元集',1.00,$my_prize,"感谢你的使用。");
+            }
             setBalanceLog($first_leader,13,$my_prize,$my_user_money,'VIP返佣奖：'.$my_prize,$order_sn);
             //购买VIP返佣日志
             vip_commission_log($order_id,$user_id,$first_leader,$order_sn,0.1);

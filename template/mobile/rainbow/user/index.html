@@ -116,7 +116,7 @@
                 <default />
 
                 <if condition="$is_vip eq 0">
-                        <if condition="($menu.menu_name == '我的分销') OR ($menu.menu_name == '我的VIP')">
+                        <if condition="$menu.menu_name == '我的VIP'">
                                   <else/>
                                   <a href="{$menu.menu_url}">
                                         <div class="z_user_list <if condition='$menu.is_tab eq 1'>border10</if>">
@@ -131,9 +131,7 @@
                                             </div>
                                         </div>
                                   </a>
-
                          </if>  
-                        
                     <else/>
                     <a href="{$menu.menu_url}">
                             <div class="z_user_list <if condition='$menu.is_tab eq 1'>border10</if>">
