@@ -154,6 +154,7 @@ return	array(
 					// array('name' => '分销设置', 'act'=>'distribut', 'op'=>'System'),
 					// array('name' => '销售日志', 'act'=>'sales_log', 'op'=>'Distribut'),
 					array('name'=>'VIP返佣日志','act'=>'commission_log','op'=>'vip'),
+					array('name'=>'VIP购买记录','act'=>'vip_buy_log','op'=>'vip'),
 			)),
 	     
     	    array('name' => '微信接入','child' => array(

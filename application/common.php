@@ -1103,8 +1103,6 @@ function vip_commission_log($order_id,$user_id,$to_user_id,$order_sn,$money){
         'money'          => $money,
         'create_time'    => time(),
     );
-    $this->Withdrawal_Success($v['openid'],'提现失败！',$v['money'],time(),'拒绝理由：'.$data['remark']);
-  
     $bool = M('vip_commission_log')->insert($data);
 }
 

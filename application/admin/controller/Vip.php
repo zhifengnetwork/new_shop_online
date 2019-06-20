@@ -113,7 +113,6 @@ class Vip extends Base
         return $this->fetch();
     }
 
-   
 
     //购买返佣
     public function export_commission_log()
