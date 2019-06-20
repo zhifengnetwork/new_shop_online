@@ -197,7 +197,7 @@ class Payment extends MobileBase
             $body = 'VIP购买';
         	$data['user_id']  = $user['user_id'];
             $data['nickname'] = $user['nickname'];
-            $data['account']  = 0.01;
+            $data['account']  = 1;
         	$data['order_sn'] = 'vip'.get_rand_str(10,0,1);
         	$data['ctime']    = time();
             $order_id = M('buy_vip')->add($data);
