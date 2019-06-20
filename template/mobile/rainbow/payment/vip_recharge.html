@@ -87,7 +87,7 @@
     function ajax_check_pay_status() {
         $.ajax({
             type: "post",
-            url: "{:U('Home/Api/check_order_pay_status')}",
+            url: "{:U('Home/Api/check_order_pay_status_vip')}",
             data: {recharge: "1", order_id: "{$order_id}"},
             dataType: 'json',
             success: function (data) {
