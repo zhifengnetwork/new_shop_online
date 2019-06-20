@@ -98,7 +98,7 @@
 					<div class="modle_shop_info">
 						<p class="modle_shop_name">{{item.goods_name}}</p>
 						<div class="modle_shop_price" :class="v.params.price">
-							<s class="dssds">￥{{item.market_price}}</s><br/><span class="shop_shop">会员价￥{{item.shop_price}}</span>
+							<span class="dssds">市场价￥{{item.market_price}}</span><br/><span class="shop_shop">会员价￥{{item.shop_price}}</span>
 							<div class="modle_shop_buybtn" :class="v.params.btnStyle"></div>
 						</div>
 					</div>
@@ -110,7 +110,7 @@
 						<img :src="item.original_img" alt="">
 						<div class="modle_shop_attr" :class="v.params.attr"></div>
 						<p class="modle_shop_price" :class="v.params.price">
-							<s class="dssds">￥{{item.market_price}}</s><br/><span>会员价￥{{item.shop_price}}</span>
+							<span class="dssds">市场价￥{{item.market_price}}</span><br/><span class="shop_shop">会员价￥{{item.shop_price}}</span>
 						</p>
 					</div>
 					<div class="modle_shop_info" :class="v.params.name">
@@ -675,10 +675,12 @@
 
 	.dssds {
 		color: gray;
-		font-size: .25rem
+		font-size: .28rem!important;
+		padding-left: .3rem
 	}
 	.shop_shop{
 		font-size: .28rem;
+		padding-left: .3rem;
 		color: red;
 	}
 
@@ -1017,7 +1019,7 @@
 		/* margin: 0 .1rem .4rem .18rem; */
 		margin-bottom: .1rem;
 		width: 49.2%;
-		height: 5rem;
+		height: 4.8rem;
 		text-align: left;
 		background: white;
 	}
@@ -1027,7 +1029,7 @@
 	}
 
 	.modle_shop_item2 .modle_shop_img {
-		height: 2.9rem;
+		height: 3.3rem;
 	}
 
 	/* 显示三个 */
@@ -1090,7 +1092,7 @@
 
 		position: absolute;
 		left: 0;
-		bottom: -1.97rem;
+		bottom: -1.37rem;
 		width: 100%;
 		font-size: 14px;
 		color: #f3f3f3;
@@ -1131,12 +1133,17 @@
 		float: left;
 		font-size: .3rem;
 		line-height: .4rem;
-		height: .8rem;
-		overflow: hidden;
+		height: .4rem;
+		/* overflow: hidden;
 		text-overflow: ellipsis;
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
-		-webkit-box-orient: vertical;
+		-webkit-box-orient: vertical; */
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		padding-left: .3rem
+
 	}
 
 	.modle_shop_item2 .modle_shop_name {
