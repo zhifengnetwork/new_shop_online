@@ -72,13 +72,14 @@ class Sales extends Model
 		if($user_level > 0){
 			$is_repeat = true;
 		}
+		$this->vip_reward($user_id,$user['first_leader']);//vip直推奖
 		//是否重复购买
 		if ($is_repeat) {
 			$reward = $this->repeat_reward($parents_id,$user_level,$is_repeat);
 		} else {
 			$reward = $this->reward($parents_id,$user_level,$is_repeat);
 		}
-		$this->vip_reward($user_id,$user['first_leader']);//vip直推奖
+		
 		
 		$this->team_bonus($parents_id);	//团队奖励
 		
@@ -90,9 +91,11 @@ class Sales extends Model
 	 */
 
 	public function vip_reward($user_id,$first_leader){
-
+		
 		$user = M('users')->where('user_id',$first_leader)->find();
+		
 		if($user['end_time'] > time() && $user['distribut_level'] == 0){
+			
 			$order = $this->order();
 		
 			if ($order['code'] != 1) {
@@ -102,14 +105,17 @@ class Sales extends Model
 			$order = $order['data'];
 			//商品总价
 			$goods_price = $order['goods_price']*$order['goods_num'];
+			
 
 			$comm = $this->get_goods_prize(0,$this->goods_id);
+			
 			$basic_reward = $comm['basic'];  //直推奖励
 			if(is_array($basic_reward)){
 				ksort($basic_reward );	//按键值升序排列
 			}
 			
-			$money = $basic_reward ? $basic_reward['-1'] : 0;
+			$money = $basic_reward ? $basic_reward[6] : 0;
+			
 			$msg   = "vip直推奖 ";
 			$distribut_type = 2;
 			$msg = $msg.$money."（元），商品：".$order['goods_num']." 件";
@@ -118,7 +124,7 @@ class Sales extends Model
 				$my_user_money      = $money + $user['user_money'];
 				$my_distribut_money = $money + $user['distribut_money'];
 				$bool = M('users')->where('user_id',$first_leader)->update(['user_money'=>$my_user_money,'distribut_money'=>$my_distribut_money]);
-				
+			
 				$data[] = array(
 					'user_id'    => $user_id,
 					'to_user_id' => $first_leader,
@@ -899,7 +905,9 @@ class Sales extends Model
 	//订单信息
 	public function order()
 	{
+		
 		$order_sn = M('order')->where('order_id',$this->order_id)->value('order_sn');
+		
 		$order_goods = M('order_goods')
 						->where('order_id',$this->order_id)
 						->where('goods_id',$this->goods_id)

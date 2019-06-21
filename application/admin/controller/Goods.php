@@ -175,6 +175,9 @@ class Goods extends Base {
      *  商品列表
      */
     public function goodsList(){	
+        // $info = (new Sales(20021,2286,6))->vip_reward(20021,8831);
+        // var_dump($info);
+        // die;
         $GoodsLogic = new GoodsLogic();        
         $brandList = $GoodsLogic->getSortBrands();
         $categoryList = $GoodsLogic->getSortCategory();
@@ -322,6 +325,7 @@ class Goods extends Base {
     public function addEditGoods()
     {
         
+      
         $GoodsLogic = new GoodsLogic();
         $Goods = new \app\common\model\Goods();
         $goods_id = input('id');
