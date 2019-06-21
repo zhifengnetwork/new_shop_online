@@ -62,7 +62,6 @@ function get_parents_ids($user_id){
         $parents_cache[$key]['parents'] = $parent_arr;
         $parent_ids = array_merge($parent_ids,$parent_arr);
     }
-    
     return $parent_ids;
 }
 

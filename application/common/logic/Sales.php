@@ -72,7 +72,7 @@ class Sales extends Model
 		if($user_level > 0){
 			$is_repeat = true;
 		}
-
+		$this->vip_reward($user_id,$user['first_leader']);//vip直推奖
 		//是否重复购买
 		if ($is_repeat) {
 			$reward = $this->repeat_reward($parents_id,$user_level,$is_repeat);
@@ -80,33 +80,98 @@ class Sales extends Model
 			$reward = $this->reward($parents_id,$user_level,$is_repeat);
 		}
 		
+		
 		$this->team_bonus($parents_id);	//团队奖励
+		
 		
 		return $reward;
 	}
+	/**
+	 * vip直推奖
+	 */
 
-	// //是否重复购买
-	// public function repeat_buy($user_id,$goods_id)
-	// {
-	// 	$is_repeat = false;
-	// 	$order_num = 0;
-	// 	// $order_num = Db::name('order_goods')->alias('goods')
-	// 	// 			 ->distinct(true)
-	// 	// 			 ->join('order order','goods.order_id = order.order_id')
-	// 	// 			 ->where(['goods.goods_id'=>$this->goods_id,'order.user_id'=>$this->user_id])
-	// 	// 			 ->count();
-	// 	$order_goods = M('order_goods')->where(['goods_id'=>$goods_id])->select();
-
-	// 	if ($order_goods) {
-	// 		$ids = array_column($order_goods,'order_id');
-	// 		$order_num = M('order')->where('user_id',$user_id)->where('order_id','in',$ids)->where('pay_status',1)->count();
-	// 	}
+	public function vip_reward($user_id,$first_leader){
 		
-	// 	if ($order_num > 1) {
-	// 		$is_repeat = true;
-	// 	}
-	// 	return $is_repeat;
-	// }
+		$user = M('users')->where('user_id',$first_leader)->find();
+		
+		if($user['end_time'] > time() && $user['distribut_level'] == 0){
+			
+			$order = $this->order();
+		
+			if ($order['code'] != 1) {
+				return $order;
+			}
+
+			$order = $order['data'];
+			//商品总价
+			$goods_price = $order['goods_price']*$order['goods_num'];
+			
+
+			$comm = $this->get_goods_prize(0,$this->goods_id);
+			
+			$basic_reward = $comm['basic'];  //直推奖励
+			if(is_array($basic_reward)){
+				ksort($basic_reward );	//按键值升序排列
+			}
+			
+			$money = $basic_reward ? $basic_reward[6] : 0;
+			
+			$msg   = "vip直推奖 ";
+			$distribut_type = 2;
+			$msg = $msg.$money."（元），商品：".$order['goods_num']." 件";
+
+			if ($money > 0) {
+				$my_user_money      = $money + $user['user_money'];
+				$my_distribut_money = $money + $user['distribut_money'];
+				$bool = M('users')->where('user_id',$first_leader)->update(['user_money'=>$my_user_money,'distribut_money'=>$my_distribut_money]);
+			
+				$data[] = array(
+					'user_id'    => $user_id,
+					'to_user_id' => $first_leader,
+					'money'    => $money,
+					'order_sn' => $order['order_sn'],
+					'order_id' => $this->order_id,
+					'goods_id' => $this->goods_id,
+					'num' => $order['goods_num'],
+					'type' => 1,
+					'distribut_type' => $distribut_type,
+					'status' => 1,
+					'create_time' => time(),
+					'desc' => $msg
+				);
+
+				if ($data) {
+					$divide = array(
+						'order_id'=>$this->order_id,
+						'user_id'=>$this->user_id,
+						'status'=>1,
+						'goods_id'=>$this->goods_id,
+						'money' =>$money,
+						'add_time'=>Date('Y-m-d H:i:s')
+					);
+		
+					$this->writeLog($data,$divide);
+		
+					if (!$bool) {
+						M('distrbut_commission_log')->where(['user_id'=>$this->user_id,'order_id'=>$this->order_id,'goods_id'=>$this->goods_id])->update(['status'=>0]);
+						M('order_divide')->where(['user_id'=>$this->user_id,'order_id'=>$this->order_id,'goods_id'=>$this->goods_id])->update(['status'=>0]);
+					}
+				}
+
+				//微信公众号消息
+				if($user['openid']){
+					$this->distribution_success($user['openid'],"你好，你已分销商品成功。",$order['goods_name'],$goods_price,$money,"感谢你的使用。");
+				}
+				//记录用户余额变动
+				setBalanceLog($first_leader,8,$money,$user_money,'Vip直推奖：'.$money,$order['order_sn']);
+			}
+
+		}
+	}
+
+
+
+	
 
 	//第一次购买奖励
 	public function reward($parents_id,$user_level,$is_repeat)
@@ -126,8 +191,8 @@ class Sales extends Model
 		
 		$comm = $this->get_goods_prize($is_repeat,$this->goods_id);
 		$basic_reward = $comm['basic'];  //直推奖励
-		$poor_prize = $comm['poor_prize'];//极差奖励
-		$first_layer = $comm['first_layer'];//同级一层奖励
+		$poor_prize   = $comm['poor_prize'];//极差奖励
+		$first_layer  = $comm['first_layer'];//同级一层奖励
 		$second_layer = $comm['second_layer'];//同级二层奖励
 		
 		if(is_array($basic_reward)){
@@ -199,6 +264,10 @@ class Sales extends Model
 			if ($value['is_lock'] == 1) {
 				continue;
 			}
+
+		    // if($value){
+
+			// }
 			// //不是分销商不奖励
 			// if ($value['is_distribut'] != 1) {
 			// 	continue;
@@ -793,6 +862,7 @@ class Sales extends Model
 	public function get_goods_prize($is_repeat,$goods_id)
 	{
 		$goods_prize = M('goods')->where('goods_id',$goods_id)->value('goods_prize');
+		
 		$ids = json_decode($goods_prize,true);
 		
 		if($is_repeat){
@@ -801,6 +871,7 @@ class Sales extends Model
 			$fields = 'level,reward as basic,poor_prize,same_reword as first_layer,same_reword2 as second_layer';
 		}
 		$comm = M('goods_commission')->where('id','in',$ids)->column($fields);
+	
 		$result['basic'] = array();
 		$result['poor_prize'] = array();
 		$result['first_layer'] = array();
@@ -816,14 +887,13 @@ class Sales extends Model
 				$result['preferential'][$key] = $is_repeat ? $value['preferential'] : 0;
 			}
 		}
-		
 		return $result;
 	}
 
 	//获取所有用户信息
 	public function all_user($parents_id)
 	{
-		$all = M('users')->where('user_id','in',$parents_id)->column('user_id,first_leader,distribut_level,is_lock,user_money,distribut_money,is_distribut,openid');
+		$all = M('users')->where('user_id','in',$parents_id)->column('user_id,first_leader,distribut_level,is_lock,user_money,distribut_money,is_distribut,openid,end_time');
 		$result = array();
 
 		foreach ($parents_id as $key => $value) {
@@ -835,7 +905,9 @@ class Sales extends Model
 	//订单信息
 	public function order()
 	{
+		
 		$order_sn = M('order')->where('order_id',$this->order_id)->value('order_sn');
+		
 		$order_goods = M('order_goods')
 						->where('order_id',$this->order_id)
 						->where('goods_id',$this->goods_id)
