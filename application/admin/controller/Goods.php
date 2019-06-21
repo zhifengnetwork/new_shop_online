@@ -23,6 +23,7 @@ use app\common\model\SpecGoodsPrice;
 use app\common\model\SpecItem;
 use app\common\model\GoodsCategory;
 use app\common\util\TpshopException;
+use app\common\logic\Sales;
 use think\AjaxPage;
 use think\Loader;
 use think\Page;
@@ -320,6 +321,10 @@ class Goods extends Base {
      */
     public function addEditGoods()
     {
+        
+        // $info = (new Sales(0,0,0))->get_goods_prize(0,261);
+        // var_dump($info);
+        // die;
         $GoodsLogic = new GoodsLogic();
         $Goods = new \app\common\model\Goods();
         $goods_id = input('id');
@@ -345,7 +350,6 @@ class Goods extends Base {
         $level_name = array_map(function($level){
             return array('level'=>$level['level'],'level_name'=>$level['level_name']);
         },$level_name);
-
         $sales = array();
         $num = 0;
         foreach ($level_name as $key => $value) {

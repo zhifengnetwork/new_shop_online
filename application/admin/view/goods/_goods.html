@@ -1,3 +1,5 @@
+
+
 <include file="public/layout" />
 <!--物流配置 css -start-->
 <script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
@@ -438,6 +440,10 @@
                     <span class="err" id="err_is_free_shipping"></span>
                 </dd>
             </dl>
+
+            
+
+
             <dl class="row">
                 <dt class="tit">
                     <label>总库存</label>
@@ -463,6 +469,21 @@
                     <p class="notic">多个关键词，用空格隔开</p>
                 </dd>
             </dl>
+            <dl class="row">
+                <dt class="tit">
+                  <label><em>*</em>是否有购买业绩</label>
+                </dt>
+                <dd class="opt">
+                  <div class="onoff">
+                    <label  for="is_achievement1"  class="cb-enable <if condition='$goods.is_achievement eq 1'>selected</if>">是</label>
+                    <label  for="is_achievement0"  class="cb-disable <if condition='$goods.is_achievement eq 0'>selected</if>">否</label>
+                    <input id="is_achievement1" class="is_free_shipping" name="is_achievement" value="1" type="radio" <if condition="$goods[is_achievement] eq 1"> checked="checked"</if>>
+                    <input id="is_achievement0"class="is_free_shipping" name="is_achievement" value="0" type="radio" <if condition="$goods[is_achievement] eq 0"> checked="checked"</if>>
+                  </div>
+                  <p class="notic">选是，用户购买该商品时，产生购买业绩。</p>
+                </dd>
+            </dl>
+
             <dl class="row">
                 <dt class="tit">
                     <label>团队奖励商品</label>

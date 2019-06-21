@@ -330,7 +330,7 @@ class PlaceOrder
         }
         $payList = $this->pay->getPayList();
         $goods_ids = get_arr_column($payList,'goods_id');
-        $goodsArr = Db::name('goods')->where('goods_id', 'IN', $goods_ids)->getField('goods_id,cost_price,give_integral,is_receiving_commission,prize_ratio,is_team_prize');
+        $goodsArr = Db::name('goods')->where('goods_id', 'IN', $goods_ids)->getField('goods_id,cost_price,give_integral,is_receiving_commission,prize_ratio,is_team_prize,is_achievement');
         $orderGoodsAllData = [];
         foreach ($payList as $payKey => $payItem) {
             if($this->pay->getGoodsPrice() ==0){  //清华要求加上
@@ -344,6 +344,7 @@ class PlaceOrder
             $orderGoodsData['goods_name'] = $payItem['goods_name']; // 商品名称
             $orderGoodsData['goods_sn'] = $payItem['goods_sn']; // 商品货号
             $orderGoodsData['goods_num'] = $payItem['goods_num']; // 购买数量
+            $orderGoodsData['is_achievement'] = $goodsArr[$payItem['goods_id']]['is_achievement']; // 是否加入业绩
             $orderGoodsData['is_receiving_commission'] = $goodsArr[$payItem['goods_id']]['is_receiving_commission']; // 如何返佣
             $orderGoodsData['prize_ratio'] = $goodsArr[$payItem['goods_id']]['prize_ratio']; // 团队奖励百分比
             $orderGoodsData['is_team_prize'] = $goodsArr[$payItem['goods_id']]['is_team_prize']; // 是否为团队奖励商品（0：不是，1：是）
