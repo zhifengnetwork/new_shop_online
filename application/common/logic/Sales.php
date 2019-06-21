@@ -153,7 +153,7 @@ class Sales extends Model
 				}
 
 				//微信公众号消息
-				if($value['openid']){
+				if($user['openid']){
 					$this->distribution_success($user['openid'],"你好，你已分销商品成功。",$order['goods_name'],$goods_price,$money,"感谢你的使用。");
 				}
 				//记录用户余额变动

@@ -322,9 +322,6 @@ class Goods extends Base {
     public function addEditGoods()
     {
         
-        // $info = (new Sales(0,0,0))->get_goods_prize(0,261);
-        // var_dump($info);
-        // die;
         $GoodsLogic = new GoodsLogic();
         $Goods = new \app\common\model\Goods();
         $goods_id = input('id');
