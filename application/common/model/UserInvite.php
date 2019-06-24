@@ -66,8 +66,8 @@ class UserInvite extends Model{
      * @param $adduser_id   被邀请的新用户ID
      */
     public function invite($user_id = 0,$adduser_id = 0){
-        write_log('邀请人id'. $user_id );
-        write_log('被邀请人id'. $adduser_id );
+        // write_log('邀请人id'. $user_id );
+        // write_log('被邀请人id'. $adduser_id );
         $user_id = intval($user_id);
         $adduser_id = intval($adduser_id);
 
@@ -85,22 +85,24 @@ class UserInvite extends Model{
         $num = 1;
         $money = 0.01;
         $time = time();
-        $desc = '邀请'.$num.'个新会员奖励'.$money;
+        $desc = '邀请第'.$num.'个新会员奖励'.$money;
         $log = Db::name('commission_log')->where(['user_id'=>$user_id,'identification' => 2])->field('`num`')->order('id desc')->find();
         if($log){
             $num   = $log['num'];
             $money = $rule[$num];
-            $desc = '邀请'.$num.'个新会员奖励'.$money;
+            $desc = '邀请第'.$num.'个新会员奖励'.$money;
         }
 
         if($money){
             $insql = "insert into `tp_commission_log` (`user_id`,`add_user_id`,`identification`,`num`,`money`,`addtime`,`desc`) values ";
             $insql .= " ('$user_id','$adduser_id','2','$num','$money','$time','$desc')";
             $res = Db::execute($insql);
+            write_log('记录用户余额变动bool'. $res );
             if($res){
+                write_log('记录用户余额变动'. $user_id );
                 Db::execute("update `tp_users` set `user_money` = `user_money` + '$money', `distribut_money` = `distribut_money` + '$money' where `user_id` = '$user_id'");
                 //记录用户余额变动
-                $user_money=Db::name('users')->where(['user_id'=>$user_id])->value('user_money');
+                $user_money = Db::name('users')->where(['user_id'=>$user_id])->value('user_money');
                 setBalanceLog($user_id,2,$money,$user_money,'邀请奖励：'.$money);
                 return true;
             }
