@@ -818,6 +818,7 @@ class User extends MobileBase
         $log = Db::name('order')->alias('order')
             ->distinct(true)
             ->join('order_goods goods','order.order_id = goods.order_id')
+            ->where('order.pay_status',1)
             ->where('order.user_id',$id)
             ->order('order.pay_time','desc')
             ->field('goods.rec_id,order.pay_time,goods.goods_price,goods.goods_num')
