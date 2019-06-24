@@ -129,7 +129,7 @@ class MobileBase extends Controller {
 
         // $user = Db::name('users')->find(17657);
         // session('user',$user);
-        write_log('bind 未进入'. $user['user_id']);
+     
         if($user['user_id']){
             write_log('bind 开始'. $user['user_id']);
 //            var_dump($_SESSION);
@@ -145,13 +145,13 @@ class MobileBase extends Controller {
                
                 $dfc5b = session('dfc5b');
                 if($dfc5b != $this->user_id){
-                    write_log('yaoqing 开始1'. $this->user_id);
+                  
                     $dfc5b_res = Db::name('users')->where('user_id', $this->user_id)->update(['first_leader' => $dfc5b]);
                     if($dfc5b_res){
                         $dfc5b_user = session('dfc5b_user');
-                        write_log('yaoqing 开始2'. $dfc5b_user);
+                      
                         if($dfc5b_user){
-                            write_log('yaoqing 开始3'. $dfc5b_user);
+                         
                             $this->Invitation_Register($dfc5b_user,'恭喜你邀请注册成功！',$user['nickname'],$user['mobile'],time(),'恭喜你又收纳一名得力爱将，你的团队越来越大！');
                         }
                         session('dfc5b',0);
@@ -173,6 +173,7 @@ class MobileBase extends Controller {
             
             // 邀请注册送佣金
             $UserInvite = new UserInvite();
+            write_log('邀请注册送佣金 未进入'. $user['user_id']);
             $UserInvite->user_invite($user['user_id']);
 
             // 签到送佣金

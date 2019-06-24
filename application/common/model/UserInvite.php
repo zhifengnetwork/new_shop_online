@@ -52,7 +52,9 @@ class UserInvite extends Model{
     public function user_invite($user_id = 0){
         $user_id = intval($user_id);
         $info = Db::name('users')->field('first_leader')->where('user_id',$user_id)->find();
+
         if($info && $info['first_leader']){
+            write_log('邀请注册送佣金 进判断'. $info['first_leader']);
             $this->invite($info['first_leader'],$user_id);
         }
     }
