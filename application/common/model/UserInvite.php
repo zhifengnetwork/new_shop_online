@@ -54,7 +54,7 @@ class UserInvite extends Model{
         $info = Db::name('users')->field('first_leader')->where('user_id',$user_id)->find();
 
         if($info && $info['first_leader']){
-            write_log('邀请注册送佣金 进判断'. $info['first_leader']);
+           
             $this->invite($info['first_leader'],$user_id);
         }
     }
@@ -66,29 +66,34 @@ class UserInvite extends Model{
      * @param $adduser_id   被邀请的新用户ID
      */
     public function invite($user_id = 0,$adduser_id = 0){
+        write_log('邀请人id'. $user_id );
+        write_log('被邀请人id'. $adduser_id );
         $user_id = intval($user_id);
         $adduser_id = intval($adduser_id);
 
         if(!$user_id || !$adduser_id || !$this->invite_on_off || !$this->rule){
             return false;
         }
+        write_log('qwe1'. $adduser_id );
 
         $addlog = Db::name('commission_log')->where('add_user_id',$adduser_id)->count();
         if($addlog){
             return false;
         }
+        write_log('qwe2'. $adduser_id );
 
         $rule = $this->rule;
         $num = 1;
         $money = $rule[$num];
         $time = time();
         $desc = '邀请'.$num.'个新会员奖励'.$money;
-
+        write_log('注册佣金1多少'. $money );
         $log = Db::name('commission_log')->where('user_id',$user_id)->field('`num`')->order('id desc')->find();
         if($log){
             $num = $log['num'];
             $money = $rule[$num];
         }
+        write_log('注册佣金2多少'. $money );
 
         if($money){
             $insql = "insert into `tp_commission_log` (`user_id`,`add_user_id`,`identification`,`num`,`money`,`addtime`,`desc`) values ";

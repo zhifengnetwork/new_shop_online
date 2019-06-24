@@ -173,7 +173,6 @@ class MobileBase extends Controller {
             
             // 邀请注册送佣金
             $UserInvite = new UserInvite();
-            write_log('邀请注册送佣金 未进入'. $user['user_id']);
             $UserInvite->user_invite($user['user_id']);
 
             // 签到送佣金
