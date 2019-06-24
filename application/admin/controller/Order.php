@@ -103,7 +103,8 @@ class Order extends Base {
 
         I('shipping_status') != '' ? $condition['shipping_status'] = I('shipping_status') : false;
         I('user_id') ? $condition['user_id'] = trim(I('user_id')) : false;
-        $sort_order = I('order_by','DESC').' '.I('sort');
+        // $sort_order = I('order_by','DESC').' '.I('sort');
+        $sort_order = 'order_id DESC';
         $count = Db::name('order')->where($condition)->count();
         $Page  = new AjaxPage($count,20);
         $show = $Page->show();
@@ -129,7 +130,7 @@ class Order extends Base {
             }
         }
         
-        // dump($oginfo);exit;
+        // dump($show);exit;
         $this->assign('oginfo',$oginfo);
         $this->assign('orderList',$orderList);
         $this->assign('page',$show);// 赋值分页输出
