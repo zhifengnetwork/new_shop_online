@@ -90,18 +90,18 @@ class UserInvite extends Model{
         if($log){
             $num   = $log['num'] + 1;
             if(!empty($rule[$num]) && $rule[$num] > 0){
-                $money = $rule[$num];
+                $money = $rule[$num] + 0.01;
             }
             $desc = '邀请第'.$num.'个新会员奖励'.$money;
         }
-        write_log('奖励金额'. $money );
+        // write_log('奖励金额'. $money );
         if($money){
             $insql = "insert into `tp_commission_log` (`user_id`,`add_user_id`,`identification`,`num`,`money`,`addtime`,`desc`) values ";
             $insql .= " ('$user_id','$adduser_id','2','$num','$money','$time','$desc')";
             $res = Db::execute($insql);
-            write_log('记录用户余额变动bool'. $res );
+            // write_log('记录用户余额变动bool'. $res );
             if($res){
-                write_log('记录用户余额变动'. $user_id );
+                // write_log('记录用户余额变动'. $user_id );
                 Db::execute("update `tp_users` set `user_money` = `user_money` + '$money', `distribut_money` = `distribut_money` + '$money' where `user_id` = '$user_id'");
                 //记录用户余额变动
                 $user_money = Db::name('users')->where(['user_id'=>$user_id])->value('user_money');
