@@ -74,26 +74,24 @@ class UserInvite extends Model{
         if(!$user_id || !$adduser_id || !$this->invite_on_off || !$this->rule){
             return false;
         }
-        write_log('qwe1'. $adduser_id );
+      
 
         $addlog = Db::name('commission_log')->where('add_user_id',$adduser_id)->count();
         if($addlog){
             return false;
         }
-        write_log('qwe2'. $adduser_id );
 
         $rule = $this->rule;
         $num = 1;
-        $money = $rule[$num];
+        $money = 0.01;
         $time = time();
         $desc = '邀请'.$num.'个新会员奖励'.$money;
-        write_log('注册佣金1多少'. $money );
-        $log = Db::name('commission_log')->where('user_id',$user_id)->field('`num`')->order('id desc')->find();
+        $log = Db::name('commission_log')->where(['user_id'=>$user_id,'identification' => 2])->field('`num`')->order('id desc')->find();
         if($log){
-            $num = $log['num'];
+            $num   = $log['num'];
             $money = $rule[$num];
+            $desc = '邀请'.$num.'个新会员奖励'.$money;
         }
-        write_log('注册佣金2多少'. $money );
 
         if($money){
             $insql = "insert into `tp_commission_log` (`user_id`,`add_user_id`,`identification`,`num`,`money`,`addtime`,`desc`) values ";
