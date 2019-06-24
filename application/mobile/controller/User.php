@@ -139,7 +139,7 @@ class User extends MobileBase
         $comm = Db::name('distrbut_commission_log')->where($where)->order('log_id','desc')->whereTime('create_time','today')->sum('money');
         $vip  = Db::name('vip_commission_log')->where(['to_user_id' =>$user_id ])->order('log_id','desc')->whereTime('create_time','today')->sum('money');
         //邀请奖励
-        $comm2 = Db::name('commission_log')->where(['user_id' => $user_id])->order('id','desc')->whereTime('addtime','yesterday')->sum('money');
+        $comm2 = Db::name('commission_log')->where(['user_id' => $user_id])->order('id','desc')->whereTime('addtime','today')->sum('money');
 
         $money = $comm + $vip + $comm2;
         return $money;
