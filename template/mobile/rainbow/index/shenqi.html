@@ -72,8 +72,9 @@
 
 		<!--单图模块 box-->
 		<div class="modle_box" v-if="v.id == 'signageId'? true:''" :key="v.id">
-			<div class="signage" @click="pay">
-				<div class="signage_img" v-for="item in v['data']['images']">
+			
+			<div class="signage" v-for="item in v['data']['images']" @click="pay(item.url)" >
+				<div class="signage_img">
 					<img :src="item['imgUrl']" alt="">
 				</div>
 			</div>
@@ -503,7 +504,10 @@
 					});
 				},
 				//拉起支付
-				pay(){
+				pay(url){
+					if(url==''){
+						return false;
+					}
 					$('#recharge_form').submit();
 				},
 				/*（轮播图）根据传过来的data=>创建 swiper 的分页器*/
