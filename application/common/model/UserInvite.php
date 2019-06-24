@@ -89,10 +89,12 @@ class UserInvite extends Model{
         $log = Db::name('commission_log')->where(['user_id'=>$user_id,'identification' => 2])->field('`num`')->order('id desc')->find();
         if($log){
             $num   = $log['num'];
-            $money = $rule[$num];
+            if(!empty($rule[$num]) && $rule[$num] > 0){
+                $money = $rule[$num];
+            }
             $desc = '邀请第'.$num.'个新会员奖励'.$money;
         }
-
+        write_log('奖励金额'. $money );
         if($money){
             $insql = "insert into `tp_commission_log` (`user_id`,`add_user_id`,`identification`,`num`,`money`,`addtime`,`desc`) values ";
             $insql .= " ('$user_id','$adduser_id','2','$num','$money','$time','$desc')";

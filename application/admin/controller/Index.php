@@ -24,9 +24,36 @@ use app\common\logic\MessageFactory;
 use think\Db;
 class Index extends Base {
 
-  
+     // config 名称
+    public $conf_name = 'user_invite_rule';
+    // config 
+    public $conf_inc_type = 'user_invite_rule';
+    // 网站设置
+    public $config = [];
+    // 邀新送佣金设置
+    public $invite_conf = [];
+    // 邀新送佣金开关 0 关闭  1 开启
+    public $invite_on_off = 0;
+    // 奖励规则
+    public $rule = [];
 
     public function index(){
+        $config = Db::query("select * from `tp_config` where `name` = '".$this->conf_inc_type."' and `inc_type` = '".$this->conf_inc_type."'");
+        if($config){
+            $config = $config[0];
+            $this->invite_conf = $config['value'] = json_decode($config['value'],true);
+            $this->invite_on_off = $config['value']['invite_on_off'];
+            $this->rule = $config['value']['rule'];
+            $this->config = $config;
+        }else{
+            return false;
+        }
+        $num = 1;
+        $rule = $this->rule;
+        $money = $rule[100];
+        var_dump($money);
+        die;
+
         $this->pushVersion();        
         $admin_info = getAdminInfo(session('admin_id'));
         $order_amount = M('order')->where("order_status=0 and (pay_status=1 or pay_code='cod')")->count();
