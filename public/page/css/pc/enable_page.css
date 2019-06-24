@@ -1,4 +1,4 @@
-/*最外边框*/
+﻿/*最外边框*/
 .enable_page_wrap {
 	position: relative;
 	min-width: 1112px;
@@ -1242,6 +1242,9 @@
 }
 .disabled {
     pointer-events: none;
+}
+#example1_previous{
+    pointer-events:unset;
 }
 .img0 :nth-child(2),
 .img1 :nth-child(3),
