@@ -129,8 +129,9 @@ class MobileBase extends Controller {
 
         // $user = Db::name('users')->find(17657);
         // session('user',$user);
-
+     
         if($user['user_id']){
+            write_log('bind 开始'. $user['user_id']);
 //            var_dump($_SESSION);
             $this->user_id = $user['user_id'];
             $this->user = Db::name('users')->find($this->user_id);
@@ -141,20 +142,16 @@ class MobileBase extends Controller {
 
             # 新版 - 上下级关系绑定
             if(session('dfc5b') && !$this->user['first_leader']){
-                
+               
                 $dfc5b = session('dfc5b');
                 if($dfc5b != $this->user_id){
-
+                  
                     $dfc5b_res = Db::name('users')->where('user_id', $this->user_id)->update(['first_leader' => $dfc5b]);
                     if($dfc5b_res){
                         $dfc5b_user = session('dfc5b_user');
-//                        if($this->user_id=='17657'){
-//                            session('dfc5b','');
-//                            session('dfc5b_user','');
-//                            var_dump($dfc5b_user);die;
-//                        }
-
+                      
                         if($dfc5b_user){
+                         
                             $this->Invitation_Register($dfc5b_user,'恭喜你邀请注册成功！',$user['nickname'],$user['mobile'],time(),'恭喜你又收纳一名得力爱将，你的团队越来越大！');
                         }
                         session('dfc5b',0);

@@ -138,11 +138,10 @@ class User extends MobileBase
 
         $comm = Db::name('distrbut_commission_log')->where($where)->order('log_id','desc')->whereTime('create_time','today')->sum('money');
         $vip  = Db::name('vip_commission_log')->where(['to_user_id' =>$user_id ])->order('log_id','desc')->whereTime('create_time','today')->sum('money');
+        //邀请奖励
+        $comm2 = Db::name('commission_log')->where(['user_id' => $user_id])->order('id','desc')->whereTime('addtime','today')->sum('money');
 
-        // $where['type'] = 4;
-        // $comm2 = Db::name('distrbut_commission_log')->where($where)->order('log_id','desc')->whereTime('create_time','yesterday')->sum('money');
-
-        $money = $comm + $vip;
+        $money = $comm + $vip + $comm2;
         return $money;
     }
 
@@ -674,8 +673,13 @@ class User extends MobileBase
         $third_count = count($third);
 
         $team_count = Db::query("SELECT count(*) as count FROM tp_parents_cache where find_in_set('$user_id',`parents`)");
-        //$team_count = Db::query("SELECT count(*) as count FROM tp_users where find_in_set('$user_id',`parents`)");
+        //个人业绩  团队业绩
 
+        $Ad  = M('agent_performance');
+
+        $performance = $Ad->where(['user_id' => $user_id])->find();
+        //$team_count = Db::query("SELECT count(*) as count FROM tp_users where find_in_set('$user_id',`parents`)");
+        $this->assign('performance',$performance);
         $this->assign('first_count',$first_count);
         $this->assign('second_count',$second_count);
         $this->assign('third_count',$third_count);
