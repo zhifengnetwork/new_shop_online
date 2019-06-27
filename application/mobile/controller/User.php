@@ -673,8 +673,13 @@ class User extends MobileBase
         $third_count = count($third);
 
         $team_count = Db::query("SELECT count(*) as count FROM tp_parents_cache where find_in_set('$user_id',`parents`)");
-        //$team_count = Db::query("SELECT count(*) as count FROM tp_users where find_in_set('$user_id',`parents`)");
+        //个人业绩  团队业绩
 
+        $Ad  = M('agent_performance');
+
+        $performance = $Ad->where(['user_id' => $user_id])->find();
+        //$team_count = Db::query("SELECT count(*) as count FROM tp_users where find_in_set('$user_id',`parents`)");
+        $this->assign('performance',$performance);
         $this->assign('first_count',$first_count);
         $this->assign('second_count',$second_count);
         $this->assign('third_count',$third_count);
