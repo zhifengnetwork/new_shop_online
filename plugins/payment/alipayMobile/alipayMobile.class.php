@@ -83,7 +83,7 @@ class alipayMobile extends Model
                         "out_trade_no"	=> $order['order_sn'], //商户订单号
                         "subject"       => $store_name, //订单名称，必填
                         "total_fee"	=> $order['order_amount'], //付款金额
-                        "show_url"	=> "http://www.tp-shop.cn", //收银台页面上，商品展示的超链接，必填
+                        "show_url"	=> "http://www.shukongxuanya.com", //收银台页面上，商品展示的超链接，必填
                 
                     );
             //  如果是支付宝网银支付    
