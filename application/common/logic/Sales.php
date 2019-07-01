@@ -291,6 +291,7 @@ class Sales extends Model
 					$is_prize = true;
 					$msg = "直推奖 ";
 					$distribut_type = 2;
+					$money = $money * $order['goods_num'];
 					$msg = $msg.$money."（元），商品：".$order['goods_num']." 件";
 
 					if ($money > 0) {
@@ -368,7 +369,8 @@ class Sales extends Model
 					$money = $basic_reward ? $basic_reward[$value['distribut_level']] : 0;
 					$is_prize = true;
 					$msg = "直推奖 ";
-					$msg = $msg.$money."（元），商品：".$order['goods_num']." 件";
+					$money = $money * $order['goods_num'];
+					$msg   = $msg.$money."（元），商品：".$order['goods_num']." 件";
 					$distribut_type = 2;
 
 					if ($money > 0) {
@@ -591,7 +593,7 @@ class Sales extends Model
 					$is_prize = true;
 					$msg = "自购直推奖 ";
 					$distribut_type = 2;
-
+					$money = $money * $order['goods_num'];
 					$msg = $msg.$money."（元），商品：".$order['goods_num']." 件";
 
 					if ($money > 0) {
@@ -670,6 +672,7 @@ class Sales extends Model
 					$money = $basic_reward ? $basic_reward[$value['distribut_level']] : 0;
 					$is_prize = true;
 					$msg = "自购直推奖 ";
+					$money = $money * $order['goods_num'];
 					$distribut_type = 2;
 					$msg = $msg.$money."（元），商品：".$order['goods_num']." 件";
 
