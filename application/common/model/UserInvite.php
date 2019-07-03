@@ -83,14 +83,14 @@ class UserInvite extends Model{
 
         $rule = $this->rule;
         $num = 1;
-        $money = 0.01;
+        $money = 0.1;
         $time = time();
         $desc = '邀请第'.$num.'个新会员奖励'.$money;
         $log = Db::name('commission_log')->where(['user_id'=>$user_id,'identification' => 2])->field('`num`')->order('id desc')->find();
         if($log){
             $num   = $log['num'] + 1;
             if(!empty($rule[$num]) && $rule[$num] > 0){
-                $money = $rule[$num] + 0.01;
+                $money = $rule[$num] + 0.1;
             }
             $desc = '邀请第'.$num.'个新会员奖励'.$money;
         }
