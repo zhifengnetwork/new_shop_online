@@ -136,14 +136,25 @@
 		}
 	
 		.modle_shop_item2 .dssds {
-			color: gray;
-			font-size: .28rem!important;
-			padding-left: .2rem
+			color: #ccc;
+			font-size: .02rem!important;
+			padding-left: .1rem
+
 		}
 		.modle_shop_item2 .shop_shop{
-			font-size: .28rem;
-			padding-left: .2rem;
+			font-size: .33rem;
 			color: red;
+		}
+		.modle_shop_item2 .huiyuan{
+			font-size: .10rem;
+			padding-left: .1rem;
+			color:red
+			
+		}
+		.huiyuan_ear{
+			position: absolute;
+			bottom: -1.3rem;
+			
 		}
 	
 		/* 轮播图 -s */
@@ -417,7 +428,7 @@
 	
 		.modle_shop_item .modle_shop_img {
 			float: left;
-			width: 40%;
+			width: 50%;
 			height: 100%;
 		}
 	
@@ -429,13 +440,14 @@
 		.modle_shop_item .modle_shop_info {
 			text-align: left;
 			float: left;
-			width: 52%;
+			width: 48%;
 			height: 100%;
-			margin-left: .3rem;
+			margin-left: 2%
+	
 		}
 	
 		.modle_shop_item .modle_shop_info .modle_shop_name {
-			font-size: .31rem;
+			font-size: .22rem;
 			height: .8rem;
 			margin-top: .05rem;
 			margin-bottom: .1rem;
@@ -455,7 +467,7 @@
 	
 		.modle_shop_item .modle_shop_info .modle_shop_price {
 			position: relative;
-			bottom:-.6rem;
+			bottom:0rem;
 			width: 100%;
 			font-size: .24rem;
 		}
@@ -481,9 +493,10 @@
 			/* margin: 0 .1rem .4rem .18rem; */
 			margin-bottom: .1rem;
 			width: 49.2%;
-			height: 4.8rem;
+			height: 5rem;
 			text-align: left;
 			background: white;
+			border-radius: .12rem
 		}
 		.modle_shop_item2:nth-child(even){
 	
@@ -513,7 +526,21 @@
 		.modle_shop_item3 .modle_shop_img {
 			height: 2.5rem;
 		}
-		.modle_shop_item2 .modle_shop_img img,
+		
+		.modle_shop_item2 .modle_shop_img img{
+			position: absolute;
+			left: 0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			margin: auto;
+			display: block;
+			width: 100%;
+			height: 100%;
+			padding:.1rem .1rem 0 .1rem;
+			box-sizing: border-box
+		}	
+
 		.modle_shop_item3 .modle_shop_img img {
 			position: absolute;
 			left: 0;
@@ -538,8 +565,8 @@
 			color: red
 		}
 		.modle_shop_item .dssds{
-			font-size: .32rem;
-			color: gray
+			font-size: .28rem;
+			color:red
 		}
 		.modle_shop_item3 .modle_shop_price {
 			position: absolute;
@@ -564,9 +591,9 @@
 	
 			position: absolute;
 			left: 0;
-			bottom: -1.1rem;
+			bottom: -.7rem;
 			width: 100%;
-			font-size: 14px;
+			font-size: .02rem;
 			color: #f3f3f3;
 			overflow: hidden;
 			text-overflow: ellipsis;
@@ -603,8 +630,8 @@
 		.modle_shop_item2 .modle_shop_name{
 	
 			float: left;
-			font-size: .27rem;
-			line-height: .4rem;
+			font-size: .23rem;
+			line-height: .5rem;
 			height: .4rem;
 			/* overflow: hidden;
 			text-overflow: ellipsis;
@@ -614,7 +641,7 @@
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
-			padding-left: .2rem
+			padding-left: .1rem
 	
 		}
 	
@@ -1531,9 +1558,10 @@
 					<div class="modle_shop_info">
 						<p class="modle_shop_name">{{item.goods_name}}</p>
 						<div class="modle_shop_price" :class="v.params.price">
-							<span class="dssds">市场价￥{{item.market_price}}</span><br/><span class="shop_shop">会员价￥{{item.shop_price}}</span>
+							<span class="dssds">市场价￥{{item.market_price}}</span>
 							<div class="modle_shop_buybtn" :class="v.params.btnStyle"></div>
 						</div>
+						<p class="huiyuan_ear"><span class="huiyuan">会员价</span><span class="shop_shop">￥{{item.shop_price}}</span></p>
 					</div>
 				</a>
 				<!-- 显示多个 -->
@@ -1543,8 +1571,9 @@
 						<img :src="item.original_img" alt="">
 						<div class="modle_shop_attr" :class="v.params.attr"></div>
 						<p class="modle_shop_price" :class="v.params.price">
-							<span class="dssds">市场价￥{{item.market_price}}</span><br/><span class="shop_shop">会员价￥{{item.shop_price}}</span>
+							<span class="dssds">市场价￥{{item.market_price}}</span>
 						</p>
+						<p class="huiyuan_ear"><span class="huiyuan">会员价</span><span class="shop_shop">￥{{item.shop_price}}</span></p>
 					</div>
 					<div class="modle_shop_info" :class="v.params.name">
 						<div class="modle_shop_name" :style="{width:v.params.btnStyle==''?'100%':''}">
