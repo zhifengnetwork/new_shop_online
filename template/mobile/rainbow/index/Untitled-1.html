@@ -1,0 +1,88 @@
+<script type="text/javascript">
+var goods_sku = '';
+$.ajax({ 
+    type: "get", 
+    url: "http://api.zfwl.c3w.cc/goods/goodsdetail", 
+    data:{'goods_id':18},
+    async:false, 
+    dataType: "json", 
+    success: function(data){ 
+        var spec = '';
+        goods_sku = data.data.spec.goods_sku;
+        $(data.data.spec.spec_attr).each(function(key,val){
+
+            spec += '<div class="form-group spec">';
+            spec += '<label class="col-sm-2 control-label">' + val.spec_name + '</label>';
+            spec += '<div class="col-sm-9">';
+
+                $(val.res).each(function(k,v){
+                    spec += '<label style="margin-top:4px; margin-right:20px;">';
+                    spec += '<input type="radio" value="'+v.attr_id+'" name="'+val.spec_id+'" />' + v.attr_name;
+                    spec += '</label>';
+                });
+
+            spec += '</div>';
+            spec += '</div>';
+        });
+
+        $('#gg').append(spec);
+    } 
+});
+
+function where(array, obj) {
+    const keys = Object.keys(obj);
+    return array.filter(m => {
+        return keys.every(key => m.hasOwnProperty(key) && m[key] === obj[key]);
+    });
+}
+
+$('input[type="radio"]').on('click',function(){
+    
+    if( $(this).attr('checked') ){
+        $(this).removeAttr('checked');
+    }else{
+        $(this).attr('checked','checked');
+    }
+
+    var spec_id = '';
+    var attr_id = '';
+    var arr = {};
+    $('input[type=radio]:checked').each(function(key,val){
+        spec_id = $(val).attr('name');
+        attr_id = $(val).val();
+
+        arr[spec_id] = parseInt( attr_id );
+    });
+
+    $('input[type=radio]').attr('disabled','disabled');
+
+    if( Object.keys(arr).length == 0 ){
+        $('input[type=radio]').removeAttr('disabled');
+        return;
+    }
+    var new_arr = new Array();
+    $(goods_sku).each(function(key,val){
+        $( eval('('+val.sku_attr+')') ).each(function(k,v){
+            new_arr.push(v);
+        });
+    });
+
+    var res = where(new_arr,arr);
+    var sku_attr = '';
+    for(var i=0;i<res.length;i++){
+        sku_attr =  JSON.stringify(res[i]);
+        for(var key in res[i]){
+            $('input[value='+res[i][key]+']').removeAttr('disabled');
+        }
+    }
+
+    for(var i=0;i<goods_sku.length;i++){
+        if( sku_attr == goods_sku[i].sku_attr ){
+            $('#num').html( goods_sku[i].inventory );
+            $('#pri').html( goods_sku[i].price );
+        }
+    }
+
+});
+
+</script>

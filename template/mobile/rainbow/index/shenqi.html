@@ -138,7 +138,8 @@
 		.modle_shop_item2 .dssds {
 			color: #ccc;
 			font-size: .02rem!important;
-			padding-left: .1rem
+			padding-left: .1rem;
+			
 
 		}
 		.modle_shop_item2 .shop_shop{
@@ -155,6 +156,17 @@
 			position: absolute;
 			bottom: -1.18rem;
 			
+		}
+		.huiyuan_ear2{
+			position: absolute;
+			bottom: -1.18rem;
+			left: -3.1rem;
+			
+		}
+		.dssds2{
+			position:absolute;
+			top: .55rem;
+			color: #ccc
 		}
 	
 		/* 轮播图 -s */
@@ -564,7 +576,7 @@
 		}
 		.modle_shop_item .dssds{
 			font-size: .28rem;
-			color:red
+			color:#ccc
 		}
 		.modle_shop_item3 .modle_shop_price {
 			position: absolute;
@@ -589,7 +601,7 @@
 	
 			position: absolute;
 			left: 0;
-			bottom: -.7rem;
+			bottom: -.8rem;
 			width: 100%;
 			font-size: .02rem;
 			color: #f3f3f3;
@@ -1556,10 +1568,12 @@
 					<div class="modle_shop_info">
 						<p class="modle_shop_name">{{item.goods_name}}</p>
 						<div class="modle_shop_price" :class="v.params.price">
-							<span class="dssds">市场价￥{{item.market_price}}</span>
-							<div class="modle_shop_buybtn" :class="v.params.btnStyle"></div>
+							<span class="dssds2">市场价￥{{item.market_price}}</span>
+							<div class="modle_shop_buybtn" :class="v.params.btnStyle">
+								<p class="huiyuan_ear2"><span class="huiyuan">会员价</span><span class="shop_shop">￥{{item.shop_price}}</span></p>
+							</div>
 						</div>
-						<p class="huiyuan_ear"><span class="huiyuan">会员价</span><span class="shop_shop">￥{{item.shop_price}}</span></p>
+						
 					</div>
 				</a>
 				<!-- 显示多个 -->
