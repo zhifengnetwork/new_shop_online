@@ -308,7 +308,7 @@ class Cart extends MobileBase {
                 //预售订单和抢购不支持货到付款
                 $payment_where['code'] = 'weixin';
             }else{
-                $payment_where['code'] = array('in',array('weixin','cod'));
+                $payment_where['code'] = array('in',array('weixin','cod','alipayMobile'));
             }
         }else{
             if(in_array($order['prom_type'],$no_cod_order_prom_type) || in_array(1,$orderGoodsPromType) || $order['shop_id'] > 0){
@@ -325,10 +325,6 @@ class Cart extends MobileBase {
         }
         $paymentList = M('Plugin')->where($payment_where)->select();
         $paymentList = convert_arr_key($paymentList, 'code');
-        if($this->user_id == 17217){
-            print_r($payment_where);
-            // print_r($paymentList);
-        }
        
         if(is_weixin()){
             unset($paymentList['weixinH5']);
