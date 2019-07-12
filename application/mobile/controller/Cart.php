@@ -326,8 +326,8 @@ class Cart extends MobileBase {
         $paymentList = M('Plugin')->where($payment_where)->select();
         $paymentList = convert_arr_key($paymentList, 'code');
         if($this->user_id == 17217){
-            var_dump($payment_where);
-            var_dump($paymentList);
+            print_r($payment_where);
+            print_r($paymentList);
         }
        
         if(is_weixin()){
