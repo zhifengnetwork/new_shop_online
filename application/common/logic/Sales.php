@@ -206,6 +206,7 @@ class Sales extends Model
 		$layer = 0;
 		$msg = "";
 		$is_prize = false;
+		$distrbut_money = 0;
 		$total_money = 0;
 		$status = 1;
 		$data = array();
@@ -444,10 +445,12 @@ class Sales extends Model
 			if (!$user_money) {
 				continue;
 			}
+
+			$distrbut_money    = $user_money;//佣金
 			
-			$total_money += $user_money;
-			$user_money += $value['user_money'];
-			$distribut_money = $user_money+$value['distribut_money'];
+			$total_money      += $user_money;
+			$user_money       += $value['user_money'];
+			$distribut_money   = $distrbut_money+$value['distribut_money'];
 			
 			$bool = M('users')->where('user_id',$value['user_id'])->update(['user_money'=>$user_money,'distribut_money'=>$distribut_money]);
 			
@@ -512,6 +515,7 @@ class Sales extends Model
 		$layer = 0;
 		$msg = "";
 		$is_prize = false;
+		$distrbut_money = 0;
 		$total_money = 0;
 		$data = array();
 		$result = array('code' => 0);
@@ -523,7 +527,7 @@ class Sales extends Model
 				$user_id = $this->user_id;
 				$total_money = $my_prize;
 				$user = M('users')->where('user_id',$user_id)->field('user_money,distribut_money,openid')->find();
-				$my_user_money = $my_prize + $user['user_money'];
+				$my_user_money  = $my_prize + $user['user_money'];
 				$my_distribut_money = $my_prize + $user['distribut_money'];
 				$bool = M('users')->where('user_id',$user_id)->update(['user_money'=>$my_user_money,'distribut_money'=>$my_distribut_money]);
 				$result['code'] = 0;
@@ -748,10 +752,10 @@ class Sales extends Model
 			if (!$user_money) {
 				continue;
 			}
-			
-			$total_money += $user_money;
-			$user_money += $value['user_money'];
-			$distribut_money = $user_money+$value['distribut_money'];
+			$distrbut_money     = $user_money;//佣金
+			$total_money       += $user_money;
+			$user_money        += $value['user_money'];//用户获得佣金改变后的余额
+			$distribut_money    = $distrbut_money+$value['distribut_money'];//用户获得佣金改变后的佣金
 			
 			$bool = M('users')->where('user_id',$value['user_id'])->update(['user_money'=>$user_money,'distribut_money'=>$distribut_money]);
 			

@@ -326,6 +326,7 @@ class Cart extends MobileBase {
         $paymentList = M('Plugin')->where($payment_where)->select();
         $paymentList = convert_arr_key($paymentList, 'code');
        
+       
         if(is_weixin()){
             unset($paymentList['weixinH5']);
         }else{
