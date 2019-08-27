@@ -35,17 +35,17 @@ class PerformanceLogic extends Model
 
 			$note             = '购买普通商品'.'订单编号为 '.$order_sn.' 的业绩';
 
-			if($val['member_card'] == 1){
-				//会员卡
-				$Performance_type = $val['member_card'];
-				$note             = '购买会员卡'.'订单编号为 '.$order_sn.' 的业绩';
-			}
+			// if($val['member_card'] == 1){
+			// 	//会员卡
+			// 	$Performance_type = $val['member_card'];
+			// 	$note             = '购买会员卡'.'订单编号为 '.$order_sn.' 的业绩';
+			// }
 
-			if( $val['is_gift_pack'] == 1){
-				//大礼包
-				$Performance_type = 2;
-				$note             = '购买大礼包'.'订单编号为 '.$order_sn.' 的业绩';
-			}
+			// if( $val['is_gift_pack'] == 1){
+			// 	//大礼包
+			// 	$Performance_type = 2;
+			// 	$note             = '购买大礼包'.'订单编号为 '.$order_sn.' 的业绩';
+			// }
            
                   
 			if($val['is_achievement'] == 1){
