@@ -192,11 +192,13 @@ function getMenuArr(){
 		}
 		foreach($menuArr as $k=>$val){
 			foreach ($val['child'] as $j=>$v){
-				foreach ($v['child'] as $s=>$son){
-					if(strpos($role_right,$son['op'].'@'.$son['act']) === false){
-						unset($menuArr[$k]['child'][$j]['child'][$s]);//过滤菜单
+				if(isset($v['child'])){
+					foreach ($v['child'] as $s=>$son){
+						if(strpos($role_right,$son['op'].'@'.$son['act']) === false){
+							unset($menuArr[$k]['child'][$j]['child'][$s]);//过滤菜单
+						}
 					}
-				}
+			    }
 			}
 		}
 		foreach ($menuArr as $mk=>$mr){

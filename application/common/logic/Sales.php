@@ -181,7 +181,7 @@ class Sales extends Model
 		if ($order['code'] != 1) {
 			return $order;
 		}
-
+            
 		$order = $order['data'];
 		//商品总价
         $goods_price=$order['goods_price']*$order['goods_num'];
@@ -198,6 +198,7 @@ class Sales extends Model
 		if(is_array($basic_reward)){
 			ksort($basic_reward );	//按键值升序排列
 		}
+
 		if (is_array($poor_prize)) {
 			ksort($poor_prize);
 		}

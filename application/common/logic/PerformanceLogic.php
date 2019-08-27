@@ -33,15 +33,30 @@ class PerformanceLogic extends Model
 
 		foreach($goods_idarr as $val){
 
+			$note             = '购买普通商品'.'订单编号为 '.$order_sn.' 的业绩';
+
+			if($val['member_card'] == 1){
+				//会员卡
+				$Performance_type = $val['member_card'];
+				$note             = '购买会员卡'.'订单编号为 '.$order_sn.' 的业绩';
+			}
+
+			if( $val['is_gift_pack'] == 1){
+				//大礼包
+				$Performance_type = 2;
+				$note             = '购买大礼包'.'订单编号为 '.$order_sn.' 的业绩';
+			}
+           
+                  
 			if($val['is_achievement'] == 1){
 
 				$Performance = new Performance;
 				$Users = new Users;
 		
 				$goods_num = M('order_goods')->where('order_id',$order_id)->sum('goods_num');
-				$price = $order['goods_price'];
-				$user_id = $order['user_id'];
-				$order_sn = $order['order_sn'];
+				$price     = $order['goods_price'];
+				$user_id   = $order['user_id'];
+				$order_sn  = $order['order_sn'];
 				
 				$user = $Users->where('user_id',$user_id)->value('first_leader');
 				$is_per = $Performance->where('user_id',$order['user_id'])->find();
@@ -49,18 +64,18 @@ class PerformanceLogic extends Model
 				//购买者添加业绩
 				if ($is_per) {
 					$per[] = array(
-						'performance_id'=>$is_per['performance_id'],
-						'ind_per'=>$is_per['ind_per']+$price,
-						'ind_goods_sum'=>$is_per['ind_goods_sum']+$goods_num,
-						'update_time'=>Date('Y-m-d H:i:s')
+						'performance_id'=> $is_per['performance_id'],
+						'ind_per'       => $is_per['ind_per']+$price,
+						'ind_goods_sum' => $is_per['ind_goods_sum']+$goods_num,
+						'update_time'   => Date('Y-m-d H:i:s')
 					);
 				} else {
 					$per[] = array(
-						'user_id'=>$user_id,
-						'ind_per'=>$price,
-						'ind_goods_sum'=>$goods_num,
-						'create_time'=>Date('Y-m-d H:i:s'),
-						'update_time'=>Date('Y-m-d H:i:s')
+						'user_id'         =>    $user_id,
+						'ind_per'         =>    $price,
+						'ind_goods_sum'   =>    $goods_num,
+						'create_time'     =>    Date('Y-m-d H:i:s'),
+						'update_time'     =>    Date('Y-m-d H:i:s')
 					);
 				}
 				
@@ -71,7 +86,7 @@ class PerformanceLogic extends Model
 					'order_sn'=>$order_sn,
 					'order_id'=>$order_id,
 					'create_time'=>Date('Y-m-d H:i:s'),
-					'note'=>'订单编号为 '.$order_sn.' 的业绩'
+					'note'=>$note
 				);
 				//上级
 				// $id_list = $Users->where('user_id',$user_id)->value('parents');
