@@ -96,7 +96,7 @@
                                         <span class="number">{$count.handle_order}</span>
                                     </a>
                                 </li>
-                               </else>
+                               <else/>
                                <li>
                                     <a href="{:U('Admin/index/index')}">
                                         <i class="ice ice_w"></i>
@@ -105,6 +105,8 @@
                                     </a>
                                 </li>
                             </if>
+
+
                             <if condition=" $admin_info['role_id'] eq 1">
                             <li>
                                 <a  href="{:U('Admin/Goods/goodsList')}">
@@ -113,7 +115,7 @@
                                     <span class="number">{$count.goods}</span>
                                 </a>
                             </li>
-                        </else>
+                        <else/>
 
                            <li>
                                 <a  href="{:U('Admin/index/index')}">
@@ -132,7 +134,7 @@
                                 <span class="number">{$count.article}</span>
                             </a>
                         </li>
-                        <if condition=" $admin_info['role_id'] eq 1">
+                        <if condition="$admin_info['role_id'] eq 1">
                             <li>
                                 <a href="{:U('Admin/User/index')}">
                                     <i class="ice ice_n"></i>
@@ -140,14 +142,15 @@
                                     <span class="number">{$count.users}0</span>
                                 </a>
                             </li>
-                             </else>
+
+                             <else/>
                              <li>
                                     <a href="{:U('Admin/index/index')}">
                                         <i class="ice ice_n"></i>
                                         <div class="t">会员总数</div>
                                         <span class="number">{$count.users}0</span>
                                     </a>
-                                </li>
+                             </li>
                       </if>
                     </ul>
                 </div>
