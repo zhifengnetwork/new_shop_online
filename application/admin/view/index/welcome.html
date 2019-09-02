@@ -126,14 +126,25 @@
                             </li>
 
                          </if>
-                         
+
+                         <if condition="$admin_info['role_id'] eq 1">
+                            <li>
+                                <a href="{:U('Admin/Article/articleList')}">
+                                    <i class="ice ice_f"></i>
+                                    <div class="t">文章数量</div>
+                                    <span class="number">{$count.article}</span>
+                                </a>
+                            </li>
+                        <else/>
                         <li>
-                            <a href="{:U('Admin/Article/articleList')}">
-                                <i class="ice ice_f"></i>
-                                <div class="t">文章数量</div>
-                                <span class="number">{$count.article}</span>
-                            </a>
-                        </li>
+                              
+                                    <i class="ice ice_f"></i>
+                                    <div class="t">文章数量</div>
+                                    <span class="number">{$count.article}</span>
+                                
+                            </li>
+
+                    </if>
                         <if condition="$admin_info['role_id'] eq 1">
                             <li>
                                 <a href="{:U('Admin/User/index')}">
