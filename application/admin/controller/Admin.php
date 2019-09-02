@@ -40,7 +40,7 @@ class Admin extends Base {
     			$val['add_time'] = date('Y-m-d H:i:s',$val['add_time']);
     			$list[] = $val;
     		}
-    	}
+		}
     	$this->assign('list',$list);
         return $this->fetch();
     }

@@ -31,6 +31,8 @@ class Index extends Base {
         $this->assign('order_amount',$order_amount);
         $this->assign('admin_info',$admin_info);             
         $this->assign('menu',getMenuArr());   //view2
+        // print_r($admin_info);
+        // die;
         return $this->fetch();
     }
 
@@ -118,7 +120,9 @@ class Index extends Base {
     	$count['users'] = M('users')->where("1=1")->count();//会员总数
     	$count['today_login'] = M('users')->where("last_login>=$today")->count();//今日访问
     	$count['new_users'] = M('users')->where("reg_time>=$today")->count();//新增会员
-    	$count['comment'] = M('comment')->where("is_show=0")->count();//最新评论
+        $count['comment'] = M('comment')->where("is_show=0")->count();//最新评论
+        $admin_info = getAdminInfo(session('admin_id'));
+        $this->assign('admin_info',$admin_info);
     	$this->assign('count',$count);
         return $this->fetch();
     }
