@@ -162,7 +162,7 @@
                 <span id="market_price_title">市场价：</span><span class="linethr" id="market_price">{$goods.market_price}</span>
                 <img src="/public/static/images/erweimafengxiang.jpg"  style="float: right;width: 2.5rem;position:absolute;top: 3rem;right: 0;" onclick="share_icon();"/>
                 <p class="inlist" style="margin-top: 1rem;">
-                    <if condition="$goods.prom_type neq 2"><span style="float:left;">销量：{$goods['sales_sum']+$goods['virtual_sales_sum']}</span></if>
+                    <!-- <if condition="$goods.prom_type neq 2"><span style="float:left;">销量：{$goods['sales_sum']+$goods['virtual_sales_sum']}</span></if> -->
                     <!--<span >当前库存：<span class="spec_store_count">{$goods.store_count}</span></span>-->
                     <span>运费：<i id="shipping_freight"></i></span>
                     <span style="text-align:right; float:right;">广东深圳</span>
